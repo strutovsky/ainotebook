@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: mongo-service
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    volumes:
+      - ../../data/mongo-volume:/data/db
+    restart: always
+    ports:
+    - 8000:27017
