@@ -79,7 +79,7 @@ class MainMenu extends React.Component {
 
                     <Menu.ItemGroup title={"Sticks"}>
                         <SubMenu key="sub1" icon={<PaperClipOutlined />} title="Stick pages">
-                            {this.props.notices.map(item => (<Menu.Item key={item.id}>
+                            {this.props.notices.map(item => (<Menu.Item key={item.id+'n'}>
                                 {item.name}
                             </Menu.Item>))}
 

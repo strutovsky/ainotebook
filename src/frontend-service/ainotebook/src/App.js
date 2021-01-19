@@ -13,8 +13,8 @@ const temp = [
 ]
 
 const noticesTemp = [
-    {name: 'Soroka page', id: '1'},
-    {name: 'Novitskiy page', id: '2'}
+    {name: 'Soroka page', id: '1n'},
+    {name: 'Novitskiy page', id: '2n'}
 ]
 
 function App() {
@@ -35,7 +35,9 @@ function App() {
   }
 
   const AddNotice = (notice) => {
-    let tempId = Number(notebooks.length) + 1
+    let tempId = (parseInt(notices.length) + 1) + 'n'
+
+    console.log(tempId)
 
     if(notice === "")  {
         setNotice([...notices, {name: 'notice ' + tempId, id: tempId}])
