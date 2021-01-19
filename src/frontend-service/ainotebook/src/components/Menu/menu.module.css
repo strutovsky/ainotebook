@@ -28,6 +28,8 @@
 }
 
 .tempNoteboook input {
-    width: 200px;
+    width: 150px;
     border: none;
+    outline: none!important;
+    margin-left: 15px;
 }
