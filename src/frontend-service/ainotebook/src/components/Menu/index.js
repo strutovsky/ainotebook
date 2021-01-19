@@ -35,6 +35,11 @@ class MainMenu extends React.Component {
         this.props.AddBook(e.target.value)
     }
 
+    addNoteNotice = (e) => {
+        this.props.setAddingNoticeMode(false)
+        this.props.AddNotice(e.target.value)
+    }
+
     toggleCollapsed = () => {
         this.setState({
             collapsed: !this.state.collapsed,
@@ -73,10 +78,17 @@ class MainMenu extends React.Component {
 
 
                     <Menu.ItemGroup title={"Sticks"}>
-                        <SubMenu key="sub1" icon={<PaperClipOutlined />} title="Stick">
-                            <Menu.Item key="5">Page 1</Menu.Item>
-                            <Menu.Item key="5">Page 2</Menu.Item>
-                            <Menu.Item key="5">Page 3</Menu.Item>
+                        <SubMenu key="sub1" icon={<PaperClipOutlined />} title="Stick pages">
+                            {this.props.notices.map(item => (<Menu.Item key={item.id}>
+                                {item.name}
+                            </Menu.Item>))}
+
+                            <Add
+                                addingMode={this.props.addingNotice}
+                                setAddingMode={this.props.setAddingNoticeMode}
+                                placeholder={"Add stick page"}
+                                add={this.addNoteNotice}
+                            />
                         </SubMenu>
                     </Menu.ItemGroup>
 
