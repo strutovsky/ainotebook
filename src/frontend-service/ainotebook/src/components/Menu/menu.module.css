@@ -17,6 +17,16 @@
     left: 47px;
 }
 
+.tempNoteboook {
+    padding: 24px;
+    cursor: pointer;
+    color: var(--color-lightgray);
+}
+
+.tempNoteboook:hover {
+    color: var(--color-primary);
+}
+
 .tempNoteboook input {
     width: 200px;
     border: none;

@@ -17,7 +17,13 @@ function App() {
   const [addingMode, setAddingMode] = useState(false)
 
   const AddBook = (book) => {
-    setNotebooks([...notebooks, {name: book, id: notebooks.length + 1}])
+    let tempId = Number(notebooks.length) + 1
+
+    if(book === "")  {
+        setNotebooks([...notebooks, {name: 'Book ' + tempId, id: tempId}])
+    }else {
+        setNotebooks([...notebooks, {name: book, id: tempId}])
+    }
   }
 
   return (<>

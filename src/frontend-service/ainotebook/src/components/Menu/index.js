@@ -55,9 +55,10 @@ class MainMenu extends React.Component {
 
                 {/*<Button type="primary" className={MenuStyles.addNotebook} onClick={this.focusOnInput}>Add notebook <PlusOutlined /></Button>*/}
                 <Menu
-                    defaultOpenKeys={['sub1']}
+                    defaultSelectedKeys={['add']}
                     mode="inline"
                     theme="light"
+
                     // inlineCollapsed={this.state.collapsed}
                 >
                     <Menu.ItemGroup title={"Notebooks"}>
@@ -66,12 +67,28 @@ class MainMenu extends React.Component {
                         </Menu.Item>))}
                     </Menu.ItemGroup>
 
-                    {/*{this.props.addingMode &&}*/}
-                    <Menu.Item className={MenuStyles.tempNoteboook} key={'temp'} icon={<BookOutlined /> } disabled={true}>
-                        <Input ref={this.addBookRef} placeholder="Enter name of notebook" value={this.state.notebookValue}
-                               autofocus={true}
-                               onChange={this.nootebookChangeHandler} onBlur={this.addNoteBook}/>
-                    </Menu.Item>
+                    {!this.props.addingMode && <div className={MenuStyles.tempNoteboook}
+                               key={'add'}
+                               onClick={() => this.props.setAddingMode(true)}
+                    >
+                        <PlusOutlined /> Add notebook
+                    </div>}
+
+
+                    {this.props.addingMode &&  <Menu.Item className={MenuStyles.tempNoteboook}
+                               key={'temp'} icon={<BookOutlined /> }
+                               disabled={true}
+                    >
+
+                        <Input ref={this.addBookRef}
+                               placeholder="Enter name of notebook"
+                               value={this.state.notebookValue}
+                               autoFocus={true}
+                               onChange={this.nootebookChangeHandler}
+                               onBlur={this.addNoteBook}/>
+
+                    </Menu.Item>}
+
                     <Menu.ItemGroup title={"Quick notice"}>
                         <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
                             <Menu.Item key="5">Option 5</Menu.Item>
