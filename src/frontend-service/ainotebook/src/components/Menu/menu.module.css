@@ -1,0 +1,22 @@
+.menuWrap {
+    background: #fff;
+    height: 100vh;
+    padding-top: 50px;
+}
+
+.button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 0px;
+}
+
+.addNotebook {
+    position: absolute;
+    top: 0;
+    left: 47px;
+}
+
+.tempNoteboook input {
+    width: 200px;
+}

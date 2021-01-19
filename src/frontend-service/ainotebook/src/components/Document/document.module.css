@@ -1,0 +1,11 @@
+.wrap {
+    background: #fff;
+    max-width: 82%;
+    padding: 100px;
+}
+
+.header {
+    font-size: 25px;
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 20px;
+}

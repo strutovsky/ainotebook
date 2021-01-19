@@ -1,0 +1,15 @@
+:root{
+  --color-primary: #1890FF;
+  --color-background-dark: #000C17;
+  --color-background-light: #001529;
+}
+
+.App {
+  display: flex;
+  justify-content: space-between;
+  background: lightgrey;
+}
+
+h1 {
+  color: #fff!important;
+}
