@@ -49,16 +49,16 @@ class MainMenu extends React.Component {
 
         return (
             <div style={{ width: 256 }} className={MenuStyles.menuWrap}>
-                <Button className={MenuStyles.button} type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }} >
-                    {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
-                </Button>
+                {/*<Button className={MenuStyles.button} type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }} >*/}
+                {/*    {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}*/}
+                {/*</Button>*/}
 
-                <Button type="primary" className={MenuStyles.addNotebook} onClick={this.focusOnInput}>Add notebook <PlusOutlined /></Button>
+                {/*<Button type="primary" className={MenuStyles.addNotebook} onClick={this.focusOnInput}>Add notebook <PlusOutlined /></Button>*/}
                 <Menu
                     defaultOpenKeys={['sub1']}
                     mode="inline"
                     theme="light"
-                    inlineCollapsed={this.state.collapsed}
+                    // inlineCollapsed={this.state.collapsed}
                 >
                     <Menu.ItemGroup title={"Notebooks"}>
                         {this.props.notebooks.map(item => (<Menu.Item key={item.id} icon={<BookOutlined />}>
@@ -66,12 +66,12 @@ class MainMenu extends React.Component {
                         </Menu.Item>))}
                     </Menu.ItemGroup>
 
-                    {this.props.addingMode &&
-                    <Menu.Item className={MenuStyles.tempNoteboook} key={'temp'} icon={<BookOutlined /> }>
+                    {/*{this.props.addingMode &&}*/}
+                    <Menu.Item className={MenuStyles.tempNoteboook} key={'temp'} icon={<BookOutlined /> } disabled={true}>
                         <Input ref={this.addBookRef} placeholder="Enter name of notebook" value={this.state.notebookValue}
                                autofocus={true}
                                onChange={this.nootebookChangeHandler} onBlur={this.addNoteBook}/>
-                    </Menu.Item>}
+                    </Menu.Item>
                     <Menu.ItemGroup title={"Quick notice"}>
                         <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
                             <Menu.Item key="5">Option 5</Menu.Item>

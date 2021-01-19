@@ -1,8 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import 'antd/dist/antd.css';
+import {FileDoneOutlined} from '@ant-design/icons';
+
 import MainMenu from './components/Menu';
-import {useState} from 'react';
+import React, {useState} from 'react';
 import Document from './components/Document';
 
 const temp = [
@@ -18,16 +20,21 @@ function App() {
     setNotebooks([...notebooks, {name: book, id: notebooks.length + 1}])
   }
 
-  return (
-    <div className="App">
-      <MainMenu notebooks={notebooks}
-                AddBook={AddBook}
-                addingMode={addingMode}
-                setAddingMode={setAddingMode}
-      />
+  return (<>
+          <header>
+              <h1><FileDoneOutlined /> Ainotebook</h1>
+          </header>
 
-      <Document/>
-    </div>
+          <div className="App">
+              <MainMenu notebooks={notebooks}
+                        AddBook={AddBook}
+                        addingMode={addingMode}
+                        setAddingMode={setAddingMode}
+                  />
+
+              <Document/>
+          </div>
+      </>
   );
 }
 
