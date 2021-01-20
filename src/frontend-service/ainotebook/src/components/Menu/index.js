@@ -12,6 +12,8 @@ import {
 
 import MenuStyles from './menu.module.css'
 import Add from '../../common/adding';
+import {NavLink} from 'react-router-dom';
+
 
 const { SubMenu } = Menu;
 
@@ -32,12 +34,18 @@ class MainMenu extends React.Component {
 
     addNoteBook = (e) => {
         this.props.setAddingMode(false)
-        this.props.AddBook(e.target.value)
+        if(e.target.value !== ""){
+            this.props.AddBook(e.target.value)
+        }
+
     }
 
     addNoteNotice = (e) => {
         this.props.setAddingNoticeMode(false)
-        this.props.AddNotice(e.target.value)
+
+        if(e.target.value !== "") {
+            this.props.AddNotice(e.target.value)
+        }
     }
 
     toggleCollapsed = () => {
@@ -49,7 +57,7 @@ class MainMenu extends React.Component {
     render() {
 
         return (
-            <div style={{ width: 256 }} className={MenuStyles.menuWrap}>
+            <div className={MenuStyles.menuWrap}>
                 {/*<Button className={MenuStyles.button} type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }} >*/}
                 {/*    {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}*/}
                 {/*</Button>*/}
@@ -63,9 +71,14 @@ class MainMenu extends React.Component {
                     // inlineCollapsed={this.state.collapsed}
                 >
                     <Menu.ItemGroup title={"Notebooks"}>
-                        {this.props.notebooks.map(item => (<Menu.Item key={item.id} icon={<BookOutlined />}>
-                            {item.name}
-                        </Menu.Item>))}
+                        {this.props.notebooks.map(item => (<SubMenu key={item.id} icon={<BookOutlined />} title={item.name}>
+                                {item.pages.map(page => {
+                                    return (<Menu.Item key={page.id}>
+                                                <NavLink to={"/notebook/"+item.id + "/page/" + page.id}></NavLink>{page.title}
+                                            </Menu.Item>)
+                                })}
+
+                        </SubMenu>))}
 
                         <Add
                             addingMode={this.props.addingMode}
@@ -81,6 +94,7 @@ class MainMenu extends React.Component {
                         <SubMenu key="sub1" icon={<PaperClipOutlined />} title="Stick pages">
                             {this.props.notices.map(item => (<Menu.Item key={item.id+'n'}>
                                 {item.name}
+                                {/*d*/}
                             </Menu.Item>))}
 
                             <Add
@@ -96,10 +110,7 @@ class MainMenu extends React.Component {
                         <SubMenu key="sub2" icon={<SettingOutlined />} title="Setting" o>
                             <Menu.Item key="9">Option 9</Menu.Item>
                             <Menu.Item key="10">Option 10</Menu.Item>
-                            <SubMenu key="sub3" title="Submenu">
-                                <Menu.Item key="11">Option 11</Menu.Item>
-                                <Menu.Item key="12">Option 12</Menu.Item>
-                            </SubMenu>
+
                         </SubMenu>
                     </Menu.ItemGroup>
                 </Menu>

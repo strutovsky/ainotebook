@@ -1,18 +1,40 @@
 {
   "notebooks": [
-    {"id":  "1", "name": "name",
+    {
+      "id": 11,
+      "name": "name",
       "pages": [
         {
-          "id": 1,
+          "id": 12,
           "title": "Some title",
           "date": "24.07.2000 | 22:40",
           "text": "Some body dance",
           "metadata": ""
         }
       ]
+    },
+    {
+      "id": 14,
+      "name": "book",
+      "pages": [
+        {
+          "id": 54,
+          "title": "Some title 2",
+          "date": "24.07.2000 | 22:40",
+          "text": "Some body dance сорока как тебе",
+          "metadata": ""
+        },
+        {
+          "id": 34,
+          "title": "Some title 3",
+          "date": "24.07.2000 | 22:40",
+          "text": "Some body dance сорока как Gorin",
+          "metadata": ""
+        }
+      ]
     }
   ],
-  "notice": [
+  "notices": [
     {
       "id": "1n",
       "name": "Notice",
