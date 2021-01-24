@@ -13,3 +13,12 @@ services:
     restart: always
     ports:
     - 8000:27017
+
+  frontend:
+    container_name: frontend-service
+    build:
+      context: ../../src/frontend-service
+    image: frontend-service:tag
+    ports:
+    - 8001:80
+    restart: always
