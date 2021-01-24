@@ -8,15 +8,6 @@ import MainMenu from './components/Menu';
 import React, {useEffect, useState} from 'react';
 import Document from './components/Document';
 
-const temp = [
-  {name: 'Soroka', id: '1'},
-  {name: 'Novitskiy', id: '2'}
-]
-
-const noticesTemp = [
-    {name: 'Soroka page', id: '1n'},
-    {name: 'Novitskiy page', id: '2n'}
-]
 
 function App() {
     const [notebooks, setNotebooks] = useState([])
