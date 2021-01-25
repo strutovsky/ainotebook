@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.register_blueprint(routes)
 
 db = MongoEngine()
-app.config["MONGODB_SETTINGS"] = {"host": f"mongodb://root:secret@localhost:8000/test?authSource=admin"}
+app.config["MONGODB_SETTINGS"] = {"host": f"mongodb://root:secret@172.20.0.2:27017/test?authSource=admin"}
 db.init_app(app)
 
 
