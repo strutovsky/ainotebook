@@ -2,9 +2,15 @@ from server import db
 from flask import request, Response
 from . import routes
 
+class Pages(db.EmbeddedDocument):
+    title = db.StringField(required=True)
+    date = db.StringField()
+    text = db.StringField()
+    metadata = db.StringField()
+
 class Notebook(db.Document):
     name = db.StringField(required=True)
-    pages = db.ListField(required=True)
+    pages = db.ListField(db.EmbeddedDocumentField(Pages))
 
     def to_json(self):
         return {"name": self.name, "pages": self.pages}
@@ -29,3 +35,9 @@ def get_notebook_by_id(id):
     body = request.get_json()
     notebook = Notebook.objects.get(id=id)
     return notebook.to_json()
+
+@routes.route("/notebooks/<id>/pages", methods=["GET"])
+def get_notebook_pages(id):
+    body = request.get_json()
+    notebook = Notebook.objects.get(id=id)
+    return notebook.to_json()["pages"]      #TODO: list response
