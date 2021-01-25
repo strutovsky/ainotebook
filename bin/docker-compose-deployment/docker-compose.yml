@@ -20,7 +20,7 @@ services:
   ui:
     container_name: ui
     build:
-      context: ../../src/frontend-service
+      context: ../../src/ui
     image: ainotebook-ui:tag
     ports:
       - 8080:80
