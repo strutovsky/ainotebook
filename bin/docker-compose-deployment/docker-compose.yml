@@ -29,6 +29,6 @@ services:
       context: ../../src/server
     image: ainotebook-server:tag
     ports:
-      - 8002:8000
+      - 8002:5000
     restart: always
-    command: [ "python3", 'server.py' ]
+    command: [ "python3", "server.py" ]

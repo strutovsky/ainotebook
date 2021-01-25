@@ -6,3 +6,5 @@ COPY . .
 
 RUN python3 -m pip install --upgrade pip && python3 -m pip install -r requirements.txt
 
+EXPOSE 5000
+
