@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mongo:
-    container_name: mongo-service
+    container_name: mongo
     image: mongo:latest
     environment:
       - MONGO_INITDB_DATABASE=test
@@ -12,13 +12,23 @@ services:
       - ../../data/mongo-volume:/data/db
     restart: always
     ports:
-    - 8000:27017
+      - 8000:27017
 
-  frontend:
-    container_name: frontend-service
+  ui:
+    container_name: ui
     build:
       context: ../../src/frontend-service
-    image: frontend-service:tag
+    image: ainotebook-ui:tag
     ports:
-    - 8001:80
+      - 8001:80
     restart: always
+
+  server:
+    container_name: server
+    build:
+      context: ../../src/server
+    image: ainotebook-server:tag
+    ports:
+      - 8002:8000
+    restart: always
+    command: [ "python3", 'server.py' ]
