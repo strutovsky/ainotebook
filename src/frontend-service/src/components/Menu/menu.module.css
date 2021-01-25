@@ -3,6 +3,7 @@
     height: 100vh;
     padding-top: 50px;
     width: 17.5%;
+    min-width: 200px;
 }
 
 .button {
@@ -18,17 +19,17 @@
     left: 47px;
 }
 
-.tempNoteboook {
+.tempNotebook {
     padding: 24px;
     cursor: pointer;
     color: var(--color-lightgray);
 }
 
-.tempNoteboook:hover {
+.tempNotebook:hover {
     color: var(--color-primary);
 }
 
-.tempNoteboook input {
+.tempNotebook input {
     width: 150px;
     border: none;
     outline: none!important;

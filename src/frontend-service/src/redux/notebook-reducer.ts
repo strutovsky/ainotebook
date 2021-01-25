@@ -39,18 +39,21 @@ export const actions = {
 type ActionsType = InferActionsTypes<typeof actions>
 
 
-export const setNotebooksThunk = () => {
+export const getNotebooksThunk = () => {
     return (dispatch: Dispatch<ActionsTypes>) => {
         NotebookAPI.getNotebooks().then((notebooks: INotebooks) => {
+            debugger
             dispatch(actions.setNotebooks(notebooks))
         })
 
     }
 }
 
-export const addNotebooksThunk = () => {
-    return (dispatch: Dispatch<ActionsTypes>) => {
-        NotebookAPI.addBook()
+export const addNotebooksThunk = (name: string) => {
+    return (dispatch: any) => {
+        NotebookAPI.addBook(name).then(() => {
+            dispatch(getNotebooksThunk())
+        })
     }
 }
 

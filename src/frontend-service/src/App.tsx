@@ -17,7 +17,6 @@ function App() {
           </header>
 
           <div className="App">
-
               <MainMenu/>
 
               <Route path="/notebook/:notebookId?/page/:pageId?" render={() => <Document/>}/>

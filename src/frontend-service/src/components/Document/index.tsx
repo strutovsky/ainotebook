@@ -20,7 +20,7 @@ const Document = (props: any) => {
 
         load()
 
-    }, [])
+    }, [notebookId, pageId])
 
 
 
