@@ -25,6 +25,9 @@ services:
     ports:
       - 8080:80
     restart: always
+    networks:
+      mongo:
+        ipv4_address: 172.20.0.4
     depends_on:
       - server
 
@@ -53,6 +56,9 @@ services:
       - ui
     volumes:
       - ./ainotebook-proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      mongo:
+        ipv4_address: 172.20.0.5
     ports:
       - 80:80
 
