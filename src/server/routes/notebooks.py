@@ -2,12 +2,12 @@ from server import db
 from flask import request, Response
 from . import routes
 
-
 class Notebook(db.Document):
-    content = db.StringField(required=True)
+    name = db.StringField(required=True)
+    pages = db.ListField(required=True)
 
     def to_json(self):
-        return {"content": self.content}
+        return {"name": self.name, "pages": self.pages}
 
 
 @routes.route("/notebooks", methods=["POST"])
@@ -25,7 +25,7 @@ def get_all_notebooks():
 
 
 @routes.route("/notebooks/<id>", methods=["GET"])
-def get_notebook(id):
+def get_notebook_by_id(id):
     body = request.get_json()
     notebook = Notebook.objects.get(id=id)
     return notebook.to_json()
