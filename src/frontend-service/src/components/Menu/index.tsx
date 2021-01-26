@@ -1,28 +1,36 @@
 import React, {useEffect} from 'react';
-import { Menu} from 'antd';
-import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icons';
-
-import MenuStyles from './menu.module.css'
-import Add from '../../common/adding';
 import {NavLink} from 'react-router-dom';
 import {AppStateType} from "../../redux/state";
 import {actions, addNotebooksThunk, getNotebooksThunk} from "../../redux/notebook-reducer";
 import {connect} from "react-redux";
 import {INotebooks} from "../../interfaces/notebooks";
 
+import {Menu} from 'antd';
+import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icons';
+
+import MenuStyles from './menu.module.css'
+import Add from '../../common/adding';
+import {getNoticesThunk} from "../../redux/notice-reducer";
+import {INotices} from "../../interfaces/notices";
+
 
 const { SubMenu } = Menu;
+
 
 type PropsType = {
     addNotebooksThunk: (name: string) => void,
     getNotebooksThunk: () => void,
-    Notebooks: INotebooks
+    getNoticesThunk: () => void,
+    Notebooks: INotebooks,
+    Notices: INotices,
 }
 
 
-const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNotebooksThunk}) => {
+const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNotebooksThunk, Notices, getNoticesThunk}) => {
+    debugger
         useEffect(() => {
             getNotebooksThunk()
+            getNoticesThunk()
         }, [])
 
         return (
@@ -51,10 +59,9 @@ const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNoteboo
 
                     <Menu.ItemGroup title={"Sticks"}>
                         <SubMenu key="sub1" icon={<PaperClipOutlined />} title="Stick pages">
-                            {/*{this.props.notices.map(item => (<Menu.Item key={item.id+'n'}>*/}
-                            {/*    {item.name}*/}
-                            {/*    /!*d*!/*/}
-                            {/*</Menu.Item>))}*/}
+                            {Notices.map(item => (<Menu.Item key={item.id}>
+                                {item.name}
+                            </Menu.Item>))}
 
                             {/*<Add*/}
                             {/*    addingMode={this.props.addingNotice}*/}
@@ -79,8 +86,13 @@ const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNoteboo
 
 const mapStateToProps = (state: AppStateType) => {
     return {
-        Notebooks: state.notebooks.data
+        Notebooks: state.notebooks.data,
+        Notices: state.notices.data,
     }
 }
 
-export default connect(mapStateToProps, {...actions, addNotebooksThunk, getNotebooksThunk})(MainMenu)
+export default connect(mapStateToProps, {...actions,
+    addNotebooksThunk,
+    getNotebooksThunk,
+    getNoticesThunk
+})(MainMenu)

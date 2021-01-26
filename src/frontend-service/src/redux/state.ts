@@ -1,9 +1,11 @@
 import {combineReducers, createStore, applyMiddleware, Action} from "redux";
 import thunkMiddleWare, {ThunkAction} from "redux-thunk";
 import notebookReducer from "./notebook-reducer";
+import noticeReducer from "./notice-reducer";
 
 let reducers = combineReducers({
-    notebooks: notebookReducer
+    notebooks: notebookReducer,
+    notices: noticeReducer,
 })
 
 type RootReducerType = typeof reducers;

@@ -42,7 +42,6 @@ type ActionsType = InferActionsTypes<typeof actions>
 export const getNotebooksThunk = () => {
     return (dispatch: Dispatch<ActionsTypes>) => {
         NotebookAPI.getNotebooks().then((notebooks: INotebooks) => {
-            debugger
             dispatch(actions.setNotebooks(notebooks))
         })
 
