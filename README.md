@@ -3,7 +3,7 @@ AiNotebook is an app designed for note taking.
 
 ## Build and run 
 
-In this README is written information how to build and run AiNotebook app.
+In [this README](bin/README.md) is written information how to build and run AiNotebook app.
 
 ## Folder structure
 ```
