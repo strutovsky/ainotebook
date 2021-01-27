@@ -78,6 +78,16 @@ def get_page_of_notebook(nid, pid):
             }, 200
         return Response(status=404)
 
+@routes.route("/notebook/<id>", methods=["PUT"])
+def update_notebook(id):
+    ''' Updates notebook name '''
+    body = request.get_json()
+    notebook = Notebook.objects.get(id=id)
+    notebook.name = body['name']
+    notebook.save()
+    return Response(status=200)
+
+
 
 # TODO: update https://stackoverflow.com/questions/12387478/updating-a-list-of-embedded-documents-in-mongoengine
 # https://gist.github.com/pingwping/92219a8a1e9d44e1dd8a

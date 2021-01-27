@@ -48,6 +48,7 @@ There endpoints allow you to handle backend service.
 - [GET /notebook/id](#get-notebookid)
 - [POST /notebook/id/page](#post-notebookidpage)
 - [GET /notebook/id/page/id](#get-notebookidpageid)
+- [PUT /notebook/id](#put-notebookid)
 
 ### GET /notebooks
 Gets all user notebooks with pages title.
@@ -137,7 +138,7 @@ Creates a page of notebook.
 **Response:** 200
 
 ### GET /notebook/id/page/id
-Gets a page of user notebook
+Gets a page of user notebook.
 
 **Request example:**
 ```http request
@@ -154,3 +155,15 @@ http://localhost:8001/notebook/60116e30b6576f31e60616f4/page/60116e52b6576f31e60
     "title": "Test Title"
 }
 ```
+
+### PUT /notebook/id
+Updates notebook's name.
+
+**Request example:**
+```json5
+{
+    "name": "New name"
+}
+```
+
+**Response:** 200
