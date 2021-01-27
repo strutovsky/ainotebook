@@ -1,8 +1,9 @@
+import {instance} from "./rootAPI";
+import {INotices} from "../interfaces/notices";
+
+
 export const NoticeAPI = {
     getNotices: async () => {
-        const notices = await fetch('http://localhost:4200/notices')
-        const noticesJson = await notices.json()
-
-        return noticesJson
+        return instance.get<INotices>('notebooks').then(res => res.data)
     }
 }

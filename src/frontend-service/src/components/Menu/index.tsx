@@ -27,7 +27,6 @@ type PropsType = {
 
 
 const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNotebooksThunk, Notices, getNoticesThunk}) => {
-    debugger
         useEffect(() => {
             getNotebooksThunk()
             getNoticesThunk()

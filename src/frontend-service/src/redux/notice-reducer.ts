@@ -40,7 +40,6 @@ type ActionsType = InferActionsTypes<typeof actions>
 export const getNoticesThunk = () => {
     return (dispatch: Dispatch<ActionsTypes>) => {
         NoticeAPI.getNotices().then((notices: INotices) => {
-            debugger
             dispatch(actions.setNotices(notices))
         })
     }
