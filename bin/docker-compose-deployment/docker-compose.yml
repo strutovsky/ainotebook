@@ -2,7 +2,7 @@ version: '3'
 
 services:
   mongo:
-    container_name: mongo-service
+    container_name: mongo
     image: mongo:latest
     environment:
       - MONGO_INITDB_DATABASE=test
@@ -11,14 +11,59 @@ services:
     volumes:
       - ../../data/mongo-volume:/data/db
     restart: always
+    networks:
+      mongo:
+        ipv4_address: 172.20.0.2
     ports:
-    - 8000:27017
+      - 8000:27017
 
-  frontend:
-    container_name: frontend-service
+  ui:
+    container_name: ui
     build:
-      context: ../../src/frontend-service
-    image: frontend-service:tag
+      context: ../../src/ui
+    image: ainotebook-ui:tag
     ports:
-    - 8001:80
+      - 8080:80
     restart: always
+    networks:
+      mongo:
+        ipv4_address: 172.20.0.4
+    depends_on:
+      - server
+
+  server:
+    container_name: server
+    build:
+      context: ../../src/server
+    image: ainotebook-server:tag
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      mongo:
+        ipv4_address: 172.20.0.3
+    ports:
+      - 8001:5000
+    restart: always
+    command: [ "python3", "server.py" ]
+
+  proxy:
+    container_name: ainotebook-proxy
+    image: nginx:latest
+    depends_on:
+      - server
+      - ui
+    volumes:
+      - ./ainotebook-proxy/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      mongo:
+        ipv4_address: 172.20.0.5
+    ports:
+      - 80:80
+
+networks:
+  mongo:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
