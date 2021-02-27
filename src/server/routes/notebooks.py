@@ -87,6 +87,12 @@ def update_notebook(id):
     notebook.save()
     return Response(status=200)
 
+@routes.route("/notebook/<id>", methods=["DELETE"])
+def delete_notebook(id):
+    notebook = Notebook.objects.get(id=id)
+    notebook.delete()
+    return Response(status=200)
+
 
 
 # TODO: update https://stackoverflow.com/questions/12387478/updating-a-list-of-embedded-documents-in-mongoengine
