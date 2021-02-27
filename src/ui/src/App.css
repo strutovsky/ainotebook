@@ -7,8 +7,9 @@
 
 .App {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   background: lightgrey;
+  padding-left: 270px;
 }
 
 header {

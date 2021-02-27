@@ -8,9 +8,9 @@ export const NotebookAPI = {
 
     addBook: async (name: string) => {
         const data: INotebook = {
-            id: Date.now(),
             name,
-            pages: [{id: Date.now(), title: 'Новая страница', date: new Date(), text:"", meta: {}}]
+            id: Date.now(),
+            pages: [{id: 1, title: "Новая страница", date: new Date(), text: "", meta: {}}]
         }
 
         return instance.post<INotebook>('notebooks', data).then(res => res.data)

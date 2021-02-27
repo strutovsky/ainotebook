@@ -1,11 +1,58 @@
 .wrap {
     background: #fff;
-    width: 82%;
-    padding: 100px;
+    width: 100%;
+    padding: 50px 100px 0px 100px;
+    margin-top: 25px;
+    border-left: 1px solid lightgrey;
 }
 
-.header {
+.header, .header input {
     font-size: 25px;
     border-bottom: 1px solid lightgrey;
     margin-bottom: 20px;
+}
+
+.header input {
+    border: none;
+    outline: none;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    font-size: 1.5em;
+    width: 100%;
+}
+
+
+.toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #7E287F;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    justify-content: flex-end;
+}
+
+.toolbar h4 {
+    color: #fff;
+    font-weight: lighter;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+.toolbar .logo {
+    color: #fff;
+    margin-right: auto;
+    padding-left: 10px;
+    text-transform: uppercase;
+}
+
+.wrap textarea {
+    width: 100%;
+    height: 77vh;
+    border: none;
+    outline: none;
 }

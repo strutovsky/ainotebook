@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from 'react';
+// @ts-ignore
 import Styles from './document.module.css';
 import {withRouter} from 'react-router-dom';
+import { Avatar } from 'antd';
+import { UserOutlined, PicLeftOutlined } from '@ant-design/icons';
 
 
-const Document = (props: any) => {
+const Document: React.FC<any> = (props) => {
     const {notebookId, pageId} = props.match.params
     const [title, setTitle] = useState("Новая страница")
     const [text, setText] = useState("")
+    const [editTitle, setEditTitle] = useState(false)
 
     useEffect(() => {
         async function load() {
@@ -25,12 +29,19 @@ const Document = (props: any) => {
 
 
     return (<div className={Styles.wrap}>
+                <div className={Styles.toolbar}>
+                    <div className={Styles.logo}>Ainotebook</div>
+                    <h4>Dmitriy Naholiuk</h4>
+                    <Avatar style={{ backgroundColor: '#87d068', marginRight: '10px' }} icon={<UserOutlined />} />
+                </div>
                 <div className={Styles.header}>
-                    <h2>{title}</h2>
+                    <input value={title}
+                           onChange={e => setTitle(e.target.value)}
+                    />
                 </div>
 
                 <div className={Styles.body}>
-                    {text}
+                    <textarea name="body" value={text} onChange={e => setText(e.target.value)}></textarea>
                 </div>
             </div>)
 }

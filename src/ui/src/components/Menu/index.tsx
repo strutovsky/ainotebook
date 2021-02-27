@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {NavLink} from 'react-router-dom';
-import {AppStateType} from "../../redux/state";
-import {actions, addNotebooksThunk, getNotebooksThunk} from "../../redux/notebook-reducer";
+
+
 import {connect} from "react-redux";
 import {INotebooks} from "../../interfaces/notebooks";
 
@@ -10,8 +10,11 @@ import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icon
 
 import MenuStyles from './menu.module.css'
 import Add from '../../common/adding';
-import {getNoticesThunk} from "../../redux/notice-reducer";
+
 import {INotices} from "../../interfaces/notices";
+import { AppStateType } from '../../redux/state';
+import {getNoticesThunk} from '../../redux/notice-reducer';
+import {actions, addNotebooksThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
 
 
 const { SubMenu } = Menu;
@@ -33,11 +36,12 @@ const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNoteboo
         }, [])
 
         return (
-            <div className={MenuStyles.menuWrap}>
+            <div className={MenuStyles.menuWrap} style={{width: "270px"}}>
                 <Menu
                     defaultSelectedKeys={['add']}
                     mode="inline"
                     theme="light"
+
                 >
                     <Menu.ItemGroup title={"Notebooks"}>
                         {Notebooks.map(item => (<SubMenu key={item.id} icon={<BookOutlined />} title={item.name}>
