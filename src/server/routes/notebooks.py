@@ -2,19 +2,25 @@ from server import db
 from flask import request, Response, jsonify
 from bson import ObjectId
 from . import routes
-
+import datetime
 
 class Pages(db.EmbeddedDocument):
-    _id = db.ObjectIdField()
-    title = db.StringField()
-    date = db.StringField()  # TODO: DateTimeField
-    text = db.StringField()
+    _id = db.IntField(required=True)
+    title = db.StringField(verbose_name="Title", required=True)
+    created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
+    body = db.StringField(verbose_name="Note", required=True)
     metadata = db.StringField()
 
 
 class Notebook(db.Document):
     name = db.StringField(required=True)
-    pages = db.ListField(db.EmbeddedDocumentField(Pages))
+    pages = db.ListField(db.EmbeddedDocumentField('Pages'))
+
+    def get_next_pages_id(self):
+        return len(self.pages) + 1
+
+    def add_new_page(self, title, body, metadata):
+        self.update(add_to_set__pages=Pages(_id=self.get_next_pages_id(), title=title, body=body, metadata=metadata))
 
     def to_json(self):
         return {"name": self.name, "pages": self.pages}
@@ -55,11 +61,12 @@ def get_notebook_by_id(id):
 def create_page_of_notebook(id):
     ''' Creates a notebook page by id '''
     body = request.get_json()
-    newuid = ObjectId()
-    page = Pages(_id=newuid, title=body["title"], date=body["date"], text=body["text"], metadata=body["metadata"])
+    # newuid = ObjectId()
+    # page = Pages(_id=newuid, title=body["title"], date=body["date"], text=body["text"], metadata=body["metadata"])
     notebook = Notebook.objects.get(id=id)
-    notebook.pages.append(page)
-    notebook.save()
+    notebook.add_new_page(title=body["title"], body=body["body"], metadata=body["metadata"])
+    # notebook.pages.append(page)
+    # notebook.save()
     return Response(status=200)
 
 @routes.route("/notebook/<nid>/page/<pid>", methods=["GET"])
@@ -93,6 +100,14 @@ def delete_notebook(id):
     notebook.delete()
     return Response(status=200)
 
+# @routes.route("/notebook/<nid>/page/<pid>", methods=["DELETE"])
+# def delete_page(nid, pid):
+#     notebook = Notebook.objects.get_or_404(id=nid)
+#     notebook.update(pull__pages__id=pid)
+#     # for p in notebook.pages:
+#     #     if str(p._id) == pid:
+#     #         notebook.pages.update(pull___id=pid)
+#     return Response(status=200)
 
 
 # TODO: update https://stackoverflow.com/questions/12387478/updating-a-list-of-embedded-documents-in-mongoengine
