@@ -42,7 +42,7 @@ def get_all_notebooks():
 @routes.route("/notebook/<id>", methods=["GET"])
 def get_notebook_by_id(id):
     ''' Gets user notebook by id '''
-    notebook = Notebook.objects.get(id=id)
+    notebook = Notebook.objects.get_or_404(id=id)
     return {"id": str(notebook.id), "name": notebook.name, "pages": [{
         "id": str(page._id),
         "title": page.title,
@@ -65,7 +65,7 @@ def create_page_of_notebook(id):
 @routes.route("/notebook/<nid>/page/<pid>", methods=["GET"])
 def get_page_of_notebook(nid, pid):
     ''' Gets a page of notebook '''
-    notebook = Notebook.objects.get(id=nid)
+    notebook = Notebook.objects.get_or_404(id=nid)
 
     for p in notebook.pages:
         if str(p._id) == pid:
@@ -76,20 +76,20 @@ def get_page_of_notebook(nid, pid):
                 "text": p.text,
                 "metadata": p.metadata
             }, 200
-        return Response(status=404)
+        return Response(status=404)         # FIXME: returns 404 if page has index 1, 2, etc
 
 @routes.route("/notebook/<id>", methods=["PUT"])
 def update_notebook(id):
     ''' Updates notebook name '''
     body = request.get_json()
-    notebook = Notebook.objects.get(id=id)
+    notebook = Notebook.objects.get_or_404(id=id)
     notebook.name = body['name']
     notebook.save()
     return Response(status=200)
 
 @routes.route("/notebook/<id>", methods=["DELETE"])
 def delete_notebook(id):
-    notebook = Notebook.objects.get(id=id)
+    notebook = Notebook.objects.get_or_404(id=id)
     notebook.delete()
     return Response(status=200)
 
@@ -97,3 +97,4 @@ def delete_notebook(id):
 
 # TODO: update https://stackoverflow.com/questions/12387478/updating-a-list-of-embedded-documents-in-mongoengine
 # https://gist.github.com/pingwping/92219a8a1e9d44e1dd8a
+# TODO: update page of notebook
