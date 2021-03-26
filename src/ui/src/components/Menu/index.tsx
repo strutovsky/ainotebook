@@ -5,7 +5,7 @@ import {NavLink} from 'react-router-dom';
 import {connect} from "react-redux";
 import {INotebooks} from "../../interfaces/notebooks";
 
-import {Menu} from 'antd';
+import {Menu, Skeleton} from 'antd';
 import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icons';
 
 import MenuStyles from './menu.module.css'
@@ -26,10 +26,17 @@ type PropsType = {
     getNoticesThunk: () => void,
     Notebooks: INotebooks,
     Notices: INotices,
+    pending: boolean
 }
 
 
-const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNotebooksThunk, Notices, getNoticesThunk}) => {
+const MainMenu: React.FC<PropsType> = ({Notebooks,
+                                           addNotebooksThunk,
+                                           getNotebooksThunk,
+                                           Notices,
+                                           getNoticesThunk,
+                                           pending
+}) => {
         useEffect(() => {
             getNotebooksThunk()
             getNoticesThunk()
@@ -37,6 +44,8 @@ const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNoteboo
 
         return (
             <div className={MenuStyles.menuWrap} style={{width: "270px"}}>
+                { pending ? <Skeleton active /> :
+
                 <Menu
                     defaultSelectedKeys={['add']}
                     mode="inline"
@@ -81,7 +90,7 @@ const MainMenu: React.FC<PropsType> = ({Notebooks, addNotebooksThunk, getNoteboo
                             <Menu.Item key="10">Option 10</Menu.Item>
                         </SubMenu>
                     </Menu.ItemGroup>
-                </Menu>
+                </Menu>}
             </div>
         );
 }
@@ -91,6 +100,7 @@ const mapStateToProps = (state: AppStateType) => {
     return {
         Notebooks: state.notebooks.data,
         Notices: state.notices.data,
+        pending: state.notebooks.pending
     }
 }
 

@@ -26,6 +26,12 @@ const notebookReducer = (state = initState, action: ActionsType): IReducer<INote
                 data: action.notebooks
             }
 
+        case 'SET_PENDING':
+            return {
+                ...state,
+                pending: action.payload
+            }
+
         default: return state
 
     }
@@ -33,7 +39,8 @@ const notebookReducer = (state = initState, action: ActionsType): IReducer<INote
 
 export const actions = {
     setNotebooksPending: (payload: boolean) => ({type: "SET_NOTEBOOK_PENDING", payload} as const),
-    setNotebooks: (notebooks: INotebooks) => ({type: "SET_NOTEBOOKS", notebooks} as const)
+    setNotebooks: (notebooks: INotebooks) => ({type: "SET_NOTEBOOKS", notebooks} as const),
+    setPending: (payload: boolean) => ({type: "SET_PENDING", payload} as const)
 }
 
 type ActionsType = InferActionsTypes<typeof actions>
@@ -41,8 +48,10 @@ type ActionsType = InferActionsTypes<typeof actions>
 
 export const getNotebooksThunk = () => {
     return (dispatch: Dispatch<ActionsTypes>) => {
+        dispatch(actions.setPending(true))
         NotebookAPI.getNotebooks().then((notebooks: INotebooks) => {
             dispatch(actions.setNotebooks(notebooks))
+            dispatch(actions.setPending(false))
         })
 
     }
