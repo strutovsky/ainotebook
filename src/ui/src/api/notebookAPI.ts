@@ -14,5 +14,9 @@ export const NotebookAPI = {
         }
 
         return instance.post<INotebook>('notebook', {name}).then(res => res.data)
+    },
+
+    addPage: async (notebookId: number) => {
+        return instance.post(`notebook/${notebookId}/page`, {title: "New page", body: "", metadata: {}})
     }
 }

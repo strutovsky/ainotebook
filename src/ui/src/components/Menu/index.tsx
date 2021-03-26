@@ -14,7 +14,7 @@ import Add from '../../common/adding';
 import {INotices} from "../../interfaces/notices";
 import { AppStateType } from '../../redux/state';
 import {getNoticesThunk} from '../../redux/notice-reducer';
-import {actions, addNotebooksThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
+import {actions, addNotebooksThunk, addPageThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
 
 
 const { SubMenu } = Menu;
@@ -22,6 +22,7 @@ const { SubMenu } = Menu;
 
 type PropsType = {
     addNotebooksThunk: (name: string) => void,
+    addPageThunk: (id: number) => void,
     getNotebooksThunk: () => void,
     getNoticesThunk: () => void,
     Notebooks: INotebooks,
@@ -35,7 +36,8 @@ const MainMenu: React.FC<PropsType> = ({Notebooks,
                                            getNotebooksThunk,
                                            Notices,
                                            getNoticesThunk,
-                                           pending
+                                           pending,
+                                            addPageThunk
 }) => {
         useEffect(() => {
             getNotebooksThunk()
@@ -44,7 +46,7 @@ const MainMenu: React.FC<PropsType> = ({Notebooks,
 
         return (
             <div className={MenuStyles.menuWrap} style={{width: "270px"}}>
-                { pending ? <Skeleton active /> :
+                { pending ? <Skeleton active={true} /> :
 
                 <Menu
                     defaultSelectedKeys={['add']}
@@ -58,7 +60,14 @@ const MainMenu: React.FC<PropsType> = ({Notebooks,
                                     return (<Menu.Item key={page.id}>
                                                 <NavLink to={"/notebook/"+item.id + "/page/" + page.id}></NavLink>{page.title}
                                             </Menu.Item>)
+
+
                                 })}
+
+                            <Add
+                                placeholder={"Add page"}
+                                add={() => addPageThunk(item.id)}
+                            />
                         </SubMenu>))}
 
                         <Add
@@ -107,5 +116,6 @@ const mapStateToProps = (state: AppStateType) => {
 export default connect(mapStateToProps, {...actions,
     addNotebooksThunk,
     getNotebooksThunk,
-    getNoticesThunk
+    getNoticesThunk,
+    addPageThunk
 })(MainMenu)

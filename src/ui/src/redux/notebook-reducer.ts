@@ -65,6 +65,14 @@ export const addNotebooksThunk = (name: string) => {
     }
 }
 
+export const addPageThunk = (notebookId: number) =>{
+    return (dispatch: any) => {
+        NotebookAPI.addPage(notebookId).then(res => {
+            debugger
+        })
+    }
+}
+
 type ActionsTypes = InferActionsTypes<typeof actions>
 type ThunkType = BaseThunkType<ActionsTypes>
 
