@@ -1,5 +1,6 @@
 from server import db
 from flask import request, Response, jsonify
+from flask_cors import CORS, cross_origin
 from bson import ObjectId
 from . import routes
 import datetime
@@ -27,6 +28,7 @@ class Notebook(db.Document):
 
 
 @routes.route("/notebook", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def create_notebook():
     ''' Creates notebook with given name '''
     body = request.get_json()
@@ -35,6 +37,7 @@ def create_notebook():
 
 
 @routes.route("/notebooks", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def get_all_notebooks():
     ''' Gets all user notebooks '''
     res = []
@@ -46,6 +49,7 @@ def get_all_notebooks():
 
 
 @routes.route("/notebook/<id>", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def get_notebook_by_id(id):
     ''' Gets user notebook by id '''
     notebook = Notebook.objects.get_or_404(id=id)
@@ -58,6 +62,7 @@ def get_notebook_by_id(id):
 
 
 @routes.route("/notebook/<id>/page", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def create_page_of_notebook(id):
     ''' Creates a notebook page by id '''
     body = request.get_json()
@@ -70,6 +75,7 @@ def create_page_of_notebook(id):
     return Response(status=200)
 
 @routes.route("/notebook/<nid>/page/<pid>", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def get_page_of_notebook(nid, pid):
     ''' Gets a page of notebook '''
     notebook = Notebook.objects.get_or_404(id=nid)
@@ -86,6 +92,7 @@ def get_page_of_notebook(nid, pid):
         return Response(status=404)         # FIXME: returns 404 if page has index 1, 2, etc
 
 @routes.route("/notebook/<id>", methods=["PUT"])
+@cross_origin(supports_credentials=True)
 def update_notebook(id):
     ''' Updates notebook name '''
     body = request.get_json()
@@ -95,6 +102,7 @@ def update_notebook(id):
     return Response(status=200)
 
 @routes.route("/notebook/<id>", methods=["DELETE"])
+@cross_origin(supports_credentials=True)
 def delete_notebook(id):
     notebook = Notebook.objects.get_or_404(id=id)
     notebook.delete()

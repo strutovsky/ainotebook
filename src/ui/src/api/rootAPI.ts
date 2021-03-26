@@ -5,9 +5,9 @@ const DEBUG = process.env.NODE_ENV === "development";
 
 export const instance = axios.create({
     withCredentials: true,
-    baseURL: "http://localhost:4200/",
+    baseURL: "http://localhost:5000",
     headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
     },
 })
 

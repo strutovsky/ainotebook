@@ -13,6 +13,6 @@ export const NotebookAPI = {
             pages: [{id: 1, title: "Новая страница", date: new Date(), text: "", meta: {}}]
         }
 
-        return instance.post<INotebook>('notebooks', data).then(res => res.data)
+        return instance.post<INotebook>('notebook', {name}).then(res => res.data)
     }
 }

@@ -13,3 +13,4 @@ mongoengine==0.22.1
 pymongo==3.11.2
 Werkzeug==1.0.1
 WTForms==2.3.3
+flask-cors==3.0.10
