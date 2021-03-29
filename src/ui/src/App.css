@@ -8,7 +8,7 @@
 .App {
   display: flex;
   justify-content: center;
-  background: lightgrey;
+  background: #fff;
   padding-left: 270px;
 }
 
