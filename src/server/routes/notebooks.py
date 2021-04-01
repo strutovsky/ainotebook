@@ -66,18 +66,13 @@ def get_notebook_by_id():
     notebook = Notebook.objects.get_or_404(id=id)
     return notebook.to_json()
 
-
-@routes.route("/notebook/<id>/page", methods=["POST"])
+@routes.route("/page", methods=["POST"])
 @cross_origin(supports_credentials=True)
-def create_page_of_notebook(id):
+def create_page_of_notebook():
     ''' Creates a notebook page by id '''
     body = request.get_json()
-    # newuid = ObjectId()
-    # page = Pages(_id=newuid, title=body["title"], date=body["date"], text=body["text"], metadata=body["metadata"])
-    notebook = Notebook.objects.get(id=id)
+    notebook = Notebook.objects.get(id=body["nid"])
     notebook.add_new_page(title=body["title"], body=body["body"], metadata=body["metadata"])
-    # notebook.pages.append(page)
-    # notebook.save()
     return Response(status=200)
 
 @routes.route("/notebook/<nid>/page/<pid>", methods=["GET"])
