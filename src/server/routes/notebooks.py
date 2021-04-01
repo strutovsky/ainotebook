@@ -58,17 +58,13 @@ def delete_notebook():
     notebook.delete()
     return Response(status=200)
 
-@routes.route("/notebook/<id>", methods=["GET"])
+@routes.route("/notebook", methods=["GET"])
 @cross_origin(supports_credentials=True)
-def get_notebook_by_id(id):
+def get_notebook_by_id():
     ''' Gets user notebook by id '''
+    id = request.args.get('id')
     notebook = Notebook.objects.get_or_404(id=id)
-    return {"id": str(notebook.id), "name": notebook.name, "pages": [{
-        "id": str(page._id),
-        "title": page.title,
-        "date": page.date,
-        "metadata": page.metadata
-    } for page in notebook.pages]}, 200
+    return notebook.to_json()
 
 
 @routes.route("/notebook/<id>/page", methods=["POST"])
