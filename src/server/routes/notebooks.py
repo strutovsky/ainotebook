@@ -30,16 +30,6 @@ class Notebook(db.Document):
         return {"id": str(self.id), "name": self.name, "pages": [p.to_json() for p in self.pages]}
 
 
-@routes.route("/notebook", methods=["POST"])
-@cross_origin(supports_credentials=True)
-def create_notebook():
-    ''' Creates notebook with given name and empty page '''
-    body = request.get_json()
-    notebook = Notebook(**body).save()
-    notebook.add_new_page("New page", "", "")
-    return notebook.to_json()
-
-
 @routes.route("/notebooks", methods=["GET"])
 @cross_origin(supports_credentials=True)
 def get_all_notebooks():
@@ -50,6 +40,23 @@ def get_all_notebooks():
 
     return jsonify(res)
 
+@routes.route("/notebook", methods=["POST"])
+@cross_origin(supports_credentials=True)
+def create_notebook():
+    ''' Creates notebook with given name and empty page '''
+    name = request.args.get('name')
+    notebook = Notebook(name=name).save()
+    notebook.add_new_page("New page", "", "")
+    return notebook.to_json()
+
+@routes.route("/notebook", methods=["DELETE"])
+@cross_origin(supports_credentials=True)
+def delete_notebook():
+    ''' Deletes notebook '''
+    id = request.args.get('id')
+    notebook = Notebook.objects.get_or_404(id=id)
+    notebook.delete()
+    return Response(status=200)
 
 @routes.route("/notebook/<id>", methods=["GET"])
 @cross_origin(supports_credentials=True)
@@ -104,12 +111,7 @@ def update_notebook(id):
     notebook.save()
     return Response(status=200)
 
-@routes.route("/notebook/<id>", methods=["DELETE"])
-@cross_origin(supports_credentials=True)
-def delete_notebook(id):
-    notebook = Notebook.objects.get_or_404(id=id)
-    notebook.delete()
-    return Response(status=200)
+
 
 # @routes.route("/notebook/<nid>/page/<pid>", methods=["DELETE"])
 # def delete_page(nid, pid):
