@@ -45,7 +45,7 @@ There endpoints allow you to handle backend service.
 
 Method | Endpoint | Description | Input | Output example
 ---|---|---|---|---
-GET | /notebooks | Get all notebooks | - | [Example](#get-all-notebooks)
+GET | /notebooks | Get all notebooks |  | [Example](#get-all-notebooks)
 POST | /notebook | Create a notebook | **Query:**  <ul><li>name - *notebook name*</li></ul> | [Example](#create-a-notebook)
 
 ### Output Examples
