@@ -45,4 +45,23 @@ There endpoints allow you to handle backend service.
 
 Method | Endpoint | Description | Input | Output
 ---|---|---|---|---
-GET | /notebooks | Get all notebooks | - | [{notebook1}, {notebook2}]
+GET | /notebooks | Get all notebooks | - | <p>[
+    {
+        "id": "6065f30e3fbc16a1a89e1665",
+        "name": "",
+        "pages": [
+            {
+                "body": "1",
+                "create_at": "Thu, 01 Apr 2021 22:21:48 GMT",
+                "id": "60661d4cfa9f51145e7f2972",
+                "metadata": "2",
+                "title": "3"
+            }
+        ]
+    }
+]</p>
+POST | /notebook | Create notebook | **Query:** name - *notebook name* |
+
+
+
+####
