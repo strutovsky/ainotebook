@@ -43,9 +43,13 @@ docker run -p 5000:5000 ainotebook-server
 ## API endpoints
 There endpoints allow you to handle backend service.
 
-Method | Endpoint | Description | Input | Output
+Method | Endpoint | Description | Input
 ---|---|---|---|---
-GET | /notebooks | Get all notebooks | - | ```[
+GET | /notebooks | Get all notebooks | -
+
+Example output:
+```
+[
     {
         "id": "6065f30e3fbc16a1a89e1665",
         "name": "",
@@ -59,9 +63,5 @@ GET | /notebooks | Get all notebooks | - | ```[
             }
         ]
     }
-]```
-POST | /notebook | Create notebook | **Query:** name - *notebook name* |
-
-
-
-####
+]
+```
