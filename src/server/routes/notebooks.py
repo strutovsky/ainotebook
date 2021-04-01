@@ -131,4 +131,19 @@ def delete_page():
     notebook.delete_page(pid)
     return Response(status=200)
 
-# TODO: update page of notebook
+@routes.route("/page", methods=["PUT"])
+@cross_origin(supports_credentials=True)
+def update_page():
+    body = request.get_json()
+    notebook = Notebook.objects.get(id=body["nid"])
+    page = notebook.get_page(body["pid"])
+
+    if page:
+        page.title = body["title"]
+        page.body = body["body"]
+        page.metadata = body["metadata"]
+
+        notebook.save()
+        return Response(status=200)
+
+    return Response(status=404)
