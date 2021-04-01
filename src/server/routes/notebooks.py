@@ -75,22 +75,22 @@ def create_page_of_notebook():
     notebook.add_new_page(title=body["title"], body=body["body"], metadata=body["metadata"])
     return Response(status=200)
 
-@routes.route("/notebook/<nid>/page/<pid>", methods=["GET"])
+@routes.route("/page", methods=["GET"])
 @cross_origin(supports_credentials=True)
-def get_page_of_notebook(nid, pid):
+def get_page_of_notebook():
     ''' Gets a page of notebook '''
+    nid = request.args.get('nid')
+    pid = request.args.get('pid')
     notebook = Notebook.objects.get_or_404(id=nid)
 
-    for p in notebook.pages:
-        if str(p._id) == pid:
-            return {
-                "id": str(p._id),
-                "title": p.title,
-                "date": p.date,
-                "text": p.text,
-                "metadata": p.metadata
-            }, 200
-        return Response(status=404)         # FIXME: returns 404 if page has index 1, 2, etc
+    if not notebook.pages:
+        return Response(status=404)
+
+    for page in notebook.pages:
+        if str(page._id) == pid:
+            return page.to_json()
+
+    return Response(status=404)
 
 @routes.route("/notebook/<id>", methods=["PUT"])
 @cross_origin(supports_credentials=True)
