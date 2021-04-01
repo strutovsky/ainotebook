@@ -1,24 +1,60 @@
 :root{
   --color-primary: #1890FF;
-  --color-background-dark: #000C17;
-  --color-background-light: #001529;
-  --color-lightgray: rgba(0, 0, 0, 0.45);
+  --color-background-dark: #1F1F1F;
+  --color-background-light: #282828;
+  --color-lightgray: #B3B0AD;
+  --color-selected-menu: #363636;
+  --color-white: #ffffff;
 }
 
 .App {
   display: flex;
   justify-content: center;
-  background: #fff;
+  background: var(--color-background-light);
   padding-left: 270px;
+  padding-top: 50px;
 }
 
 header {
-  border-bottom: 5px solid lightgrey;
-  padding: 10px 20px;
+  background: var(--color-background-light)!important;
+  padding: 4px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  text-align: right;
 }
 
-header h1 {
-  margin: 0!important;
+header > div {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  align-items: center;
+}
+
+header h3 {
   font-weight: lighter;
-  text-align: right;
+  color: var(--color-white);
+  margin-right: 10px;
+}
+.ant-menu {
+  background: #282828!important;
+  color: var(--color-white)!important;
+}
+
+.ant-menu svg {
+  color: var(--color-primary);
+}
+
+.ant-menu-item-group-title,.ant-menu i   {
+  color: var(--color-lightgray)!important;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background: var(--color-selected-menu)!important;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected .ant-menu svg {
+  color: #1890FF;
 }

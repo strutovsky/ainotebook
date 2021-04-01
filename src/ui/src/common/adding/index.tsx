@@ -5,7 +5,7 @@ import {Input, Menu} from 'antd';
 
 type ownProps = {
     placeholder: string,
-    add: (name: string) => void
+    add: (name: string) => void,
 }
 
 const Add: React.FC<ownProps> = ({placeholder, add}) => {

@@ -29,15 +29,19 @@ const Document: React.FC<any> = (props) => {
 
 
     return (<div className={Styles.wrap}>
-                <div className={Styles.toolbar}>
-                    <div className={Styles.logo}>Ainotebook</div>
-                    <h4>Dmitriy Naholiuk</h4>
-                    <Avatar style={{ backgroundColor: '#87d068', marginRight: '10px' }} icon={<UserOutlined />} />
-                </div>
+                {/*<div className={Styles.toolbar}>*/}
+                {/*    <div className={Styles.logo}>Ainotebook</div>*/}
+                {/*    <h4>Dmitriy Naholiuk</h4>*/}
+                {/*    <Avatar style={{ backgroundColor: '#87d068', marginRight: '10px' }} icon={<UserOutlined />} />*/}
+                {/*</div>*/}
                 <div className={Styles.header}>
                     <input value={title}
                            onChange={e => setTitle(e.target.value)}
                     />
+                </div>
+
+                <div className={Styles.date}>
+                    {new Date().toDateString()}
                 </div>
 
                 <div className={Styles.body}>

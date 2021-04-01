@@ -65,9 +65,9 @@ export const addNotebooksThunk = (name: string) => {
     }
 }
 
-export const addPageThunk = (notebookId: number) =>{
+export const addPageThunk = (notebookId: number, title: string) =>{
     return (dispatch: any) => {
-        NotebookAPI.addPage(notebookId).then(res => {
+        NotebookAPI.addPage(notebookId, title).then(res => {
             debugger
         })
     }

@@ -1,12 +1,13 @@
 .menuWrap {
-    background: #fff;
+    background: #282828;
     height: 100vh;
-    padding-top: 50px;
     width: 17.5%;
     min-width: 200px;
     position: fixed;
     left: 0;
-    border-right: 1px solid lightgrey;
+    border-top: 1px solid var(--color-selected-menu);
+    margin-top: 1px;
+    /*border-right: 1px solid lightgrey;*/
 }
 
 .button {
@@ -25,7 +26,7 @@
 .tempNotebook {
     padding: 24px;
     cursor: pointer;
-    color: var(--color-lightgray);
+    color: #B3B0AD;
 }
 
 .tempNotebook:hover {

@@ -9,6 +9,9 @@ import 'antd/dist/antd.css';
 import {FileDoneOutlined} from '@ant-design/icons';
 import {LoginPage} from './components/Login';
 import { ChooseNotebook } from './components/NoNotebookSelected';
+import { Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
 
 
 function App() {
@@ -17,7 +20,12 @@ function App() {
   }
 
   return (<HashRouter>
-
+        <header>
+            <div>
+                <h3>Dmitriy Naholiuk</h3>
+                <Avatar size={32} icon={<UserOutlined />} />
+            </div>
+        </header>
         <div className="App">
           <MainMenu/>
           <Switch>
