@@ -26,6 +26,15 @@ class Notebook(db.Document):
         self.pages.append(page)
         self.save()
 
+    def get_page(self, id):
+        for page in self.pages:
+            if str(page._id) == id:
+                return page
+        return None
+
+    def delete_page(self, id):
+        self.update(pull__pages___id=id)
+
     def to_json(self):
         return {"id": str(self.id), "name": self.name, "pages": [p.to_json() for p in self.pages]}
 
@@ -86,11 +95,21 @@ def get_page_of_notebook():
     if not notebook.pages:
         return Response(status=404)
 
-    for page in notebook.pages:
-        if str(page._id) == pid:
-            return page.to_json()
+    page = notebook.get_page(pid)
 
-    return Response(status=404)
+    return page.to_json() if page else Response(status=404)
+
+@routes.route("/page", methods=["DELETE"])
+@cross_origin(supports_credentials=True)
+def delete_page():
+    ''' Deletes page by id '''
+    nid = request.args.get('nid')
+    pid = request.args.get('pid')
+    notebook = Notebook.objects.get_or_404(id=nid)
+    notebook.delete_page(pid)
+    return Response(status=200)
+
+
 
 @routes.route("/notebook/<id>", methods=["PUT"])
 @cross_origin(supports_credentials=True)
@@ -104,14 +123,7 @@ def update_notebook(id):
 
 
 
-# @routes.route("/notebook/<nid>/page/<pid>", methods=["DELETE"])
-# def delete_page(nid, pid):
-#     notebook = Notebook.objects.get_or_404(id=nid)
-#     notebook.update(pull__pages__id=pid)
-#     # for p in notebook.pages:
-#     #     if str(p._id) == pid:
-#     #         notebook.pages.update(pull___id=pid)
-#     return Response(status=200)
+
 
 
 # TODO: update https://stackoverflow.com/questions/12387478/updating-a-list-of-embedded-documents-in-mongoengine
