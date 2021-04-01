@@ -61,8 +61,6 @@ const MainMenu: React.FC<PropsType> = ({
                                 return (<Menu.Item key={page.id + item.id}>
                                     <NavLink to={'/notebook/' + item.id + '/page/' + page.id}></NavLink>{page.title}
                                 </Menu.Item>)
-
-
                             })}
 
                             <Add

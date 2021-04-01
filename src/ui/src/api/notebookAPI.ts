@@ -20,7 +20,9 @@ export const NotebookAPI = {
         return instance.post(`notebook/${notebookId}/page`, {title: "New page", body: "", metadata: {}})
     },
 
-    getNootebooksPages: async () => {
-        // return instance.get()
+    getNotebookPage: async (notebookId: number, pageId: number) => {
+       instance.get(`notebook/${notebookId}/page/${pageId}`).then(res => {
+            debugger
+        })
     }
 }

@@ -1,14 +1,29 @@
 .menuWrap {
     background: #282828;
-    height: 100vh;
+    height: calc(100vh - 50px);
     width: 17.5%;
     min-width: 200px;
     position: fixed;
     left: 0;
     border-top: 1px solid var(--color-selected-menu);
     margin-top: 1px;
+    overflow-y: scroll;
+    padding-right: 5px;
     /*border-right: 1px solid lightgrey;*/
 }
+.menuWrap::-webkit-scrollbar {
+    width: 1px;
+    background-color: var(--color-selected-menu);
+}
+
+.menuWrap::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary);
+    height: 10px;
+}
+
+
+
+
 
 .button {
     position: absolute;
