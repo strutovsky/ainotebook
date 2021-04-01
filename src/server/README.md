@@ -45,7 +45,7 @@ There endpoints allow you to handle backend service.
 
 Method | Endpoint | Description | Input | Output
 ---|---|---|---|---
-GET | /notebooks | Get all notebooks | - | <p>[
+GET | /notebooks | Get all notebooks | - | ```[
     {
         "id": "6065f30e3fbc16a1a89e1665",
         "name": "",
@@ -59,7 +59,7 @@ GET | /notebooks | Get all notebooks | - | <p>[
             }
         ]
     }
-]</p>
+]```
 POST | /notebook | Create notebook | **Query:** name - *notebook name* |
 
 
