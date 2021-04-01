@@ -37,7 +37,7 @@ def create_notebook():
     body = request.get_json()
     notebook = Notebook(**body).save()
     notebook.add_new_page("New page", "", "")
-    return notebook.to_json(), 200
+    return notebook.to_json()
 
 
 @routes.route("/notebooks", methods=["GET"])
@@ -46,10 +46,9 @@ def get_all_notebooks():
     ''' Gets all user notebooks '''
     res = []
     for notebook in Notebook.objects:
-        res.append({"id": str(notebook.id), "name": notebook.name, "pages": [{"title": page.title,
-                                                                              "id": str(page._id)} for page in
-                                                                             notebook.pages]})
-    return jsonify(res), 200
+        res.append(notebook.to_json())
+
+    return jsonify(res)
 
 
 @routes.route("/notebook/<id>", methods=["GET"])
