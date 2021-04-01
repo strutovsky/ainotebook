@@ -47,6 +47,10 @@ Method | Endpoint | Description | Input | Output example
 ---|---|---|---|---
 GET | /notebooks | Get all notebooks |  | [Example](#get-all-notebooks)
 POST | /notebook | Create a notebook | **Query:**  <ul><li>name - *notebook name*</li></ul> | [Example](#create-a-notebook)
+GET | /notebook | Get a notebook by id | **Query:** <ul><li>nid - *notebook id*</li></ul> | [Example](#get-a-notebook-by-id)
+DELETE | /notebook | Delete a notebook by id | **Query:** <ul><li>nid - *notebook id*</li></ul> | 200
+POST | /page | Create a page of notebook | **JSON:** <ul><li>"nid": "6065f30e3fbc16a1a89e1665"</li><li>"title": "New page of notebook"</li><li>"body": "This is body of notebook"</li><li>"metadata": ""</li></ul> | 200
+
 
 ### Output Examples
 
@@ -87,3 +91,23 @@ POST | /notebook | Create a notebook | **Query:**  <ul><li>name - *notebook name
     ]
 }
 ```
+
+#### Get a notebook by id
+
+```json5
+{
+    "id": "6065f30e3fbc16a1a89e1665",
+    "name": "",
+    "pages": [
+        {
+            "body": "1",
+            "create_at": "Thu, 01 Apr 2021 22:21:48 GMT",
+            "id": "60661d4cfa9f51145e7f2972",
+            "metadata": "2",
+            "title": "3"
+        }
+    ]
+}
+```
+
+
