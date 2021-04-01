@@ -6,34 +6,38 @@ from . import routes
 import datetime
 
 class Pages(db.EmbeddedDocument):
-    _id = db.IntField(required=True)
+    _id = db.ObjectIdField()
     title = db.StringField(verbose_name="Title", required=True)
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     body = db.StringField(verbose_name="Note", required=True)
-    metadata = db.StringField()
+    metadata = db.StringField(verbose_name="Metadata")
+
+    def to_json(self):
+        return {"id": str(self._id), "title": self.title, "create_at": self.created_at,
+                "body": self.body, "metadata": self.metadata}
 
 
 class Notebook(db.Document):
     name = db.StringField(required=True)
-    pages = db.ListField(db.EmbeddedDocumentField('Pages'))
-
-    def get_next_pages_id(self):
-        return len(self.pages) + 1
+    pages = db.ListField(db.EmbeddedDocumentField(Pages))
 
     def add_new_page(self, title, body, metadata):
-        self.update(add_to_set__pages=Pages(_id=self.get_next_pages_id(), title=title, body=body, metadata=metadata))
+        page = Pages(_id=ObjectId(), title=title, body=body, metadata=metadata)
+        self.pages.append(page)
+        self.save()
 
     def to_json(self):
-        return {"name": self.name, "pages": self.pages}
+        return {"id": str(self.id), "name": self.name, "pages": [p.to_json() for p in self.pages]}
 
 
 @routes.route("/notebook", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def create_notebook():
-    ''' Creates notebook with given name '''
+    ''' Creates notebook with given name and empty page '''
     body = request.get_json()
     notebook = Notebook(**body).save()
-    return {"id": str(notebook.id), "name": notebook.name}, 200
+    notebook.add_new_page("New page", "", "")
+    return notebook.to_json(), 200
 
 
 @routes.route("/notebooks", methods=["GET"])
