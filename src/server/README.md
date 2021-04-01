@@ -43,127 +43,86 @@ docker run -p 5000:5000 ainotebook-server
 ## API endpoints
 There endpoints allow you to handle backend service.
 
-- [GET /notebooks](#get-notebooks)
-- [POST /notebook](#post-notebook)
-- [GET /notebook/id](#get-notebookid)
-- [POST /notebook/id/page](#post-notebookidpage)
-- [GET /notebook/id/page/id](#get-notebookidpageid)
-- [PUT /notebook/id](#put-notebookid)
+Method | Endpoint | Description | Input | Output example
+---|---|---|---|---
+GET | /notebooks | Get all notebooks |  | [Example](#get-all-notebooks)
+POST | /notebook | Create a notebook | **Query:**  <ul><li>name - *notebook name*</li></ul> | [Example](#create-a-notebook)
+GET | /notebook | Get a notebook by id | **Query:** <ul><li>nid - *notebook id*</li></ul> | [Example](#get-a-notebook-by-id)
+DELETE | /notebook | Delete a notebook by id | **Query:** <ul><li>nid - *notebook id*</li></ul> | 200
+PUT | /notebook | Update notebook name | **Query:** <ul><li>nid - *notebook id*</li><li>name - *notebook name*</li></ul> | 200
+POST | /page | Create a page of notebook | **JSON:** <ul><li>"nid": "6065f30e3fbc16a1a89e1665"</li><li>"title": "New page of notebook"</li><li>"body": "This is body of notebook"</li><li>"metadata": ""</li></ul> | 200
+GET | /page | Get a page by id | **Query:** <ul><li>nid - *notebook id*</li><li>pid - *page id*</li></ul> | [Example](#get-a-page-by-id)
+DELETE | /page | Delete a page by id | **Query:** <ul><li>nid - *notebook id*</li><li>pid - *page id*</li></ul> | 200
+PUT | /page | Update page | **JSON:** <ul><li>"nid": "60662d57327ef36b8721dfc6"</li><li>"pid": "60662d5f327ef36b8721dfc8"</li><li>"body": "1"</li><li>"metadata": "2"</li><li>"title": "3"</li></ul> | 200
 
-### GET /notebooks
-Gets all user notebooks with pages title.
 
-**Response example:**
+### Output Examples
+
+#### Get all notebooks
+
 ```json5
 [
-        {
-        "id": "601029a1sfdsgj90a7a0d1d2143",
-        "name":  "NotebookName",
+    {
+        "id": "6065f30e3fbc16a1a89e1665",
+        "name": "",
         "pages": [
-                   {
-                    "id": "60103fdb8339e34d32a4fd6b",
-                    "title": "PageTitle"
-                   },
-
-                   {
-                    "id": "601040bf8339e34d32a4fd6e",
-                    "title": "PageName"
-                   }
-             ]
-        },
-
-        {
-        "id": "62342asadjf93207a0d1348dfa",
-        "name": "NotebookName2",
-        "pages": []
-        }
+            {
+                "body": "1",
+                "create_at": "Thu, 01 Apr 2021 22:21:48 GMT",
+                "id": "60661d4cfa9f51145e7f2972",
+                "metadata": "2",
+                "title": "3"
+            }
+        ]
+    }
 ]
 ```
 
-### POST /notebook
-Creates notebook with given name.
+#### Create a notebook
 
-**Request example:**
 ```json5
 {
-    "name": "Name of notebook"
-}
-```
-
-**Response example:**
-```json5
-{
-    "id": "601029a1fdc90a7a0d1d2143",
-    "name": "Name of notebook"
-}
-```
-
-### GET /notebook/id
-Gets user notebook by its ID.
-
-**Request example:**
-```http request
-http://localhost:8001/notebook/600f37cd1009d3f1136fcf6c
-```
-
-**Response example:**
-```json5
-{
-    "id": "600f37cd1009d3f1136fcf6c",
-    "name": "Notebook for testing",
+    "id": "60662749327ef36b8721dfc4",
+    "name": "asd",
     "pages": [
         {
-            "id": "60103fdb8339e34d32a4fd6b",
-            "date": "28.08.2000",
-            "metadata": "23424",
-            "title": "Test Title"
+            "body": "",
+            "create_at": "Thu, 01 Apr 2021 23:04:25 GMT",
+            "id": "60662749327ef36b8721dfc5",
+            "metadata": "",
+            "title": "New page"
         }
     ]
 }
 ```
 
-### POST /notebook/id/page
-Creates a page of notebook.
+#### Get a notebook by id
 
-**Request example:**
 ```json5
 {
-    "date": "28.08.2000",
-    "metadata": "23424",
-    "text": "This is text for page",
-    "title": "Test Title"
+    "id": "6065f30e3fbc16a1a89e1665",
+    "name": "",
+    "pages": [
+        {
+            "body": "1",
+            "create_at": "Thu, 01 Apr 2021 22:21:48 GMT",
+            "id": "60661d4cfa9f51145e7f2972",
+            "metadata": "2",
+            "title": "3"
+        }
+    ]
 }
 ```
 
-**Response:** 200
+#### Get a page by id
 
-### GET /notebook/id/page/id
-Gets a page of user notebook.
-
-**Request example:**
-```http request
-http://localhost:8001/notebook/60116e30b6576f31e60616f4/page/60116e52b6576f31e60616f5
-```
-
-**Response example:**
 ```json5
 {
-    "date": "28.08.2000",
-    "id": "60116e52b6576f31e60616f5",
-    "metadata": "23424",
-    "text": "Hello",
-    "title": "Test Title"
+    "body": "",
+    "create_at": "Thu, 01 Apr 2021 23:30:15 GMT",
+    "id": "60662d57327ef36b8721dfc7",
+    "metadata": "",
+    "title": "New page"
 }
 ```
 
-### PUT /notebook/id
-Updates notebook's name.
-
-**Request example:**
-```json5
-{
-    "name": "New name"
-}
-```
-
-**Response:** 200
