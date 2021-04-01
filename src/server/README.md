@@ -44,7 +44,7 @@ docker run -p 5000:5000 ainotebook-server
 There endpoints allow you to handle backend service.
 
 Method | Endpoint | Description | Input
----|---|---|---|---
+---|---|---|---
 GET | /notebooks | Get all notebooks | -
 
 Example output:
