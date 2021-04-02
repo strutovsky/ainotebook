@@ -2,6 +2,7 @@ from server import db
 from flask import request, Response, jsonify, session
 from flask_cors import cross_origin
 from . import routes
+from bson import ObjectId
 from werkzeug.exceptions import Unauthorized
 from models import Notebook, User
 
@@ -28,10 +29,21 @@ def get_all_notebooks():
 @cross_origin(supports_credentials=True)
 def create_notebook():
     # Creates notebook with given name and empty page
-    name = request.args.get('name')
-    notebook = Notebook(name=name).save()
-    notebook.add_new_page("New page", "", "")
-    return notebook.to_json()
+
+    if 'logged_id' in session:
+        user_id = session["user"]["id"]
+        user = User.objects.get_or_404(id=user_id)
+        name = request.args.get('name')
+
+        notebook = Notebook(_id=ObjectId(), name=name)
+        notebook.add_new_page("New page", "", "")
+        user.notebooks.append(notebook)
+        user.save()
+        return notebook.to_json()
+    else:
+        return Unauthorized(description="Need to authorize")
+
+
 
 
 @routes.route("/notebook", methods=["DELETE"])

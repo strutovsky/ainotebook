@@ -3,13 +3,14 @@ from .pages import Pages
 from bson import ObjectId
 
 class Notebook(db.EmbeddedDocument):
+    _id = db.ObjectIdField()
     name = db.StringField(required=True)
     pages = db.ListField(db.EmbeddedDocumentField(Pages))
 
     def add_new_page(self, title, body, metadata):
         page = Pages(_id=ObjectId(), title=title, body=body, metadata=metadata)
         self.pages.append(page)
-        self.save()
+        # self.save()
 
     def get_page(self, id):
         for page in self.pages:
@@ -22,7 +23,7 @@ class Notebook(db.EmbeddedDocument):
 
     def update_name(self, name):
         self.name = name
-        self.save()
+        # self.save()
 
     def to_json(self):
-        return {"id": str(self.id), "name": self.name, "pages": [p.to_json() for p in self.pages]}
+        return {"id": str(self._id), "name": self.name, "pages": [p.to_json() for p in self.pages]}

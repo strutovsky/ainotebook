@@ -45,7 +45,7 @@ def login():
         if pbkdf2_sha256.verify(password, user.password):
             user_json = user.to_json()
             del user_json["password"]
-            # NOTE: uncomment del user_json["notebooks"]
+            del user_json["notebooks"]
             session["logged_id"] = True
             session["user"] = user_json
             return jsonify(user_json), 200
