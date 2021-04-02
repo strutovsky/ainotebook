@@ -12,4 +12,7 @@ export interface INotebook {
     pages: Array<INotebookPage>
 }
 
-export type INotebooks = Array<INotebook>
+export type INotebooks = {
+    notebooks: Array<INotebook>,
+    selectedNotebooks?: INotebook | null
+}

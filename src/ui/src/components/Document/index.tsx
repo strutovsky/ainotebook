@@ -1,18 +1,23 @@
 import React, {useEffect, useState} from 'react';
 // @ts-ignore
 import Styles from './document.module.css';
-import {withRouter} from 'react-router-dom';
+import {useHistory, withRouter} from 'react-router-dom';
 import {NotebookAPI} from '../../api/notebookAPI';
 
+const queryString = require('query-string');
 
 const Document: React.FC<any> = (props) => {
-    const {notebookId, pageId} = props.match.params
+    const history = useHistory()
     const [title, setTitle] = useState("Новая страница")
     const [text, setText] = useState("")
 
-    useEffect(() => {
-        NotebookAPI.getNotebookPage(notebookId, pageId)
-    }, [notebookId, pageId])
+    const parsed = queryString.parse(props.location.search);
+    console.log(parsed)
+
+
+    // useEffect(() => {
+    //     NotebookAPI.getNotebookPage(notebookId, pageId)
+    // }, [notebookId, pageId])
 
 
 

@@ -1,7 +1,7 @@
 .wrap {
     background: #1F1F1F;
-    width: 100%;
     padding: 50px 100px 0px 100px;
+    width: 100%;
 }
 
 .header, .header input {

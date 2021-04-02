@@ -29,10 +29,10 @@ function App() {
         <div className="App">
           <MainMenu/>
           <Switch>
-              <Route path="/notebook/:notebookId?/page/:pageId?" render={() => <Document/>}/>
-              <Route>
-                  <ChooseNotebook/>
-              </Route>
+              <Route path="/notebook" render={() => <Document/>}/>
+              {/*<Route>*/}
+              {/*    <Document/>*/}
+              {/*</Route>*/}
           </Switch>
 
 

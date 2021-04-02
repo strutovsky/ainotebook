@@ -10,8 +10,8 @@
 .App {
   display: flex;
   justify-content: center;
-  background: var(--color-background-light);
-  padding-left: 270px;
+  background: var(--color-background-dark);
+  padding-left: 450px;
   padding-top: 50px;
 }
 
