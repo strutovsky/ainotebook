@@ -1,7 +1,7 @@
 export interface INotebookPage {
     id: number,
     title: string,
-    date: Date,
+    create_at: Date | string,
     text: string,
     meta: any
 }
@@ -14,5 +14,6 @@ export interface INotebook {
 
 export type INotebooks = {
     notebooks: Array<INotebook>,
-    selectedNotebooks?: INotebook | null
+    selectedNotebooks?: INotebook | null,
+    activePage?: INotebookPage | null
 }

@@ -1,4 +1,4 @@
-import {INotebook, INotebooks} from "../interfaces/notebooks";
+import {INotebook, INotebookPage, INotebooks} from '../interfaces/notebooks';
 import {IReducer} from "../interfaces/basic";
 import { InferActionsTypes, BaseThunkType } from "./state";
 import {Dispatch} from "redux";
@@ -10,7 +10,8 @@ let initState: IReducer<INotebooks> = {
     error: false,
     data: {
         selectedNotebooks: null,
-        notebooks: []
+        notebooks: [],
+        activePage: null
     },
   }
 
@@ -40,6 +41,12 @@ const notebookReducer = (state = initState, action: ActionsType): IReducer<INote
                 data: {...state.data,selectedNotebooks: action.payload}
             }
 
+        case 'SET_ACTIVE_NOTEBOOK_PAGE':
+            return {
+                ...state,
+                data: {...state.data, activePage: action.page}
+            }
+
         default: return state
 
     }
@@ -49,7 +56,9 @@ export const actions = {
     setNotebooksPending: (payload: boolean) => ({type: "SET_NOTEBOOK_PENDING", payload} as const),
     setNotebooks: (notebooks: INotebook[]) => ({type: "SET_NOTEBOOKS", notebooks} as const),
     setPending: (payload: boolean) => ({type: "SET_PENDING", payload} as const),
-    setSelectedNotebook: (payload: INotebook | null) => ({type: "SET_SELECTED_NOTEBOOK", payload} as const)
+    setSelectedNotebook: (payload: INotebook | null) => ({type: "SET_SELECTED_NOTEBOOK", payload} as const),
+    setActivePage: (page: INotebookPage | null) => ({type: "SET_ACTIVE_NOTEBOOK_PAGE", page} as const)
+
 }
 
 type ActionsType = InferActionsTypes<typeof actions>
@@ -74,10 +83,18 @@ export const addNotebooksThunk = (name: string) => {
     }
 }
 
+export const getNotebookPageThunk = (nid: string, page: string) => {
+    return (dispatch: any) => {
+        NotebookAPI.getPage(nid, page).then(res => {
+            dispatch(actions.setActivePage(res.data))
+        })
+    }
+}
+
 export const addPageThunk = (notebookId: number, title: string) =>{
     return (dispatch: any) => {
         NotebookAPI.addPage(notebookId, title).then(res => {
-            debugger
+
         })
     }
 }

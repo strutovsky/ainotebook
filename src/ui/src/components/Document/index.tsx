@@ -1,32 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Styles from './document.module.css';
 import {withRouter} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import { getActivePage } from '../../redux/selectors/notebook-selector';
+import { getNotebookPageThunk } from '../../redux/notebook-reducer';
 
 const queryString = require('query-string');
 
 const Document: React.FC<any> = (props) => {
-    const [title, setTitle] = useState("Новая страница")
-    const [text, setText] = useState("")
+    const activePage = useSelector(getActivePage)
+    const dispatch = useDispatch()
 
     const parsed = queryString.parse(props.location.search);
 
-    // useEffect(() => {
-    //     NotebookAPI.getNotebookPage(notebookId, pageId)
-    // }, [notebookId, pageId])
+    useEffect(() => {
+        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
+    }, [parsed.nid, parsed.page])
 
     return (<div className={Styles.wrap}>
                 <div className={Styles.header}>
-                    <input value={title}
-                           onChange={e => setTitle(e.target.value)}
+                    <input value={activePage?.title}
                     />
                 </div>
 
                 <div className={Styles.date}>
-                    {new Date().toDateString()}
+                    {activePage?.create_at}
                 </div>
 
                 <div className={Styles.body} >
-                    <textarea style={{"resize": "none"}} name="body" value={text} onChange={e => setText(e.target.value)}></textarea>
+                    <textarea style={{"resize": "none"}} name="body" value={activePage?.text}></textarea>
                 </div>
             </div>)
 }
