@@ -34,3 +34,8 @@ def signup():
         user = User(name=name, email=email, password=password).save()
         return Response(status=200)
     return InternalServerError(description="Something went wrong")
+
+@routes.route("/signout", methods=["POST"])
+def signout():
+    session.clear()
+    return redirect('/')
