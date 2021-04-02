@@ -2,7 +2,8 @@ from server import db
 from flask import request, Response, jsonify, request, redirect, url_for, session, render_template
 from flask_cors import cross_origin
 from bson import ObjectId
-from werkzeug.exceptions import NotFound, Conflict, InternalServerError
+from functools import wraps
+from werkzeug.exceptions import NotFound, Conflict, InternalServerError, Unauthorized
 from passlib.hash import pbkdf2_sha256
 from . import routes
 
@@ -13,6 +14,15 @@ class User(db.Document):
 
     def to_json(self):
         return {"id": str(self.id), "name": self.name, "email": self.email, "password": self.password}
+
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            return redirect('/')
 
 @routes.route("/signup", methods=["POST"])
 def signup():
@@ -39,3 +49,22 @@ def signup():
 def signout():
     session.clear()
     return redirect('/')
+
+@routes.route("/login", methods=["POST"])
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    try:
+        user = User.objects.get_or_404(email=email)
+        if pbkdf2_sha256.verify(password, user.password):
+            user_json = user.to_json()
+            del user_json["password"]
+
+            session["logged_id"] = True
+            session["user"] = user_json
+            return jsonify(user_json), 200
+        else:
+            return Unauthorized(description="Wrong password")
+    except NotFound:
+        return Conflict(description="User is not registered")
