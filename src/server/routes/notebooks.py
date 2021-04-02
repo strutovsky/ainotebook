@@ -31,6 +31,7 @@ class Notebook(db.Document):
 @cross_origin(supports_credentials=True)
 def create_notebook():
     ''' Creates notebook with given name '''
+    
     body = request.get_json()
     notebook = Notebook(**body).save()
     return {"id": str(notebook.id), "name": notebook.name}, 200
