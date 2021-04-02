@@ -1,58 +1,27 @@
 from server import db
-from flask import request, Response, jsonify
+from flask import request, Response, jsonify, session
 from flask_cors import cross_origin
-from bson import ObjectId
 from . import routes
-import datetime
-
-
-class Pages(db.EmbeddedDocument):
-    _id = db.ObjectIdField()
-    title = db.StringField(verbose_name="Title", required=True)
-    created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
-    body = db.StringField(verbose_name="Note", required=True)
-    metadata = db.StringField(verbose_name="Metadata")
-
-    def to_json(self):
-        return {"id": str(self._id), "title": self.title, "create_at": self.created_at,
-                "body": self.body, "metadata": self.metadata}
-
-
-class Notebook(db.Document):
-    name = db.StringField(required=True)
-    pages = db.ListField(db.EmbeddedDocumentField(Pages))
-
-    def add_new_page(self, title, body, metadata):
-        page = Pages(_id=ObjectId(), title=title, body=body, metadata=metadata)
-        self.pages.append(page)
-        self.save()
-
-    def get_page(self, id):
-        for page in self.pages:
-            if str(page._id) == id:
-                return page
-        return None
-
-    def delete_page(self, id):
-        self.update(pull__pages___id=id)
-
-    def update_name(self, name):
-        self.name = name
-        self.save()
-
-    def to_json(self):
-        return {"id": str(self.id), "name": self.name, "pages": [p.to_json() for p in self.pages]}
+from werkzeug.exceptions import Unauthorized
+from models import Notebook, User
 
 
 @routes.route("/notebooks", methods=["GET"])
 @cross_origin(supports_credentials=True)
 def get_all_notebooks():
     # Gets all user notebooks
-    res = []
-    for notebook in Notebook.objects:
-        res.append(notebook.to_json())
 
-    return jsonify(res)
+    if 'logged_in' in session:
+        res = []
+        user_id = session["user"]["id"]
+        user = User.objects.get_or_404(id=user_id)
+        for notebook in user.notebooks:
+            res.append(notebook.to_json())
+
+        return jsonify(res), 200
+
+    else:
+        return Unauthorized(description="Need to authorize")
 
 
 @routes.route("/notebook", methods=["POST"])

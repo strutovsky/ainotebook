@@ -1,30 +1,13 @@
 from server import db
 from flask import request, Response, jsonify, request, redirect, url_for, session, render_template
 from flask_cors import cross_origin
-from bson import ObjectId
-from functools import wraps
 from werkzeug.exceptions import NotFound, Conflict, InternalServerError, Unauthorized
 from passlib.hash import pbkdf2_sha256
 from . import routes
-
-class User(db.Document):
-    name = db.StringField(required=True)
-    email = db.StringField(required=True)
-    password = db.StringField(required=True)
-
-    def to_json(self):
-        return {"id": str(self.id), "name": self.name, "email": self.email, "password": self.password}
-
-
-def login_required(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return f(*args, **kwargs)
-        else:
-            return redirect('/')
+from models import User
 
 @routes.route("/signup", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def signup():
     '''
     Registers user with given name, email and password
@@ -46,11 +29,13 @@ def signup():
     return InternalServerError(description="Something went wrong")
 
 @routes.route("/signout", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def signout():
     session.clear()
     return redirect('/')
 
 @routes.route("/login", methods=["POST"])
+@cross_origin(supports_credentials=True)
 def login():
     email = request.form.get('email')
     password = request.form.get('password')
@@ -60,7 +45,7 @@ def login():
         if pbkdf2_sha256.verify(password, user.password):
             user_json = user.to_json()
             del user_json["password"]
-
+            # NOTE: uncomment del user_json["notebooks"]
             session["logged_id"] = True
             session["user"] = user_json
             return jsonify(user_json), 200
