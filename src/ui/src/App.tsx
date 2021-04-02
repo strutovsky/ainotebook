@@ -30,9 +30,9 @@ function App() {
           <MainMenu/>
           <Switch>
               <Route path="/notebook" render={() => <Document/>}/>
-              {/*<Route>*/}
-              {/*    <Document/>*/}
-              {/*</Route>*/}
+              <Route>
+                  <ChooseNotebook/>
+              </Route>
           </Switch>
 
 
