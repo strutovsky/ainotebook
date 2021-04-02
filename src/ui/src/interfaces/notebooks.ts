@@ -2,7 +2,7 @@ export interface INotebookPage {
     id: number,
     title: string,
     create_at: Date | string,
-    text: string,
+    body: string,
     meta: any
 }
 

@@ -28,7 +28,7 @@ const Document: React.FC<any> = (props) => {
                 </div>
 
                 <div className={Styles.body} >
-                    <textarea style={{"resize": "none"}} name="body" value={activePage?.text}></textarea>
+                    <textarea style={{"resize": "none"}} name="body" value={activePage?.body}></textarea>
                 </div>
             </div>)
 }
