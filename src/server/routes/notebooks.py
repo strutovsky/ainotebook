@@ -11,7 +11,7 @@ from models import Notebook, User
 def get_all_notebooks():
     # Gets all user notebooks
 
-    if 'logged_in' in session:
+    if session['logged_id']:
         res = []
         user_id = session["user"]["id"]
         user = User.objects.get_or_404(id=user_id)
