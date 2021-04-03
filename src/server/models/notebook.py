@@ -11,7 +11,6 @@ class Notebook(db.EmbeddedDocument):
     def add_new_page(self, title, body, metadata):
         page = Pages(_id=ObjectId(), title=title, body=body, metadata=metadata)
         self.pages.append(page)
-        # self.save()
 
     def get_page(self, id):
         for page in self.pages:
@@ -20,11 +19,9 @@ class Notebook(db.EmbeddedDocument):
         return None
 
     def delete_page(self, id):
-        self.update(pull__pages___id=id)
-
-    def update_name(self, name):
-        self.name = name
-        # self.save()
+        for p in self.pages:
+            if p.to_json()["id"] == id:
+                self.pages.remove(p)
 
     def to_json(self):
         return {"id": str(self._id), "name": self.name, "pages": [p.to_json() for p in self.pages]}
