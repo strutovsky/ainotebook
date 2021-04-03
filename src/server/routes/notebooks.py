@@ -146,8 +146,6 @@ def delete_page():
             notebook.delete_page(pid)
             user.save()
             return Response(status=200)
-        else:
-            return NotFound(description="No page with such ID")
     else:
         return Unauthorized(description="Need to authorize")
 
