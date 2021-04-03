@@ -2,7 +2,6 @@ from server import db
 from flask import request, Response, jsonify, session, make_response
 from flask_cors import cross_origin
 from . import routes
-from bson import ObjectId
 from werkzeug.exceptions import Unauthorized
 from models import Notebook, User
 
