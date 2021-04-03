@@ -95,6 +95,7 @@ POST | /login | [Login](#login)
     }
 ]
 ```
+---
 
 ### Create a notebook
 
@@ -124,6 +125,7 @@ http://localhost:5000/notebook?name=TestNotebook
     ]
 }
 ```
+---
 
 ### Get a notebook
 
@@ -156,6 +158,7 @@ http://localhost:5000/notebook?nid=6067d2e386d8b93c0cb9a368
     ]
 }
 ```
+---
 
 ### Delete a notebook
 
@@ -174,6 +177,8 @@ http://localhost:5000/notebook?nid=6067d2e386d8b93c0cb9a368
 
 **Output Example:** 200
 
+---
+
 ### Update notebook name
 
 **PUT /notebook** - Updates notebook's name
@@ -191,6 +196,7 @@ http://localhost:5000/notebook?nid=6067d2ea86d8b93c0cb9a36a&name=NewName
 * When no notebook with such ID raises **404** response
 
 **Output Example:** 200
+---
 
 ### Create a page
 
@@ -210,6 +216,7 @@ http://localhost:5000/notebook?nid=6067d2ea86d8b93c0cb9a36a&name=NewName
 * When no notebook with such ID raises **404** response
 
 **Output Example:** 200
+---
 
 ### Get a page
 
@@ -238,6 +245,7 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
     "title": "New page"
 }
 ```
+---
 
 ### Delete a page
 
@@ -257,6 +265,7 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 * When no page with such ID raises **404** response
 
 **Output Example:** 200
+---
 
 ### Update a page
 
@@ -278,6 +287,7 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 * When no page with such ID raises **404** response
 
 **Output Example:** 200
+---
 
 ### Sign up
 
@@ -292,12 +302,14 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 * 409 - if user is already registered
 * 500 - if something went wrong (with database, but shouldn't raises)
 * 200 - if user was successfully registered
+---
 
 ### Sign out
 
 **POST /signout** - Sign out of account
 
 **NOTE: NOW AFTER SIGNING OUT, IT IS REDIRECTING TO "/" PAGE**
+---
 
 ### Login
 
