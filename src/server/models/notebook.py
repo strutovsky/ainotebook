@@ -2,6 +2,7 @@ from server import db
 from .pages import Pages
 from bson import ObjectId
 
+
 class Notebook(db.EmbeddedDocument):
     _id = db.ObjectIdField()
     name = db.StringField(required=True)

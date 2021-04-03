@@ -6,6 +6,7 @@ from passlib.hash import pbkdf2_sha256
 from . import routes
 from models import User
 
+
 @routes.route("/signup", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def signup():
@@ -28,11 +29,13 @@ def signup():
         return Response(status=200)
     return InternalServerError(description="Something went wrong")
 
+
 @routes.route("/signout", methods=["POST"])
 @cross_origin(supports_credentials=True)
 def signout():
     session.clear()
     return redirect('/')
+
 
 @routes.route("/login", methods=["POST"])
 @cross_origin(supports_credentials=True)

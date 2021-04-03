@@ -1,6 +1,7 @@
 from server import db
 import datetime
 
+
 class Pages(db.EmbeddedDocument):
     _id = db.ObjectIdField()
     title = db.StringField(verbose_name="Title", required=True)

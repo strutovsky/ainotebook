@@ -44,8 +44,6 @@ def create_notebook():
         return Unauthorized(description="Need to authorize")
 
 
-
-
 @routes.route("/notebook", methods=["DELETE"])
 @cross_origin(supports_credentials=True)
 def delete_notebook():
@@ -111,6 +109,7 @@ def delete_page():
     notebook = Notebook.objects.get_or_404(id=nid)
     notebook.delete_page(pid)
     return Response(status=200)
+
 
 @routes.route("/page", methods=["PUT"])
 @cross_origin(supports_credentials=True)

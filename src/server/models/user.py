@@ -1,6 +1,7 @@
 from server import db
 from .notebook import Notebook
 
+
 class User(db.Document):
     name = db.StringField(required=True)
     email = db.StringField(required=True)
