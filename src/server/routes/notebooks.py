@@ -1,8 +1,8 @@
 from server import db
-from flask import request, Response, jsonify, session, make_response
+from flask import request, Response, jsonify, session
 from flask_cors import cross_origin
 from . import routes
-from werkzeug.exceptions import Unauthorized
+from werkzeug.exceptions import Unauthorized, NotFound
 from models import Notebook, User
 
 
@@ -19,7 +19,6 @@ def get_all_notebooks():
             res.append(notebook.to_json())
 
         return jsonify(res), 200
-
     else:
         return Unauthorized(description="Need to authorize")
 
@@ -35,7 +34,7 @@ def create_notebook():
         name = request.args.get('name')
 
         notebook = user.add_new_notebook(name)
-        return notebook.to_json()
+        return jsonify(notebook.to_json()), 200
     else:
         return Unauthorized(description="Need to authorize")
 
@@ -49,8 +48,10 @@ def delete_notebook():
         user_id = session["user"]["id"]
         user = User.objects.get_or_404(id=user_id)
         id = request.args.get('nid')
-        user.delete_notebook(id)
-        return Response(status=200)
+
+        if user.get_notebook(id):
+            user.delete_notebook(id)
+            return Response(status=200)
     else:
         return Unauthorized(description="Need to authorize")
 
@@ -65,10 +66,8 @@ def get_notebook_by_id():
         user = User.objects.get_or_404(id=user_id)
         id = request.args.get('nid')
 
-        if not user.notebooks:
-            return Response(status=204)
         notebook = user.get_notebook(id)
-        return notebook.to_json() if notebook else Response(status=404)
+        return jsonify(notebook.to_json())
     else:
         return Unauthorized(description="Need to authorize")
 
@@ -124,13 +123,8 @@ def get_page_of_notebook():
         pid = request.args.get('pid')
 
         notebook = user.get_notebook(nid)
-
-        if not notebook.pages:
-            return Response(status=404)
-
         page = notebook.get_page(pid)
-
-        return page.to_json() if page else Response(status=404)
+        return jsonify(page.to_json())
     else:
         return Unauthorized(description="Need to authorize")
 
@@ -148,9 +142,12 @@ def delete_page():
         pid = request.args.get('pid')
 
         notebook = user.get_notebook(nid)
-        notebook.delete_page(pid)
-        user.save()
-        return Response(status=200)
+        if notebook.get_page(pid):
+            notebook.delete_page(pid)
+            user.save()
+            return Response(status=200)
+        else:
+            return NotFound(description="No page with such ID")
     else:
         return Unauthorized(description="Need to authorize")
 
@@ -168,14 +165,11 @@ def update_page():
         notebook = user.get_notebook(body["nid"])
         page = notebook.get_page(body["pid"])
 
-        if page:
-            page.title = body["title"]
-            page.body = body["body"]
-            page.metadata = body["metadata"]
+        page.title = body["title"]
+        page.body = body["body"]
+        page.metadata = body["metadata"]
 
-            user.save()
-            return Response(status=200)
-
-        return Response(status=404)
+        user.save()
+        return Response(status=200)
     else:
         return Unauthorized(description="Need to authorize")

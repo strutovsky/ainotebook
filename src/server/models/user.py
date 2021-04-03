@@ -1,7 +1,7 @@
 from server import db
 from .notebook import Notebook
 from bson import ObjectId
-
+from werkzeug.exceptions import NotFound
 
 class User(db.Document):
     name = db.StringField(required=True)
@@ -20,7 +20,7 @@ class User(db.Document):
         for notebook in self.notebooks:
             if str(notebook._id) == id:
                 return notebook
-        return None
+        raise NotFound(description="No notebook with such ID")
 
     def delete_notebook(self, id):
         self.update(pull__notebooks___id=id)

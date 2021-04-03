@@ -51,7 +51,7 @@ def login():
             del user_json["notebooks"]
             session["logged_id"] = True
             session["user"] = user_json
-            return jsonify(user_json), 200
+            return Response(status=200)
         else:
             return Unauthorized(description="Wrong password")
     except NotFound:

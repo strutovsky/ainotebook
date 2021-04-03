@@ -1,6 +1,8 @@
 from server import db
 from .pages import Pages
 from bson import ObjectId
+from werkzeug.exceptions import NotFound
+
 
 
 class Notebook(db.EmbeddedDocument):
@@ -16,7 +18,7 @@ class Notebook(db.EmbeddedDocument):
         for page in self.pages:
             if str(page._id) == id:
                 return page
-        return None
+        raise NotFound(description="No page with such ID")
 
     def delete_page(self, id):
         for p in self.pages:
