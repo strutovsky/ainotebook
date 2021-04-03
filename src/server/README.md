@@ -58,9 +58,9 @@ POST | /signup | [Sign up](#sign-up)
 POST | /signout | [Sign out](#sign-out)
 POST | /login | [Login](#login)
 
-### Detailed about routes
+## Detailed about routes
 
-#### Get all notebooks
+### Get all notebooks
 
 **GET /notebooks** - Returns all available user's notebooks.
 
@@ -96,7 +96,7 @@ POST | /login | [Login](#login)
 ]
 ```
 
-#### Create a notebook
+### Create a notebook
 
 **POST /notebook** - Create a notebook for user. Also creates empty page.
 
@@ -125,7 +125,7 @@ http://localhost:5000/notebook?name=TestNotebook
 }
 ```
 
-#### Get a notebook
+### Get a notebook
 
 **GET /notebook** - Returns a notebook with given ID
 
@@ -157,7 +157,7 @@ http://localhost:5000/notebook?nid=6067d2e386d8b93c0cb9a368
 }
 ```
 
-#### Delete a notebook
+### Delete a notebook
 
 **DELETE /notebook** - Deletes a notebook with given ID
 
@@ -174,7 +174,7 @@ http://localhost:5000/notebook?nid=6067d2e386d8b93c0cb9a368
 
 **Output Example:** 200
 
-#### Update notebook name
+### Update notebook name
 
 **PUT /notebook** - Updates notebook's name
 
@@ -192,7 +192,7 @@ http://localhost:5000/notebook?nid=6067d2ea86d8b93c0cb9a36a&name=NewName
 
 **Output Example:** 200
 
-#### Create a page
+### Create a page
 
 **POST /page** - Creates page of user's notebook
 
@@ -211,7 +211,7 @@ http://localhost:5000/notebook?nid=6067d2ea86d8b93c0cb9a36a&name=NewName
 
 **Output Example:** 200
 
-#### Get a page
+### Get a page
 
 **GET /page** - Returns page of notebook
 
@@ -239,7 +239,7 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 }
 ```
 
-#### Delete a page
+### Delete a page
 
 **DELETE /page** - Deletes page of notebook
 
@@ -258,7 +258,7 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 
 **Output Example:** 200
 
-#### Update a page
+### Update a page
 
 **PUT /page** - Updates page of notebook
 
@@ -279,7 +279,7 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 
 **Output Example:** 200
 
-#### Sign up
+### Sign up
 
 **POST /signup** - Sign up in account
 
@@ -293,13 +293,13 @@ http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9
 * 500 - if something went wrong (with database, but shouldn't raises)
 * 200 - if user was successfully registered
 
-#### Sign out
+### Sign out
 
 **POST /signout** - Sign out of account
 
 **NOTE: NOW AFTER SIGNING OUT, IT IS REDIRECTING TO "/" PAGE**
 
-#### Login
+### Login
 
 **POST /login** - Log in account
 
