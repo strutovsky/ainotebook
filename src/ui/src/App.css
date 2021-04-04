@@ -45,6 +45,7 @@ header h3 {
 
 .ant-menu-item:hover{
   background: var(--color-selected-menu)!important;
+  color: var(--color-white)!important;
 }
 
 .ant-menu a {
@@ -63,14 +64,15 @@ header h3 {
   background: var(--color-selected-menu)!important;
 }
 
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected .ant-menu svg {
-  color: #1890FF;
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected .ant-menu svg, .ant-menu-item-selected a  {
+  color: #1890FF!important;
 }
 
 .ant-dropdown-menu-item {
   color: var(--color-lightgray)!important;
   padding: 10px!important;
 }
+
 
 .ant-dropdown-menu-item-active {
   background: var(--color-selected-menu)!important;
