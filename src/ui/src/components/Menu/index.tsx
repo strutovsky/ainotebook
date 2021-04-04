@@ -16,6 +16,7 @@ import {AppStateType} from '../../redux/state';
 import {getNoticesThunk} from '../../redux/notice-reducer';
 import {actions, addNotebooksThunk, addPageThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
 import {getNotebooksPending, getNotebooksSelector, getSelectedNotebook } from '../../redux/selectors/notebook-selector';
+import { ContextMenu } from '../../common/dropdown';
 const queryString = require('query-string');
 
 const {SubMenu} = Menu;
@@ -79,11 +80,14 @@ const MainMenu: React.FC = () => {
                                     }
                                     return (<Menu.Item key={item.id} icon={<BookOutlined/>} title={item.name} onClick={(info) =>{
                                                  dispatch(actions.setSelectedNotebook(item))
-                                    }}>
-                                        <NavLink to={'/notebook?nid=' + item.id + '&page='+selectedNotebook?.pages[0]?.id}></NavLink>{item.name}
+                                    }}><ContextMenu>
+                                            <NavLink to={'/notebook?nid=' + item.id + '&page='+selectedNotebook?.pages[0]?.id}>{item.name}</NavLink>
+                                            </ContextMenu>
                                             </Menu.Item>)
 
                                 })}
+
+
 
                                 {/*<Add*/}
                                 {/*    placeholder={'Add notebook'}*/}

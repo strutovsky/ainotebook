@@ -38,8 +38,16 @@ header h3 {
   color: var(--color-white);
   margin-right: 10px;
 }
-.ant-menu {
+.ant-menu{
   background: #282828!important;
+  color: var(--color-white)!important;
+}
+
+.ant-menu-item:hover{
+  background: var(--color-selected-menu)!important;
+}
+
+.ant-menu a {
   color: var(--color-white)!important;
 }
 
@@ -57,4 +65,14 @@ header h3 {
 
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected .ant-menu svg {
   color: #1890FF;
+}
+
+.ant-dropdown-menu-item {
+  color: var(--color-lightgray)!important;
+  padding: 10px!important;
+}
+
+.ant-dropdown-menu-item-active {
+  background: var(--color-selected-menu)!important;
+  color: var(--color-primary)!important;
 }
