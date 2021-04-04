@@ -59,14 +59,17 @@ const MainMenu: React.FC = () => {
         // dispatch(getNoticesThunk())
     }, [])
 
+
+
+    console.log('render')
+
     return (<div className={MenuStyles.mainWrap}>
                 <div className={MenuStyles.menuWrap} style={{width: '270px'}}>
                     {pending ? <Skeleton active={true}/> :
                         <Menu
                             mode="inline"
                             theme="light"
-                            selectedKeys={[parsed.nid]}
-
+                            selectedKeys={[nid]}
                         >
 
                             <Menu.ItemGroup title={'Notebooks'}>
@@ -77,7 +80,7 @@ const MainMenu: React.FC = () => {
                                     return (<Menu.Item key={item.id} icon={<BookOutlined/>} title={item.name} onClick={(info) =>{
                                                  dispatch(actions.setSelectedNotebook(item))
                                     }}>
-                                        <NavLink to={'/notebook?nid=' + item.id + '&page=1'}></NavLink>{item.name}
+                                        <NavLink to={'/notebook?nid=' + item.id + '&page='+selectedNotebook?.pages[0]?.id}></NavLink>{item.name}
                                             </Menu.Item>)
 
                                 })}
