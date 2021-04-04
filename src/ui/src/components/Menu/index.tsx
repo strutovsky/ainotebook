@@ -82,10 +82,10 @@ const MainMenu: React.FC = () => {
 
                                 })}
 
-                                <Add
-                                    placeholder={'Add notebook'}
-                                    add={addNotebooksThunk}
-                                />
+                                {/*<Add*/}
+                                {/*    placeholder={'Add notebook'}*/}
+                                {/*    add={addNotebooksThunk}*/}
+                                {/*/>*/}
                             </Menu.ItemGroup>
 
 

@@ -11,11 +11,10 @@ export const NotebookAPI = {
     },
 
     addBook: async (name: string) => {
-
-        return instance.post<INotebook>('notebook', {name}).then(res => res.data)
+        return instance.post<INotebook>('notebook?name='+name)
     },
 
-    addPage: async (notebookId: number, title: string) => {
-        return instance.post(`notebook/${notebookId}/page`, {title: "New page", body: "", metadata: {}})
+    addPage: async (notebookId: number) => {
+        return instance.post(`/page`, {title: "New page", body: "", metadata: "", nid: notebookId})
     }
 }

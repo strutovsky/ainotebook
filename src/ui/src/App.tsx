@@ -20,6 +20,7 @@ function App() {
   }
 
   return (<HashRouter>
+
         <header>
             <div>
                 <h3>Dmitriy Naholiuk</h3>

@@ -5,10 +5,11 @@ import {Input, Menu} from 'antd';
 
 type ownProps = {
     placeholder: string,
-    add: (name: string) => void,
+    mode: "page" | "book",
+    add: Function
 }
 
-const Add: React.FC<ownProps> = ({placeholder, add}) => {
+const Add: React.FC<ownProps> = ({placeholder, mode, add}) => {
     const [value, setValue] = useState("")
     const [addingMode, setAddingMode] = useState(false)
 
@@ -38,8 +39,15 @@ const Add: React.FC<ownProps> = ({placeholder, add}) => {
                         onChange={valueHandler}
                         onBlur={(e) => {
                             if(e.target.value !== ''){
+                                if(mode === 'book'){
+                                    add(value)
+                                }
+
+                                if(mode === 'page') {
+
+                                }
                                 setValue('')
-                                add(e.target.value)
+                                setAddingMode(false)
                             }
                         }}/>
                 </Menu.Item>}
