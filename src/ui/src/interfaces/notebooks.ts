@@ -1,5 +1,5 @@
 export interface INotebookPage {
-    id: number,
+    id: string,
     title: string,
     create_at: Date | string,
     body: string,
@@ -7,7 +7,7 @@ export interface INotebookPage {
 }
 
 export interface INotebook {
-    id: number,
+    id: string,
     name: string,
     pages: Array<INotebookPage>
 }

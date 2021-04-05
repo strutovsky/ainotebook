@@ -131,6 +131,18 @@ export const addPageThunk = (notebookId: string, title: string) =>{
     }
 }
 
+export const deleteNotebook = (notebookId: string) => {
+    return (dispatch: any) => {
+        dispatch(actions.setPending(true))
+        NotebookAPI.deleteNotebook(notebookId).then(() => {
+            NotebookAPI.getNotebooks().then((notebooks: any) => {
+                dispatch(actions.setNotebooks(notebooks))
+                dispatch(actions.setPending(false))
+            })
+        })
+    }
+}
+
 type ActionsTypes = InferActionsTypes<typeof actions>
 type ThunkType = BaseThunkType<ActionsTypes>
 

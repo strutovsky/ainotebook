@@ -18,7 +18,7 @@ export const NotebookAPI = {
         return instance.post(`/page`, {title: title, body: "", metadata: "", nid: notebookId})
     },
 
-    getNotebook: async (notebookId: string) => {
-        return instance.get('notebook?nid='+notebookId)
+    deleteNotebook: async (notebookId: string) => {
+        return instance.delete('notebook?nid='+notebookId)
     }
 }

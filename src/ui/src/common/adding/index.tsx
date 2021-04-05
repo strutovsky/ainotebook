@@ -7,7 +7,7 @@ type ownProps = {
     placeholder: string,
     mode: "page" | "book",
     add: Function,
-    nid?: number,
+    nid?: string,
 }
 
 const Add: React.FC<ownProps> = ({placeholder, mode, add, nid}) => {

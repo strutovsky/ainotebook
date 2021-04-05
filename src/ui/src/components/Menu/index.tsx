@@ -67,7 +67,7 @@ const MainMenu: React.FC = () => {
                                     }
                                     return (<Menu.Item key={item.id} icon={<BookOutlined/>} title={item.name} onClick={(info) =>{
                                                  dispatch(actions.setSelectedNotebook(item))
-                                    }}><ContextMenu>
+                                    }}><ContextMenu nid={item.id}>
                                             <NavLink to={'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>{item.name}</NavLink>
                                             </ContextMenu>
                                             </Menu.Item>)
