@@ -11,17 +11,6 @@
 .menuWrap {
     background: #282828;
     border-top: 1px solid var(--color-selected-menu);
-    overflow-y: scroll;
-
-}
-.menuWrap::-webkit-scrollbar {
-    width: 1px;
-    background-color: var(--color-selected-menu);
-}
-
-.menuWrap:hover::-webkit-scrollbar-thumb {
-    background-color: var(--color-primary);
-    height: 10px;
 }
 
 .button {

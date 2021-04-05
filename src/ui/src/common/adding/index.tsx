@@ -6,10 +6,11 @@ import {Input, Menu} from 'antd';
 type ownProps = {
     placeholder: string,
     mode: "page" | "book",
-    add: Function
+    add: Function,
+    nid?: number,
 }
 
-const Add: React.FC<ownProps> = ({placeholder, mode, add}) => {
+const Add: React.FC<ownProps> = ({placeholder, mode, add, nid}) => {
     const [value, setValue] = useState("")
     const [addingMode, setAddingMode] = useState(false)
 
@@ -44,7 +45,7 @@ const Add: React.FC<ownProps> = ({placeholder, mode, add}) => {
                                 }
 
                                 if(mode === 'page') {
-
+                                    add(nid, value)
                                 }
                                 setValue('')
                                 setAddingMode(false)

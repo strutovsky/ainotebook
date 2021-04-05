@@ -54,6 +54,20 @@ const notebookReducer = (state = initState, action: ActionsType): IReducer<INote
                 pagePending: action.payload
             }
 
+        case 'ADD_PAGES':
+            if(state.data.selectedNotebooks) {
+                return {
+                    ...state,
+                    data: {...state.data, selectedNotebooks: {...state.data.selectedNotebooks, pages: action.pages
+                    }}
+                }
+            }else {
+                return  {
+                    ...state
+                }
+            }
+
+
         default: return state
 
     }
@@ -65,7 +79,8 @@ export const actions = {
     setPending: (payload: boolean) => ({type: "SET_PENDING", payload} as const),
     setSelectedNotebook: (payload: INotebook | null) => ({type: "SET_SELECTED_NOTEBOOK", payload} as const),
     setActivePage: (page: INotebookPage | null) => ({type: "SET_ACTIVE_NOTEBOOK_PAGE", page} as const),
-    setPagePending: (payload: boolean) => ({type: "SET_PAGE_PENDING", payload} as const)
+    setPagePending: (payload: boolean) => ({type: "SET_PAGE_PENDING", payload} as const),
+    addNoteBookPage: (pages: INotebookPage[]) => ({type: "ADD_PAGES", pages} as const )
 }
 
 type ActionsType = InferActionsTypes<typeof actions>
@@ -102,10 +117,16 @@ export const getNotebookPageThunk = (nid: string, page: string) => {
     }
 }
 
-export const addPageThunk = (notebookId: number) =>{
+export const addPageThunk = (notebookId: string, title: string) =>{
     return (dispatch: any) => {
-        NotebookAPI.addPage(notebookId).then(res => {
-            debugger
+        dispatch(actions.setPending(true))
+        NotebookAPI.addPage(notebookId, title).then((res: any) => {
+            NotebookAPI.getNotebooks().then((notebooks: any) => {
+                dispatch(actions.setNotebooks(notebooks))
+                dispatch(actions.setPending(false))
+            })
+        }).catch(err => {
+
         })
     }
 }

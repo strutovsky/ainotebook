@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {NavLink, useHistory, useParams} from 'react-router-dom';
+import {NavLink, useHistory} from 'react-router-dom';
 
 
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {INotebook, INotebooks} from '../../interfaces/notebooks';
+import {useDispatch, useSelector} from 'react-redux';
+
 
 import {Menu, Skeleton} from 'antd';
 import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icons';
@@ -11,9 +11,6 @@ import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icon
 import MenuStyles from './menu.module.css'
 import Add from '../../common/adding';
 
-import {INotices} from '../../interfaces/notices';
-import {AppStateType} from '../../redux/state';
-import {getNoticesThunk} from '../../redux/notice-reducer';
 import {actions, addNotebooksThunk, addPageThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
 import {getNotebooksPending, getNotebooksSelector, getSelectedNotebook } from '../../redux/selectors/notebook-selector';
 import { ContextMenu } from '../../common/dropdown';
@@ -21,51 +18,41 @@ const queryString = require('query-string');
 
 const {SubMenu} = Menu;
 
-
-// type PropsType = {
-//     addNotebooksThunk: (name: string) => void,
-//     addPageThunk: (id: number, title: string) => void,
-//     getNotebooksThunk: () => void,
-//     getNoticesThunk: () => void,
-//     Notebooks: INotebook[],
-//     Notices: INotices,
-//     pending: boolean
-// }
-
-
 const MainMenu: React.FC = () => {
     const history = useHistory()
+    const dispatch = useDispatch()
+
     const parsed = queryString.parse(history.location.search);
 
     const [nid, setNid] = useState(parsed.nid)
     const [page, setPage] = useState(parsed.pages)
 
-
-
-    const dispatch = useDispatch()
     const notebooks = useSelector(getNotebooksSelector)
     const pending = useSelector(getNotebooksPending)
     const selectedNotebook = useSelector(getSelectedNotebook);
 
-    const params = useParams()
-
+    useEffect(() => {
+        dispatch(getNotebooksThunk())
+    }, [])
 
     useEffect(() =>{
         setNid(parsed.nid)
+    },[parsed.nid])
+
+    useEffect(() =>{
         setPage(parsed.page)
-    },[parsed.nid, parsed.page] )
+    },[parsed.page] )
 
-    useEffect(() => {
-        dispatch(getNotebooksThunk())
-        // dispatch(getNoticesThunk())
-    }, [])
+    const addBook = (name: string) => {
+        dispatch(addNotebooksThunk(name))
+    }
 
-
-
-    console.log('render')
+    const addPage = (nid: string, title: string) => {
+        dispatch(addPageThunk(nid, title))
+    }
 
     return (<div className={MenuStyles.mainWrap}>
-                <div className={MenuStyles.menuWrap} style={{width: '270px'}}>
+                <div className={MenuStyles.menuWrap + " custom-scroll"} style={{width: '270px'}}>
                     {pending ? <Skeleton active={true}/> :
                         <Menu
                             mode="inline"
@@ -87,13 +74,13 @@ const MainMenu: React.FC = () => {
 
                                 })}
 
-
-
-                                {/*<Add*/}
-                                {/*    placeholder={'Add notebook'}*/}
-                                {/*    add={addNotebooksThunk}*/}
-                                {/*/>*/}
                             </Menu.ItemGroup>
+
+                            <Add
+                                placeholder={'Add notebook'}
+                                add={addBook}
+                                mode={'book'}
+                            />
 
 
                             {/*<Menu.ItemGroup title={'Sticks'}>*/}
@@ -120,21 +107,26 @@ const MainMenu: React.FC = () => {
                         </Menu>}
                 </div>
 
-                {selectedNotebook && <div className={MenuStyles.Pages}>
+                {selectedNotebook && !pending && <div className={MenuStyles.Pages + " custom-scroll"}>
                     <Menu
                         mode="inline"
                         theme="light"
-                        defaultSelectedKeys={[page]}
                         selectedKeys={[page]}
 
                     >
                             <Menu.ItemGroup title={'Pages'} >
                                 {selectedNotebook.pages.map(pages => {
-                                    return <Menu.Item key={pages.id}>
+                                    return <Menu.Item key={pages.id} onClick={() => setPage(page?.id)}>
                                         <NavLink to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}></NavLink>{pages.title}
                                     </Menu.Item>
                                 })}
                             </Menu.ItemGroup>
+                            <Add
+                                placeholder={'Add page'}
+                                add={addPage}
+                                mode={'page'}
+                                nid={selectedNotebook?.id}
+                            />
                     </Menu>
                 </div>}
             </div>
