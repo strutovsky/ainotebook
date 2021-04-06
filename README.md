@@ -7,7 +7,10 @@ In [this README](bin/README.md) is written information how to build and run AiNo
 Or you can run via autoscript (includes 3 replicas for backend):
 
 ```bash
+:~/ainotebook$ sudo chmod +x run.sh
+:~/ainotebook$ sudo chmod +x stop.sh
 :~/ainotebook$ ./run.sh
+:~/ainotebook$ ./stop.sh
 ```
 
 ## Folder structure
