@@ -34,6 +34,17 @@ services:
     restart: always
     command: [ "python3", "server.py" ]
 
+  storage:
+    build:
+      context: ../../src/storage
+    image: ainotebook-storage:latest
+    depends_on:
+      - backend
+    expose:
+      - 80
+    restart: always
+    command: ["/bin/bash", "./script.sh"]
+
   proxy:
     image: nginx:latest
     depends_on:

@@ -15,5 +15,3 @@ RUN python3 -m pip install --upgrade pip && python3 -m pip install -r requiremen
 RUN chmod +x script.sh
 
 EXPOSE 80
-
-CMD ["/bin/bash", "./script.sh"]
