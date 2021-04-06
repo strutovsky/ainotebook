@@ -1,0 +1,25 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.wrap svg {
+    font-size: 100px;
+    color: #1890FF;
+}
+
+.wrap h2 {
+    font-weight: lighter;
+    margin-top: 10px;
+    color: var(--color-white);
+}
+
+.wrap button{
+    cursor: pointer;
+    background: var(--color-selected-menu);
+    color: var(--color-lightgray);
+    padding: 5px 10px;
+}

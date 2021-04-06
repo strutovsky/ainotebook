@@ -11,12 +11,17 @@ import {LoginPage} from './components/Login';
 import { ChooseNotebook } from './components/NoNotebookSelected';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import {ErrorPage} from './components/Error';
 
 
 
 function App() {
   if(false) {
     return <LoginPage/>
+  }
+
+  if(false) {
+      return <ErrorPage/>
   }
 
   return (<BrowserRouter>

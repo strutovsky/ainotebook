@@ -8,6 +8,11 @@ body, html {
   background: var(--color-background-dark)!important;
 }
 
+button {
+  border: none;
+  outline: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
