@@ -51,6 +51,7 @@ const MainMenu: React.FC = () => {
         dispatch(addPageThunk(nid, title))
     }
 
+
     return (<div className={MenuStyles.mainWrap}>
                 <div className={MenuStyles.menuWrap + " custom-scroll"} style={{width: '270px'}}>
                     {pending ? <Skeleton active={true}/> :
@@ -67,7 +68,7 @@ const MainMenu: React.FC = () => {
                                     }
                                     return (<Menu.Item key={item.id} icon={<BookOutlined/>} title={item.name} onClick={(info) =>{
                                                  dispatch(actions.setSelectedNotebook(item))
-                                    }}><ContextMenu nid={item.id}>
+                                    }}><ContextMenu nid={item.id} url={window.location.host+'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>
                                             <NavLink to={'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>{item.name}</NavLink>
                                             </ContextMenu>
                                             </Menu.Item>)
@@ -107,8 +108,8 @@ const MainMenu: React.FC = () => {
                         </Menu>}
                 </div>
 
-                {selectedNotebook && !pending && <div className={MenuStyles.Pages + " custom-scroll"}>
-                    <Menu
+                {selectedNotebook && <div className={MenuStyles.Pages + " custom-scroll"}>
+                    {!pending ? <Menu
                         mode="inline"
                         theme="light"
                         selectedKeys={[page]}
@@ -127,7 +128,7 @@ const MainMenu: React.FC = () => {
                                 mode={'page'}
                                 nid={selectedNotebook?.id}
                             />
-                    </Menu>
+                    </Menu> : <Skeleton active={true}/> }
                 </div>}
             </div>
 

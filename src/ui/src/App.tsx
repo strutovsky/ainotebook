@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter, Route, Switch} from "react-router-dom";
+import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
 
 import MainMenu from './components/Menu/index';
 import Document from './components/Document/index';
@@ -19,7 +19,7 @@ function App() {
     return <LoginPage/>
   }
 
-  return (<HashRouter>
+  return (<BrowserRouter>
 
         <header>
             <div>
@@ -38,7 +38,7 @@ function App() {
 
 
         </div>
-      </HashRouter>
+      </BrowserRouter>
   );
 }
 

@@ -31,3 +31,7 @@ code {
   height: 10px;
 }
 
+.ant-message {
+  top: 70px!important;
+}
+

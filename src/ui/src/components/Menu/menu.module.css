@@ -27,9 +27,9 @@
 }
 
 .tempNotebook {
-    padding: 24px;
+    padding: 20px 5px 20px 20px;
     cursor: pointer;
-    color: #B3B0AD;
+    color: var(--color-lightgray);
 }
 
 .tempNotebook:hover {
@@ -37,10 +37,12 @@
 }
 
 .tempNotebook input {
-    width: 150px;
+    width: 140px;
     border: none;
     outline: none!important;
     margin-left: 15px;
+    background: var(--color-selected-menu);
+    color: var(--color-lightgray);
 }
 
 .Pages {
