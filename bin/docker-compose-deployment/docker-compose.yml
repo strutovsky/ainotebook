@@ -51,5 +51,6 @@ services:
       - backend
     volumes:
       - ./ainotebook-proxy/nginx.conf:/etc/nginx/nginx.conf
+      - ./ainotebook-proxy/.htpasswd:/etc/nginx/.htpasswd
     ports:
       - 80:80
