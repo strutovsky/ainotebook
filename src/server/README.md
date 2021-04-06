@@ -11,9 +11,15 @@ Postman collection's available [here.](https://www.getpostman.com/collections/2f
 ## Folder structure
 ```
 server
+├── models
+│   ├── __init__.py
+│   ├── pages.py              -> class with pages
+│   ├── user.py               -> class with users
+│   └── notebook.py           -> class with notebooks
 ├── routes
 │   ├── __init__.py
-│   └── notebooks.py        -> routes for notebooks
+│   ├── loginization.py       -> routes for signup/login system
+│   └── notebooks.py          -> routes for notebooks
 ├── README.md
 ├── Dockerfile
 ├── server.py                 -> flask app runs here
