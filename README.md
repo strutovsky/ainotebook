@@ -3,7 +3,12 @@ AiNotebook is an app designed for note taking.
 
 ## Build and run 
 
-In [this README](bin/README.md) is written information how to build and run AiNotebook app.
+In [this README](bin/README.md) is written information how to build and run AiNotebook app manually.
+Or you can run via autoscript (includes 3 replicas for backend):
+
+```bash
+:~/ainotebook$ ./run.sh
+```
 
 ## Folder structure
 ```
@@ -15,6 +20,7 @@ ainotebook
 │   └── mongo-volume
 ├── src
 │   ├── server
+│   ├── storage
 │   └── ui
 ├── .gitignore
 └── README.md
