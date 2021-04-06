@@ -4,9 +4,9 @@ services:
   mongo:
     image: mongo:latest
     environment:
-      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_DATABASE=users
       - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=secret
+      - MONGO_INITDB_ROOT_PASSWORD=donnutoppassformongo
     volumes:
       - ../../data/mongo-volume:/data/db
     restart: always
