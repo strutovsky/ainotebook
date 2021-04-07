@@ -1,6 +1,6 @@
 .wrap {
     background: #1F1F1F;
-    padding: 50px 100px 0px 100px;
+    padding: 50px 20px 0px 100px;
     width: 100%;
 }
 
@@ -41,4 +41,5 @@
 .date {
     color: var(--color-lightgray);
     font-size: 12px;
+    padding-bottom: 10px;
 }

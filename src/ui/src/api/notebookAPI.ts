@@ -20,5 +20,9 @@ export const NotebookAPI = {
 
     deleteNotebook: async (notebookId: string) => {
         return instance.delete('notebook?nid='+notebookId)
+    },
+
+    putPageChanges: async (nid: string, pid: string, body: string, title: string, metadata = "") => {
+        return instance.put('/page', {nid, pid, body, title, metadata})
     }
 }

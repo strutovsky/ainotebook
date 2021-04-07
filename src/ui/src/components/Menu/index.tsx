@@ -19,6 +19,7 @@ const queryString = require('query-string');
 const {SubMenu} = Menu;
 
 const MainMenu: React.FC = () => {
+    console.log('render')
     const history = useHistory()
     const dispatch = useDispatch()
 
@@ -37,11 +38,9 @@ const MainMenu: React.FC = () => {
 
     useEffect(() =>{
         setNid(parsed.nid)
-    },[parsed.nid])
-
-    useEffect(() =>{
         setPage(parsed.page)
-    },[parsed.page] )
+    },[parsed.nid, parsed.page])
+
 
     const addBook = (name: string) => {
         dispatch(addNotebooksThunk(name))

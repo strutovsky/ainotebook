@@ -107,16 +107,6 @@ export const addNotebooksThunk = (name: string) => {
     }
 }
 
-export const getNotebookPageThunk = (nid: string, page: string) => {
-    return (dispatch: any) => {
-        dispatch(actions.setPagePending(true))
-        NotebookAPI.getPage(nid, page).then(res => {
-            dispatch(actions.setActivePage(res.data))
-            dispatch(actions.setPagePending(false))
-        })
-    }
-}
-
 export const addPageThunk = (notebookId: string, title: string) =>{
     return (dispatch: any) => {
         dispatch(actions.setPending(true))

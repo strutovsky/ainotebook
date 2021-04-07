@@ -17,3 +17,7 @@ export type INotebooks = {
     selectedNotebooks?: INotebook | null,
     activePage?: INotebookPage | null
 }
+
+export type IDocument = {
+    activeDocument: INotebookPage | null,
+}
