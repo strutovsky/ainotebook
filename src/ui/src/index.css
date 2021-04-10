@@ -38,6 +38,8 @@ code {
 }
 
 .ant-message {
-  top: 70px!important;
+  top: auto!important;
+  letf: 90%!important;
+  bottom: 50px!important;
 }
 

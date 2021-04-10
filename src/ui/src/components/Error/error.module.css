@@ -12,8 +12,11 @@
 }
 
 .wrap h2 {
-    font-weight: lighter;
     margin-top: 10px;
+}
+
+.wrap h2, .wrap p {
+    font-weight: lighter;
     color: var(--color-white);
 }
 

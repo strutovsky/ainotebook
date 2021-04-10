@@ -7,7 +7,7 @@ import {NotebookAPI} from "../api/notebookAPI";
 
 let initState: IReducer<INotebooks> = {
     pending: false,
-    error: false,
+    error: "",
     pagePending: false,
     data: {
         selectedNotebooks: null,

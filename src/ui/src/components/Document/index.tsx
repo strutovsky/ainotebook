@@ -4,9 +4,10 @@ import {withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {getActivePage, getNotebooksPending, getPagePending} from '../../redux/selectors/notebook-selector';
 import { Skeleton } from 'antd';
-import {getActivePageSelector} from '../../redux/selectors/document-selector';
+import {getActivePageSelector, getDocumentErrorSelector} from '../../redux/selectors/document-selector';
 import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
+import { ErrorPage } from '../Error';
 
 
 const queryString = require('query-string');
@@ -15,6 +16,7 @@ const Document: React.FC<any> = (props) => {
     const activePage = useSelector(getActivePageSelector)
 
     const pending = useSelector(getPagePending)
+    const error = useSelector(getDocumentErrorSelector)
     const dispatch = useDispatch()
 
 
@@ -25,6 +27,10 @@ const Document: React.FC<any> = (props) => {
         dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
         dispatch(saveChangesThunk())
     }, [parsed.nid, parsed.page])
+
+    if(error) {
+        return <ErrorPage message={error}/>
+    }
 
     if(pending || activePage === null) {
         return <Skeleton active/>

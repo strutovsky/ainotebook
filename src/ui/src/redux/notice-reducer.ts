@@ -7,7 +7,7 @@ import {NoticeAPI} from "../api/noticeAPI";
 
 let initState: IReducer<INotices> = {
     pending: false,
-    error: false,
+    error: "",
     data: []
 }
 

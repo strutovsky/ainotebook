@@ -14,6 +14,8 @@ function handleMenuClick(e: any) {
     console.log('click', e);
 }
 
+message.config({duration: 30})
+
 export const ContextMenu:React.FC<{nid: string, url: string}> = ({children,nid, url}) =>{
     const dispatch = useDispatch()
     const history = useHistory()

@@ -2,12 +2,12 @@ import { IReducer } from '../interfaces/basic'
 import {IDocument, INotebookPage} from '../interfaces/notebooks'
 import {AppStateType, BaseThunkType, InferActionsTypes} from './state'
 import {NotebookAPI} from '../api/notebookAPI';
-import { copy } from '../helpers/copy';
+import {message} from 'antd';
 
 
 let initialState: IReducer<IDocument> = {
     pending: false,
-    error: false,
+    error: '',
     data: {
         activeDocument: null,
     }
@@ -54,6 +54,12 @@ const documentReducer = (state = initialState, action: ActionsType): IReducer<ID
             }
         }
 
+        case 'SET_ERROR':
+            return {
+                ...state,
+                error: action.message
+            }
+
         default: return state
     }
 }
@@ -62,7 +68,8 @@ export const actions = {
     setActiveDocument: (payload: INotebookPage) => ({type: 'SET_ACTIVE_PAGE', payload} as const),
     setPending: (payload: boolean) => ({type: 'SET_PAGE_PENDING', payload} as const),
     setTitle: (symbol: string) => ({type:'SET_TITLE', symbol} as const),
-    setBody: (body: string) => ({type: 'SET_BODY', body} as const)
+    setBody: (body: string) => ({type: 'SET_BODY', body} as const),
+    setError: (message: string) => ({type: 'SET_ERROR', message} as const)
 }
 
 type ActionsType = InferActionsTypes<typeof actions>
@@ -73,6 +80,8 @@ export const getNotebookPageThunk = (nid: string, page: string) => {
         NotebookAPI.getPage(nid, page).then(res => {
             dispatch(actions.setActiveDocument(res.data))
             dispatch(actions.setPending(false))
+        }).catch(err => {
+            dispatch(actions.setError("Network error"))
         })
     }
 }
@@ -82,7 +91,9 @@ export const saveChangesThunk = () => {
         const state = getState()
         if(state.notebooks.data.selectedNotebooks && state.document.data.activeDocument !==null) {
             const {activeDocument} = state.document.data
-            NotebookAPI.putPageChanges(state.notebooks.data.selectedNotebooks.id, activeDocument?.id, activeDocument?.body, activeDocument?.title)
+            NotebookAPI.putPageChanges(state.notebooks.data.selectedNotebooks.id, activeDocument?.id, activeDocument?.body, activeDocument?.title).then(()=> {
+                // message.success('Changes saved')
+            })
         }
     }
 }
