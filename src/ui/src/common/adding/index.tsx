@@ -50,7 +50,29 @@ const Add: React.FC<ownProps> = ({placeholder, mode, add, nid}) => {
                                 setValue('')
                                 setAddingMode(false)
                             }
-                        }}/>
+                            setAddingMode(false)
+                        }}
+                        onKeyPress={e => {
+                            if(e.code === "Enter" && value === "") {
+                                setValue('')
+                                setAddingMode(false)
+                            }else if(e.code === "Enter" && value !== "" ){
+                                if(mode === 'book'){
+                                    add(value)
+                                }
+                                if(mode === 'page') {
+                                    add(nid, value)
+                                }
+                            }
+                        }}
+
+                        onKeyDown={e => {
+                            if(e.code === "Escape"){
+                                setValue('')
+                                setAddingMode(false)
+                            }
+                        }}
+                    />
                 </Menu.Item>}
             </>)
 }
