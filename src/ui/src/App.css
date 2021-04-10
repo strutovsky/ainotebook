@@ -43,14 +43,18 @@ header h3 {
   color: var(--color-white)!important;
 }
 
-.ant-menu-item:hover{
-  background: var(--color-selected-menu)!important;
-  color: var(--color-white)!important;
-}
-
 .ant-menu a {
   color: var(--color-white)!important;
 }
+
+.ant-menu-item:hover{
+  background: var(--color-selected-menu)!important;
+}
+
+.ant-menu-item:hover a, .ant-menu-item:hover {
+  color: var(--color-white)!important;
+}
+
 
 .ant-menu svg {
   color: var(--color-primary);
