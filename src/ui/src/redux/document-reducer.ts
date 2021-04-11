@@ -87,12 +87,16 @@ export const getNotebookPageThunk = (nid: string, page: string) => {
     }
 }
 
-export const saveChangesThunk = () => {
+export const saveChangesThunk = (editorState: any) => {
     return (dispatch: any, getState: () => AppStateType) =>{
         const state = getState()
         if(state.notebooks.data.selectedNotebooks && state.document.data.activeDocument !==null) {
             const {activeDocument} = state.document.data
-            NotebookAPI.putPageChanges(state.notebooks.data.selectedNotebooks.id, activeDocument?.id, activeDocument?.body, activeDocument?.title).then(()=> {
+            NotebookAPI.putPageChanges(
+                state.notebooks.data.selectedNotebooks.id,
+                activeDocument?.id,
+                JSON.stringify(editorState),
+                activeDocument?.title).then(()=> {
                 // if(state.notebooks.data.selectedNotebooks) dispatch(getNotebookThunk(state.notebooks.data.selectedNotebooks.id))
             })
         }

@@ -43,3 +43,22 @@ code {
   bottom: 50px!important;
 }
 
+/*Editor*/
+
+.wrapper-class *{
+  box-shadow: none!important;
+}
+
+.editor-class {
+  color: var(--color-white);
+}
+
+.toolbar-class {
+  background: var(--color-background-light)!important;
+  border: none!important;
+}
+.rdw-option-wrapper {
+  background: var(--color-lightgray)!important;
+  border: none!important;
+  outline: none!important;
+}
