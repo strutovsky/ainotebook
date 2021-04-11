@@ -6,6 +6,10 @@ export const NotebookAPI = {
         return instance.get<INotebooks>('notebooks').then(res => res.data)
     },
 
+    getNotebook: async (nid: string) => {
+        return instance.get('notebook?nid='+nid)
+    },
+
     getPage: async (nid: string, page: string) => {
         return instance.get<INotebookPage>('page?nid='+nid+'&pid='+page)
     },

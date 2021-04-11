@@ -3,6 +3,7 @@ import {IDocument, INotebookPage} from '../interfaces/notebooks'
 import {AppStateType, BaseThunkType, InferActionsTypes} from './state'
 import {NotebookAPI} from '../api/notebookAPI';
 import {message} from 'antd';
+import {getNotebookThunk} from './notebook-reducer';
 
 
 let initialState: IReducer<IDocument> = {
@@ -92,7 +93,7 @@ export const saveChangesThunk = () => {
         if(state.notebooks.data.selectedNotebooks && state.document.data.activeDocument !==null) {
             const {activeDocument} = state.document.data
             NotebookAPI.putPageChanges(state.notebooks.data.selectedNotebooks.id, activeDocument?.id, activeDocument?.body, activeDocument?.title).then(()=> {
-                // message.success('Changes saved')
+                // if(state.notebooks.data.selectedNotebooks) dispatch(getNotebookThunk(state.notebooks.data.selectedNotebooks.id))
             })
         }
     }

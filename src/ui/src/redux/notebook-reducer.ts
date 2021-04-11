@@ -121,6 +121,16 @@ export const addPageThunk = (notebookId: string, title: string) =>{
     }
 }
 
+export const getNotebookThunk = (nid: string) => {
+    return (dispatch: any) => {
+        NotebookAPI.getNotebook(nid).then(res => {
+            debugger
+        }).catch(err => {
+
+        })
+    }
+}
+
 export const deleteNotebook = (notebookId: string) => {
     return (dispatch: any) => {
         dispatch(actions.setPending(true))
