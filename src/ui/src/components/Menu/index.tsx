@@ -109,7 +109,6 @@ const MainMenu: React.FC = () => {
                         mode="inline"
                         theme="light"
                         selectedKeys={[page]}
-
                     >
                             <Menu.ItemGroup title={'Pages'} >
                                 {selectedNotebook.pages.map(pages => {

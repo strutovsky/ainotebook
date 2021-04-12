@@ -17,6 +17,7 @@ import Styles from './document.module.css';
 
 
 const queryString = require('query-string');
+const _ = require('lodash')
 
 const Document: React.FC<any> = (props) => {
     const activePage = useSelector(getActivePageSelector)
@@ -30,6 +31,13 @@ const Document: React.FC<any> = (props) => {
     let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
     const raw = convertToRaw(_contentState)
     const [editorState, setEditorState] = useState(raw) ;
+    const delayedQuery = _.debounce((q: any) => dispatch(saveChangesThunk(q)), 500);
+
+    window.addEventListener("beforeunload", (ev) =>
+    {
+        ev.preventDefault();
+        dispatch(saveChangesThunk(editorState))
+    });
 
     useEffect(() => {
         if(activePage) {
@@ -43,9 +51,15 @@ const Document: React.FC<any> = (props) => {
 
 
     useEffect(() => {
-        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
         dispatch(saveChangesThunk(editorState))
+        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
     }, [parsed.nid, parsed.page])
+
+    useEffect(() => {
+        return () => {
+            dispatch(saveChangesThunk(editorState))
+        }
+    }, [])
 
     if(error) {
         return <ErrorPage message={error}/>
@@ -75,7 +89,7 @@ const Document: React.FC<any> = (props) => {
                         editorClassName="editor-class"
                         toolbarClassName="toolbar-class"
                         toolbar={{
-                            options: ['inline', 'list', 'textAlign']
+                            options: ['inline', 'list']
                         }}
                     />
                 </div>

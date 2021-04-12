@@ -1,9 +1,10 @@
 import { IReducer } from '../interfaces/basic'
 import {IDocument, INotebookPage} from '../interfaces/notebooks'
+import {actions as aNotebooks} from './notebook-reducer';
 import {AppStateType, BaseThunkType, InferActionsTypes} from './state'
 import {NotebookAPI} from '../api/notebookAPI';
-import {message} from 'antd';
-import {getNotebookThunk} from './notebook-reducer';
+const _ = require('lodash');
+
 
 
 let initialState: IReducer<IDocument> = {
@@ -11,6 +12,8 @@ let initialState: IReducer<IDocument> = {
     error: '',
     data: {
         activeDocument: null,
+        prevBody: "",
+        prevTitle: ""
     }
 }
 
@@ -43,22 +46,20 @@ const documentReducer = (state = initialState, action: ActionsType): IReducer<ID
             }
         }
 
-        case 'SET_BODY': {
-            if(state.data.activeDocument === null) return state
-
-            return {
-                ...state,
-                data: {
-                    ...state.data,
-                    activeDocument: {...state.data.activeDocument, body: action.body}
-                }
-            }
-        }
-
         case 'SET_ERROR':
             return {
                 ...state,
                 error: action.message
+            }
+
+        case 'SET_PREV':
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    prevBody: action.payload.body,
+                    prevTitle: action.payload.title
+                }
             }
 
         default: return state
@@ -69,8 +70,8 @@ export const actions = {
     setActiveDocument: (payload: INotebookPage) => ({type: 'SET_ACTIVE_PAGE', payload} as const),
     setPending: (payload: boolean) => ({type: 'SET_PAGE_PENDING', payload} as const),
     setTitle: (symbol: string) => ({type:'SET_TITLE', symbol} as const),
-    setBody: (body: string) => ({type: 'SET_BODY', body} as const),
-    setError: (message: string) => ({type: 'SET_ERROR', message} as const)
+    setError: (message: string) => ({type: 'SET_ERROR', message} as const),
+    setPrev: (payload: {body: string, title: string}) => ({type: 'SET_PREV', payload} as const)
 }
 
 type ActionsType = InferActionsTypes<typeof actions>
@@ -79,10 +80,14 @@ export const getNotebookPageThunk = (nid: string, page: string) => {
     return (dispatch: any) => {
         dispatch(actions.setPending(true))
         NotebookAPI.getPage(nid, page).then(res => {
-            dispatch(actions.setActiveDocument(res.data))
-            dispatch(actions.setPending(false))
+            if(res.status === 200){
+                dispatch(actions.setActiveDocument(res.data))
+                dispatch(actions.setPrev({body: res.data.body, title: res.data.title}))
+            }
         }).catch(err => {
             dispatch(actions.setError("Network error"))
+        }).finally(() => {
+            dispatch(actions.setPending(false))
         })
     }
 }
@@ -90,15 +95,32 @@ export const getNotebookPageThunk = (nid: string, page: string) => {
 export const saveChangesThunk = (editorState: any) => {
     return (dispatch: any, getState: () => AppStateType) =>{
         const state = getState()
-        if(state.notebooks.data.selectedNotebooks && state.document.data.activeDocument !==null) {
-            const {activeDocument} = state.document.data
-            NotebookAPI.putPageChanges(
-                state.notebooks.data.selectedNotebooks.id,
-                activeDocument?.id,
-                JSON.stringify(editorState),
-                activeDocument?.title).then(()=> {
-                // if(state.notebooks.data.selectedNotebooks) dispatch(getNotebookThunk(state.notebooks.data.selectedNotebooks.id))
-            })
+
+        const {selectedNotebooks} = state.notebooks.data
+        const {activeDocument, prevBody, prevTitle} = state.document.data
+
+
+        if(selectedNotebooks && activeDocument !==null) {
+            const body = JSON.stringify(editorState)
+
+            if(prevBody !== body || prevTitle !==activeDocument.title){
+                NotebookAPI.putPageChanges(selectedNotebooks.id, activeDocument.id, body, activeDocument.title).then(() => {
+
+                    if (prevTitle !==activeDocument.title) {
+                        let temp = {...selectedNotebooks, pages: [...selectedNotebooks.pages]}
+
+                        //@ts-ignore
+                        temp.pages = selectedNotebooks.pages.map((item: INotebookPage) => {
+                            if (item.id === activeDocument.id) {
+                                item.title = activeDocument.title
+                            }
+                            return item
+                        })
+
+                        dispatch(aNotebooks.setSelectedNotebook(temp))
+                    }
+                })
+            }
         }
     }
 }

@@ -20,4 +20,6 @@ export type INotebooks = {
 
 export type IDocument = {
     activeDocument: INotebookPage | null,
+    prevBody: string
+    prevTitle: string
 }
