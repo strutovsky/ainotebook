@@ -3,6 +3,7 @@ import {IReducer} from "../interfaces/basic";
 import { InferActionsTypes, BaseThunkType } from "./state";
 import {Dispatch} from "redux";
 import {NotebookAPI} from "../api/notebookAPI";
+import { actions as appActions } from './app-reducer';
 
 
 let initState: IReducer<INotebooks> = {
@@ -92,6 +93,10 @@ export const getNotebooksThunk = () => {
         NotebookAPI.getNotebooks().then((notebooks: any) => {
             dispatch(actions.setNotebooks(notebooks))
             dispatch(actions.setPending(false))
+
+        }).catch(() => {
+            // @ts-ignore
+            dispatch(appActions.setErrorApp('Network Error'))
         })
 
     }

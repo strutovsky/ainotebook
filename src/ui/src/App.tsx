@@ -12,14 +12,17 @@ import {ErrorPage} from './components/Error';
 import { UserOutlined } from '@ant-design/icons';
 import './App.css';
 import 'antd/dist/antd.css';
+import {useSelector} from 'react-redux';
+import { getAppErrorSelector } from './redux/selectors/app-selector';
 
 
 function App() {
+    const error = useSelector(getAppErrorSelector)
   if(false) {
     return <LoginPage/>
   }
 
-  if(false) {
+  if(error) {
       return <ErrorPage/>
   }
 

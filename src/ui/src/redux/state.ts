@@ -3,11 +3,13 @@ import thunkMiddleWare, {ThunkAction} from "redux-thunk";
 import notebookReducer from "./notebook-reducer";
 import noticeReducer from "./notice-reducer";
 import documentReducer from './document-reducer';
+import appReducer from './app-reducer';
 
 let reducers = combineReducers({
     notebooks: notebookReducer,
     document: documentReducer,
     notices: noticeReducer,
+    app: appReducer
 })
 
 type RootReducerType = typeof reducers;

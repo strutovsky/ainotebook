@@ -34,6 +34,8 @@ export const actions = {
     setNotices: (notices: INotices) => ({type: "SET_NOTICE", notices} as const)
 }
 
+
+
 type ActionsType = InferActionsTypes<typeof actions>
 
 
