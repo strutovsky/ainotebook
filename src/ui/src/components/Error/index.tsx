@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {InfoCircleOutlined} from '@ant-design/icons'
 import Styles from './error.module.css'
 

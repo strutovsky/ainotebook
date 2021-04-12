@@ -1,21 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {NavLink, useHistory} from 'react-router-dom';
-
-
 import {useDispatch, useSelector} from 'react-redux';
-
-
-import {Menu, Skeleton} from 'antd';
-import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icons';
-
-import MenuStyles from './menu.module.css'
-import Add from '../../common/adding';
 
 import {actions, addNotebooksThunk, addPageThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
 import {getNotebooksPending, getNotebooksSelector, getSelectedNotebook } from '../../redux/selectors/notebook-selector';
-import { ContextMenu } from '../../common/dropdown';
-const queryString = require('query-string');
+import {Menu, Skeleton} from 'antd';
 
+import Add from '../../common/adding';
+import { ContextMenu } from '../../common/dropdown';
+
+import {BookOutlined, SettingOutlined} from '@ant-design/icons';
+import MenuStyles from './menu.module.css'
+
+const queryString = require('query-string');
 const {SubMenu} = Menu;
 
 const MainMenu: React.FC = () => {

@@ -1,39 +1,36 @@
 import React, {useEffect, useState} from 'react';
-import Styles from './document.module.css';
 import {withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {getActivePage, getNotebooksPending, getPagePending} from '../../redux/selectors/notebook-selector';
+
+import {getPagePending} from '../../redux/selectors/notebook-selector';
 import { Skeleton } from 'antd';
 import {getActivePageSelector, getDocumentErrorSelector} from '../../redux/selectors/document-selector';
 import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
-import { ErrorPage } from '../Error';
-import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const Button: React.FC = () => {
-    return <button/>
-}
+import { ErrorPage } from '../Error';
+
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Styles from './document.module.css';
 
 
 const queryString = require('query-string');
 
 const Document: React.FC<any> = (props) => {
     const activePage = useSelector(getActivePageSelector)
-
     const pending = useSelector(getPagePending)
     const error = useSelector(getDocumentErrorSelector)
+
     const dispatch = useDispatch()
 
     const parsed = queryString.parse(props.location.search);
 
-
-
     let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
     const raw = convertToRaw(_contentState)
-
     const [editorState, setEditorState] = useState(raw) ;
+
     useEffect(() => {
         if(activePage) {
             try {
@@ -71,14 +68,6 @@ const Document: React.FC<any> = (props) => {
                 </div>
 
                 <div className={Styles.body} >
-                    {/*<textarea style={{"resize": "none"}}*/}
-                    {/*          name="body"*/}
-                    {/*          value={activePage?.body}*/}
-                    {/*          onChange={e => {*/}
-                    {/*              dispatch(actions.setBody(e.target.value))*/}
-                    {/*          }}*/}
-                    {/*          className={"custom-scroll"}*/}
-                    {/*></textarea>*/}
                     <Editor
                         defaultContentState={editorState}
                         onContentStateChange={setEditorState}
