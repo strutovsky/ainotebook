@@ -16,25 +16,29 @@ function handleMenuClick(e: any) {
 
 message.config({duration: 30})
 
-export const ContextMenu:React.FC<{nid: string, url: string}> = ({children,nid, url}) =>{
+export const ContextMenu:React.FC<{nid: string, url: string, mode: 'page'|'notebook'}> = ({children,
+                                                                                              nid,
+                                                                                              url,
+                                                                                              mode
+}) =>{
     const dispatch = useDispatch()
     const history = useHistory()
 
     const menu = (<Menu className={Styles.wrap}>
                     <Menu.Item key="1" icon={<EditOutlined />}>
-                        Rename notebook
+                        Rename {mode}
                     </Menu.Item>
                     <Menu.Item key="3" icon={<CopyOutlined />} onClick={() => {
                         navigator.clipboard.writeText(url)
                         message.success("link copied")
                     }}>
-                        Copy link to notebook
+                        Copy link to {mode}
                     </Menu.Item>
                     <Menu.Item key="2" icon={<DeleteOutlined />} onClick={() =>{
                         dispatch(deleteNotebook(nid))
                         history.push('/')
                     }}>
-                        Delete notebook
+                        Delete {mode}
                     </Menu.Item>
                     </Menu>);
     return <Dropdown overlay={menu} trigger={['contextMenu']}>{children}</Dropdown>

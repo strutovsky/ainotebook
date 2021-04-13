@@ -67,9 +67,9 @@ const MainMenu: React.FC = () => {
                                     if(nid === item.id){
                                         dispatch(actions.setSelectedNotebook(item))
                                     }
-                                    return (<Menu.Item key={item.id} icon={<BookOutlined/>} title={item.name} onClick={(info) =>{
+                                    return (<Menu.Item key={item.id}  icon={<BookOutlined/>} title={item.name} onClick={(info) =>{
                                                  dispatch(actions.setSelectedNotebook(item))
-                                    }}><ContextMenu nid={item.id} url={window.location.host+'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>
+                                    }}><ContextMenu mode={'notebook'} nid={item.id} url={window.location.host+'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>
                                             <NavLink to={'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>{item.name}</NavLink>
                                             </ContextMenu>
                                             </Menu.Item>)
@@ -121,7 +121,9 @@ const MainMenu: React.FC = () => {
                                         setIsOpen(false)
                                         setPage(page?.id)}
                                     }>
-                                        <NavLink to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}></NavLink>{pages.title}
+                                        <ContextMenu mode={'page'} nid={pages.id} url={window.location.host+'/notebook?nid=' + selectedNotebook.id + '&page=' + pages.id}>
+                                            <NavLink to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}>{pages.title}</NavLink>
+                                        </ContextMenu>
                                     </Menu.Item>
                                 })}
                             </Menu.ItemGroup>
