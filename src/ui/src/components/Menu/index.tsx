@@ -9,7 +9,7 @@ import {Menu, Skeleton} from 'antd';
 import Add from '../../common/adding';
 import { ContextMenu } from '../../common/dropdown';
 
-import {BookOutlined, SettingOutlined} from '@ant-design/icons';
+import {BookOutlined, SettingOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import MenuStyles from './menu.module.css'
 
 const queryString = require('query-string');
@@ -23,6 +23,7 @@ const MainMenu: React.FC = () => {
 
     const [nid, setNid] = useState(parsed.nid)
     const [page, setPage] = useState(parsed.pages)
+    const [isOpen, setIsOpen] = useState(true)
 
     const notebooks = useSelector(getNotebooksSelector)
     const pending = useSelector(getNotebooksPending)
@@ -46,7 +47,13 @@ const MainMenu: React.FC = () => {
         dispatch(addPageThunk(nid, title))
     }
 
-    return (<div className={MenuStyles.mainWrap}>
+    return (<div className={MenuStyles.mainWrap  + " " + (isOpen ? MenuStyles.menuOpened : "")}>
+                <div className={MenuStyles.menuButton} onClick={() => {
+                    setIsOpen(prevState => !prevState)
+                }}>
+                    <MenuUnfoldOutlined />
+                </div>
+
                 <div className={MenuStyles.menuWrap + " custom-scroll"}>
                     {pending ? <Skeleton active={true}/> :
                         <Menu
@@ -110,7 +117,10 @@ const MainMenu: React.FC = () => {
                     >
                             <Menu.ItemGroup title={'Pages'} >
                                 {selectedNotebook.pages.map(pages => {
-                                    return <Menu.Item key={pages.id} onClick={() => setPage(page?.id)}>
+                                    return <Menu.Item key={pages.id} onClick={() => {
+                                        setIsOpen(false)
+                                        setPage(page?.id)}
+                                    }>
                                         <NavLink to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}></NavLink>{pages.title}
                                     </Menu.Item>
                                 })}

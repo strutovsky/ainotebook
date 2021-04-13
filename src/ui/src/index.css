@@ -60,11 +60,12 @@ code {
   bottom: 5px;
   left: 0;
   width: 100%;
-  padding: 10px!important;
+  padding: 10px 0px!important;
   border-bottom: 1px solid var(--color-selected-menu)!important;
 }
 .rdw-option-wrapper {
   background: var(--color-lightgray)!important;
   border: none!important;
   outline: none!important;
+
 }

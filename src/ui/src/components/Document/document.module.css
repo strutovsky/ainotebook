@@ -48,3 +48,15 @@
 .body {
     height: 60vh;
 }
+
+@media (max-width: 800px) {
+    .wrap {
+        padding: 20px;
+    }
+
+    .body {
+        height: 57vh;
+    }
+
+}
+
