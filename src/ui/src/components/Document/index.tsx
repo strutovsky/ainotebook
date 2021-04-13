@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {getPagePending} from '../../redux/selectors/notebook-selector';
-import { Skeleton } from 'antd';
+import { Skeleton, Spin } from 'antd';
 import {getActivePageSelector, getDocumentErrorSelector} from '../../redux/selectors/document-selector';
 import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
@@ -17,7 +17,7 @@ import Styles from './document.module.css';
 
 
 const queryString = require('query-string');
-const _ = require('lodash')
+
 
 const Document: React.FC<any> = (props) => {
     const activePage = useSelector(getActivePageSelector)
@@ -25,19 +25,12 @@ const Document: React.FC<any> = (props) => {
     const error = useSelector(getDocumentErrorSelector)
 
     const dispatch = useDispatch()
-
     const parsed = queryString.parse(props.location.search);
 
     let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
     const raw = convertToRaw(_contentState)
     const [editorState, setEditorState] = useState(raw) ;
-    const delayedQuery = _.debounce((q: any) => dispatch(saveChangesThunk(q)), 500);
 
-    window.addEventListener("beforeunload", (ev) =>
-    {
-        ev.preventDefault();
-        dispatch(saveChangesThunk(editorState))
-    });
 
     useEffect(() => {
         if(activePage) {
@@ -65,35 +58,35 @@ const Document: React.FC<any> = (props) => {
         return <ErrorPage message={error}/>
     }
 
-    if(pending || activePage === null) {
-        return <Skeleton active/>
+    if(activePage === null || pending) {
+        return <Skeleton title={true}></Skeleton>
     }
 
     return (<div className={Styles.wrap}>
-                <div className={Styles.header}>
-                    <input value={activePage?.title} onChange={(e) => {
-                        dispatch(actions.setTitle(e.target.value))
-                    }}
-                    />
-                </div>
-
-                <div className={Styles.date}>
-                    {activePage?.create_at}
-                </div>
-
-                <div className={Styles.body} >
-                    <Editor
-                        defaultContentState={editorState}
-                        onContentStateChange={setEditorState}
-                        wrapperClassName="wrapper-class"
-                        editorClassName="editor-class"
-                        toolbarClassName="toolbar-class"
-                        toolbar={{
-                            options: ['inline', 'list']
+                    <div className={Styles.header}>
+                        <input value={activePage?.title} onChange={(e) => {
+                            dispatch(actions.setTitle(e.target.value))
                         }}
-                    />
-                </div>
-            </div>)
+                        />
+                    </div>
+
+                    <div className={Styles.date}>
+                        {activePage?.create_at}
+                    </div>
+
+                    <div className={Styles.body + " custom-scroll"} >
+                        <Editor
+                            defaultContentState={editorState}
+                            onContentStateChange={setEditorState}
+                            wrapperClassName="wrapper-class"
+                            editorClassName="editor-class"
+                            toolbarClassName="toolbar-class"
+                            toolbar={{
+                                options: ['inline', 'list']
+                            }}
+                        />
+                    </div>
+                </div>)
 }
 
 export default withRouter(Document)

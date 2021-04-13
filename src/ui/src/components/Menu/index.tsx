@@ -16,7 +16,6 @@ const queryString = require('query-string');
 const {SubMenu} = Menu;
 
 const MainMenu: React.FC = () => {
-    console.log('render')
     const history = useHistory()
     const dispatch = useDispatch()
 
@@ -47,9 +46,8 @@ const MainMenu: React.FC = () => {
         dispatch(addPageThunk(nid, title))
     }
 
-
     return (<div className={MenuStyles.mainWrap}>
-                <div className={MenuStyles.menuWrap + " custom-scroll"} style={{width: '270px'}}>
+                <div className={MenuStyles.menuWrap + " custom-scroll"}>
                     {pending ? <Skeleton active={true}/> :
                         <Menu
                             mode="inline"

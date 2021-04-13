@@ -8,22 +8,20 @@
 }
 
 .App {
-  display: flex;
-  justify-content: center;
   background: var(--color-background-dark);
-  padding-left: 450px;
-  padding-top: 50px;
+  display: flex;
+
 }
 
 header {
   background: var(--color-background-light)!important;
   padding: 4px 20px;
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 9999;
   text-align: right;
+  border-bottom: 1px solid var(--color-selected-menu)!important;
 }
 
 header > div {

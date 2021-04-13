@@ -118,10 +118,11 @@ export const addPageThunk = (notebookId: string, title: string) =>{
         NotebookAPI.addPage(notebookId, title).then((res: any) => {
             NotebookAPI.getNotebooks().then((notebooks: any) => {
                 dispatch(actions.setNotebooks(notebooks))
-                dispatch(actions.setPending(false))
             })
         }).catch(err => {
 
+        }).finally(() => {
+            dispatch(actions.setPending(false))
         })
     }
 }
@@ -129,7 +130,7 @@ export const addPageThunk = (notebookId: string, title: string) =>{
 export const getNotebookThunk = (nid: string) => {
     return (dispatch: any) => {
         NotebookAPI.getNotebook(nid).then(res => {
-            debugger
+
         }).catch(err => {
 
         })

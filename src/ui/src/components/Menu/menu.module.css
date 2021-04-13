@@ -1,16 +1,18 @@
 .mainWrap {
     display: flex;
     height: calc(100vh - 30px);
-    min-width: 150px;
-    position: fixed;
     left: 0;
-    top: 47px;
     border-right: 1px solid var(--color-selected-menu);
 }
 
 .menuWrap {
     background: #282828;
-    border-top: 1px solid var(--color-selected-menu);
+    width: 210px;
+}
+
+.Pages {
+    background: var(--color-background-light);
+    width: 200px;
 }
 
 .button {
@@ -45,8 +47,3 @@
     color: var(--color-lightgray);
 }
 
-.Pages {
-    background: var(--color-background-light);
-    border-top: 1px solid var(--color-selected-menu);
-    width: 200px;
-}
