@@ -59,7 +59,7 @@ const Document: React.FC<any> = (props) => {
     }
 
     if(activePage === null || pending) {
-        return <Skeleton title={true}></Skeleton>
+        return <Skeleton title={true} active={true} className={"padding-10"}></Skeleton>
     }
 
     return (<div className={Styles.wrap}>

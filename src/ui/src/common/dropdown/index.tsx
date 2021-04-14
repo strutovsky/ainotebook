@@ -7,19 +7,19 @@ import Styles from './dropdown.module.css'
 import {useDispatch} from 'react-redux';
 import { deleteNotebook } from '../../redux/notebook-reducer';
 import { useHistory } from 'react-router-dom';
+import { deletePage } from '../../redux/document-reducer';
 
-
-function handleMenuClick(e: any) {
-    message.info('Click on menu item.');
-    console.log('click', e);
-}
 
 message.config({duration: 30})
 
-export const ContextMenu:React.FC<{nid: string, url: string, mode: 'page'|'notebook'}> = ({children,
+export const ContextMenu:React.FC<{nid: string,
+                                   url: string,
+                                   mode: 'page'|'notebook',
+                                   pid?: string
+}> = ({children,
                                                                                               nid,
                                                                                               url,
-                                                                                              mode
+                                                                                              mode,pid
 }) =>{
     const dispatch = useDispatch()
     const history = useHistory()
@@ -28,15 +28,21 @@ export const ContextMenu:React.FC<{nid: string, url: string, mode: 'page'|'noteb
                     <Menu.Item key="1" icon={<EditOutlined />}>
                         Rename {mode}
                     </Menu.Item>
-                    <Menu.Item key="3" icon={<CopyOutlined />} onClick={() => {
+                    <Menu.Item key="3" icon={<CopyOutlined />} onClick={(e) => {
                         navigator.clipboard.writeText(url)
                         message.success("link copied")
                     }}>
                         Copy link to {mode}
                     </Menu.Item>
                     <Menu.Item key="2" icon={<DeleteOutlined />} onClick={() =>{
-                        dispatch(deleteNotebook(nid))
+                        if(mode === "page" && pid) {
+                            dispatch(deletePage(nid, pid))
+                        }
+
+                        if(mode === 'notebook') dispatch(deleteNotebook(nid))
+
                         history.push('/')
+
                     }}>
                         Delete {mode}
                     </Menu.Item>

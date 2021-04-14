@@ -3,8 +3,7 @@ import {IDocument, INotebookPage} from '../interfaces/notebooks'
 import {actions as aNotebooks} from './notebook-reducer';
 import {AppStateType, BaseThunkType, InferActionsTypes} from './state'
 import {NotebookAPI} from '../api/notebookAPI';
-const _ = require('lodash');
-
+import {actions as nActions} from './notebook-reducer';
 
 
 let initialState: IReducer<IDocument> = {
@@ -122,6 +121,18 @@ export const saveChangesThunk = (editorState: any) => {
                 })
             }
         }
+    }
+}
+
+export const deletePage = (notebookId: string, pid: string) => {
+    return (dispatch: any) => {
+        dispatch(nActions.setPending(true))
+        NotebookAPI.deletePage(notebookId, pid).then(() => {
+            NotebookAPI.getNotebooks().then((notebooks: any) => {
+                dispatch(nActions.setNotebooks(notebooks))
+                dispatch(nActions.setPending(false))
+            })
+        })
     }
 }
 
