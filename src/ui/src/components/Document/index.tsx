@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {getPagePending} from '../../redux/selectors/notebook-selector';
-import { Skeleton, Spin } from 'antd';
+import { Skeleton } from 'antd';
 import {getActivePageSelector, getDocumentErrorSelector} from '../../redux/selectors/document-selector';
 import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
@@ -82,8 +82,9 @@ const Document: React.FC<any> = (props) => {
                             editorClassName="editor-class"
                             toolbarClassName="toolbar-class"
                             toolbar={{
-                                options: ['inline', 'list']
+                                options: ['inline', 'list', ]
                             }}
+
                         />
                     </div>
                 </div>)

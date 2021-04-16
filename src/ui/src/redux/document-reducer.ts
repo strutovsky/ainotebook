@@ -4,6 +4,7 @@ import {actions as aNotebooks} from './notebook-reducer';
 import {AppStateType, BaseThunkType, InferActionsTypes} from './state'
 import {NotebookAPI} from '../api/notebookAPI';
 import {actions as nActions} from './notebook-reducer';
+import {message} from 'antd';
 
 
 let initialState: IReducer<IDocument> = {
@@ -98,14 +99,14 @@ export const saveChangesThunk = (editorState: any) => {
         const {selectedNotebooks} = state.notebooks.data
         const {activeDocument, prevBody, prevTitle} = state.document.data
 
-
         if(selectedNotebooks && activeDocument !==null) {
             const body = JSON.stringify(editorState)
 
             if(prevBody !== body || prevTitle !==activeDocument.title){
-                NotebookAPI.putPageChanges(selectedNotebooks.id, activeDocument.id, body, activeDocument.title).then(() => {
 
+                NotebookAPI.putPageChanges(selectedNotebooks.id, activeDocument.id, body, activeDocument.title).then((res) => {
                     if (prevTitle !==activeDocument.title) {
+
                         let temp = {...selectedNotebooks, pages: [...selectedNotebooks.pages]}
 
                         //@ts-ignore
@@ -118,6 +119,8 @@ export const saveChangesThunk = (editorState: any) => {
 
                         dispatch(aNotebooks.setSelectedNotebook(temp))
                     }
+                }).catch(err => {
+
                 })
             }
         }

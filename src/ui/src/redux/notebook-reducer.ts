@@ -68,6 +68,24 @@ const notebookReducer = (state = initState, action: ActionsType): IReducer<INote
                 }
             }
 
+        case 'CHANGE_NOTEBOOK_NAME':
+            const temp = [...state.data.notebooks].map(notebook => {
+                if(notebook.id === action.nid) {
+                    notebook.name = action.name
+                }
+
+                return notebook
+            })
+
+
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    notebooks: temp
+                }
+            }
+
 
         default: return state
 
@@ -81,7 +99,8 @@ export const actions = {
     setSelectedNotebook: (payload: INotebook | null) => ({type: "SET_SELECTED_NOTEBOOK", payload} as const),
     setActivePage: (page: INotebookPage | null) => ({type: "SET_ACTIVE_NOTEBOOK_PAGE", page} as const),
     setPagePending: (payload: boolean) => ({type: "SET_PAGE_PENDING", payload} as const),
-    addNoteBookPage: (pages: INotebookPage[]) => ({type: "ADD_PAGES", pages} as const )
+    addNoteBookPage: (pages: INotebookPage[]) => ({type: "ADD_PAGES", pages} as const ),
+    changeNotebookName: (name: string, nid: string) => ({type: "CHANGE_NOTEBOOK_NAME", nid, name} as const)
 }
 
 type ActionsType = InferActionsTypes<typeof actions>

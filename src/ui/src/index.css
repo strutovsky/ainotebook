@@ -43,6 +43,32 @@ code {
   bottom: 50px!important;
 }
 
+.ant-modal-content {
+  background: var(--color-background-dark)!important;
+  color: var(--color-white);
+}
+
+.ant-modal-content input {
+  background: var(--color-background-light);
+  color: var(--color-white);
+  border: none;
+}
+
+
+.ant-modal-header {
+  background: var(--color-background-dark)!important;
+  color: var(--color-white)!important;
+  border-bottom: 1px solid var(--color-selected-menu)!important;
+}
+
+.ant-modal-title, .ant-modal-title .ant-modal-header {
+  color: var(--color-lightgray)!important;
+}
+
+.ant-modal-footer {
+  border-top: 1px solid var(--color-selected-menu)!important;
+}
+
 /*Editor*/
 
 .wrapper-class *{
@@ -51,7 +77,13 @@ code {
 
 .editor-class {
   color: var(--color-white);
+
 }
+
+/*.editor-class * {*/
+/*  background: var(--color-background-dark);*/
+/*  color: var(--color-white);*/
+/*}*/
 
 .toolbar-class {
   background: var(--color-background-light)!important;

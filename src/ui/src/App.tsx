@@ -14,6 +14,7 @@ import './App.css';
 import 'antd/dist/antd.css';
 import {useSelector} from 'react-redux';
 import { getAppErrorSelector } from './redux/selectors/app-selector';
+import { NotebookModal } from './components/Modals/NotebookModal';
 
 
 function App() {

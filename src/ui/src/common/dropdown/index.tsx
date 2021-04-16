@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import { Menu, Dropdown, message} from 'antd';
 import { DeleteOutlined, EditOutlined, CopyOutlined} from '@ant-design/icons';
@@ -8,26 +8,33 @@ import {useDispatch} from 'react-redux';
 import { deleteNotebook } from '../../redux/notebook-reducer';
 import { useHistory } from 'react-router-dom';
 import { deletePage } from '../../redux/document-reducer';
+import {NotebookModal} from '../../components/Modals/NotebookModal';
 
 
-message.config({duration: 30})
+message.config({duration: 1})
 
 export const ContextMenu:React.FC<{nid: string,
                                    url: string,
                                    mode: 'page'|'notebook',
-                                   pid?: string
+                                   pid?: string,
+                                   name?: string
+
 }> = ({children,
                                                                                               nid,
                                                                                               url,
-                                                                                              mode,pid
+                                                                                              mode,pid, name
 }) =>{
     const dispatch = useDispatch()
     const history = useHistory()
+    const [hidden, setHidden] = useState(true)
+
 
     const menu = (<Menu className={Styles.wrap}>
-                    <Menu.Item key="1" icon={<EditOutlined />}>
+                    {mode !== "page" && <Menu.Item key="1" icon={<EditOutlined />} onClick={() => {
+                        setHidden(false)
+                    }}>
                         Rename {mode}
-                    </Menu.Item>
+                    </Menu.Item>}
                     <Menu.Item key="3" icon={<CopyOutlined />} onClick={(e) => {
                         navigator.clipboard.writeText(url)
                         message.success("link copied")
@@ -47,5 +54,8 @@ export const ContextMenu:React.FC<{nid: string,
                         Delete {mode}
                     </Menu.Item>
                     </Menu>);
-    return <Dropdown overlay={menu} trigger={['contextMenu']}>{children}</Dropdown>
+    return <>
+            <Dropdown overlay={menu} trigger={['contextMenu']}>{children}</Dropdown>
+            <NotebookModal nid={nid} hidden={hidden} setHidden={setHidden} name={name}/>
+        </>
 }
