@@ -1,36 +1,94 @@
 import React, {useEffect, useState} from 'react';
-// @ts-ignore
-import Styles from './document.module.css';
 import {withRouter} from 'react-router-dom';
-import {NotebookAPI} from '../../api/notebookAPI';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {getPagePending} from '../../redux/selectors/notebook-selector';
+import { Skeleton } from 'antd';
+import {getActivePageSelector, getDocumentErrorSelector} from '../../redux/selectors/document-selector';
+import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
+import {actions} from '../../redux/document-reducer'
+import { ContentState, convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+
+import { ErrorPage } from '../Error';
+
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Styles from './document.module.css';
+
+
+const queryString = require('query-string');
 
 
 const Document: React.FC<any> = (props) => {
-    const {notebookId, pageId} = props.match.params
-    const [title, setTitle] = useState("Новая страница")
-    const [text, setText] = useState("")
+    const activePage = useSelector(getActivePageSelector)
+    const pending = useSelector(getPagePending)
+    const error = useSelector(getDocumentErrorSelector)
+
+    const dispatch = useDispatch()
+    const parsed = queryString.parse(props.location.search);
+
+    let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
+    const raw = convertToRaw(_contentState)
+    const [editorState, setEditorState] = useState(raw) ;
+
 
     useEffect(() => {
-        NotebookAPI.getNotebookPage(notebookId, pageId)
-    }, [notebookId, pageId])
+        if(activePage) {
+            try {
+                setEditorState(JSON.parse(activePage.body))
+            }catch (e){
+                setEditorState(convertToRaw(ContentState.createFromText(activePage.body)))
+            }
+        }
+    }, [activePage])
 
 
+    useEffect(() => {
+        dispatch(saveChangesThunk(editorState))
+        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
+    }, [parsed.nid, parsed.page])
+
+    useEffect(() => {
+        return () => {
+            dispatch(saveChangesThunk(editorState))
+        }
+    }, [])
+
+    if(error) {
+        return <ErrorPage message={error}/>
+    }
+
+    if(activePage === null || pending) {
+        return <Skeleton title={true} active={true} className={"padding-10"}></Skeleton>
+    }
 
     return (<div className={Styles.wrap}>
-                <div className={Styles.header}>
-                    <input value={title}
-                           onChange={e => setTitle(e.target.value)}
-                    />
-                </div>
+                    <div className={Styles.header}>
+                        <input value={activePage?.title} onChange={(e) => {
+                            dispatch(actions.setTitle(e.target.value))
+                        }}
+                        />
+                    </div>
 
-                <div className={Styles.date}>
-                    {new Date().toDateString()}
-                </div>
+                    <div className={Styles.date}>
+                        {activePage?.create_at}
+                    </div>
 
-                <div className={Styles.body}>
-                    <textarea name="body" value={text} onChange={e => setText(e.target.value)}></textarea>
-                </div>
-            </div>)
+                    <div className={Styles.body + " custom-scroll"} >
+                        <Editor
+                            defaultContentState={editorState}
+                            onContentStateChange={setEditorState}
+                            wrapperClassName="wrapper-class"
+                            editorClassName="editor-class"
+                            toolbarClassName="toolbar-class"
+                            stripPastedStyles={true}
+                            toolbar={{
+                                options: ['inline', 'list', ]
+                            }}
+
+                        />
+                    </div>
+                </div>)
 }
 
 export default withRouter(Document)

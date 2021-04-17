@@ -7,7 +7,7 @@ import {NoticeAPI} from "../api/noticeAPI";
 
 let initState: IReducer<INotices> = {
     pending: false,
-    error: false,
+    error: "",
     data: []
 }
 
@@ -33,6 +33,8 @@ export const actions = {
     setNoticePending: (payload: boolean) => ({type: "SET_NOTICE_PENDING", payload} as const),
     setNotices: (notices: INotices) => ({type: "SET_NOTICE", notices} as const)
 }
+
+
 
 type ActionsType = InferActionsTypes<typeof actions>
 

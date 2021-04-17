@@ -1,7 +1,9 @@
 import React from 'react';
-import Styled from './login.module.css'
 import {Button, Form, Input} from 'antd';
 import Checkbox from 'antd/lib/checkbox/Checkbox';
+
+import Styled from './login.module.css'
+
 
 
 export const LoginPage = () => {
