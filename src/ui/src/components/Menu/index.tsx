@@ -11,6 +11,9 @@ import { ContextMenu } from '../../common/dropdown';
 
 import {BookOutlined, SettingOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
 import MenuStyles from './menu.module.css'
+import { LangSetting } from '../Settings/lang';
+import {getLangSelector} from '../../redux/selectors/app-selector';
+import {texts} from '../../lang/languages';
 
 const queryString = require('query-string');
 const {SubMenu} = Menu;
@@ -29,6 +32,7 @@ const MainMenu: React.FC = () => {
     const notebooks = useSelector(getNotebooksSelector)
     const pending = useSelector(getNotebooksPending)
     const selectedNotebook = useSelector(getSelectedNotebook);
+    const lang = useSelector(getLangSelector)
 
     useEffect(() => {
         dispatch(getNotebooksThunk())
@@ -63,7 +67,7 @@ const MainMenu: React.FC = () => {
                             selectedKeys={[nid]}
                         >
 
-                            <Menu.ItemGroup title={'Notebooks'}>
+                            <Menu.ItemGroup title={texts.menu.Notebooks[lang]}>
                                 {notebooks.map(item => {
                                     if(nid === item.id){
                                         dispatch(actions.setSelectedNotebook(item))
@@ -85,15 +89,14 @@ const MainMenu: React.FC = () => {
                             </Menu.ItemGroup>
 
                             <Add
-                                placeholder={'Add notebook'}
+                                placeholder={texts.menu.addNotebook[lang]}
                                 add={addBook}
                                 mode={'book'}
                             />
 
-                            <Menu.ItemGroup title={'Setting and other'}>
-                                <SubMenu key="sub2" icon={<SettingOutlined/>} title="Setting">
-                                    <Menu.Item key="9">Option 9</Menu.Item>
-                                    <Menu.Item key="10">Option 10</Menu.Item>
+                            <Menu.ItemGroup title={texts.settings.setting[lang]}>
+                                <SubMenu key="sub2" icon={<SettingOutlined/>} title={texts.settings.lang[lang]}>
+                                    <LangSetting/>
                                 </SubMenu>
                             </Menu.ItemGroup>
                         </Menu>}
@@ -105,7 +108,7 @@ const MainMenu: React.FC = () => {
                         theme="light"
                         selectedKeys={[page]}
                     >
-                            <Menu.ItemGroup title={'Pages'} >
+                            <Menu.ItemGroup title={texts.menu.Pages[lang]} >
                                 {selectedNotebook.pages.map(pages => {
                                     return <Menu.Item key={pages.id} onClick={() => {
                                         setIsOpen(false)
@@ -122,7 +125,7 @@ const MainMenu: React.FC = () => {
                                 })}
                             </Menu.ItemGroup>
                             <Add
-                                placeholder={'Add page'}
+                                placeholder={texts.menu.addPage[lang]}
                                 add={addPage}
                                 mode={'page'}
                                 nid={selectedNotebook?.id}

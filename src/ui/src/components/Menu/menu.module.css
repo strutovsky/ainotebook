@@ -3,16 +3,19 @@
     height: calc(100vh - 30px);
     left: 0;
     border-right: 1px solid var(--color-selected-menu);
+
 }
 
 .menuWrap {
     background: #282828;
     width: 210px;
+    padding: 20px 0;
 }
 
 .Pages {
     background: var(--color-background-light);
     width: 200px;
+    padding: 20px 0;
 }
 
 .button {

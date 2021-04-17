@@ -81,6 +81,7 @@ const Document: React.FC<any> = (props) => {
                             wrapperClassName="wrapper-class"
                             editorClassName="editor-class"
                             toolbarClassName="toolbar-class"
+                            stripPastedStyles={true}
                             toolbar={{
                                 options: ['inline', 'list', ]
                             }}

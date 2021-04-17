@@ -15,13 +15,16 @@
 
 header {
   background: var(--color-background-light)!important;
-  padding: 4px 20px;
+  padding: 4px 20px 4px 40px;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 9999;
   text-align: right;
   border-bottom: 1px solid var(--color-selected-menu)!important;
+  display: flex;
+  justify-content: space-between;
+
 }
 
 header > div {
@@ -35,6 +38,7 @@ header h3 {
   font-weight: lighter;
   color: var(--color-white);
   margin-right: 10px;
+
 }
 .ant-menu{
   background: #282828!important;

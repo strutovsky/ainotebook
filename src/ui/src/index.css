@@ -105,3 +105,14 @@ code {
 .padding-10 {
   padding: 10px!important;
 }
+
+.Copyright{
+  color: var(--color-lightgray);
+
+}
+
+@media (max-width: 510px) {
+  .Copyright{
+    display: none;
+  }
+}
