@@ -113,7 +113,7 @@ export const getNotebooksThunk = () => {
             dispatch(actions.setNotebooks(notebooks))
             dispatch(actions.setPending(false))
 
-        }).catch(() => {
+        }).catch((err) => {
             // @ts-ignore
             dispatch(appActions.setErrorApp('Network Error'))
         })
@@ -142,16 +142,6 @@ export const addPageThunk = (notebookId: string, title: string) =>{
 
         }).finally(() => {
             dispatch(actions.setPending(false))
-        })
-    }
-}
-
-export const getNotebookThunk = (nid: string) => {
-    return (dispatch: any) => {
-        NotebookAPI.getNotebook(nid).then(res => {
-
-        }).catch(err => {
-
         })
     }
 }

@@ -8,7 +8,8 @@ CORS(app, support_credentials=True)
 app.register_blueprint(routes)
 
 db = MongoEngine()
-app.config["MONGODB_SETTINGS"] = {"host": f"mongodb://root:donnutoppassformongo@mongo:27017/users?authSource=admin"}
+app.config.update(SESSION_COOKIE_HTTPONLY=False)
+app.config["MONGODB_SETTINGS"] = {"host": f"mongodb://root:donnutoppassformongo@localhost:27017/users?authSource=admin"}
 app.secret_key = b'\xcc^\x91\xea\x17-\xd0W\x03\xa7\xf8J0\xac8\xc5'
 db.init_app(app)
 

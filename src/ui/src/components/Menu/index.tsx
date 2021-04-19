@@ -75,6 +75,7 @@ const MainMenu: React.FC = () => {
                                     return (<Menu.Item key={item.id}
                                                        icon={<BookOutlined/>}
                                                        title={item.name}
+                                                       onContextMenu={() => {}}
                                                        onClick={(info) =>{
                                                             dispatch(actions.setSelectedNotebook(item))
                                     }}>
@@ -107,19 +108,20 @@ const MainMenu: React.FC = () => {
                         mode="inline"
                         theme="light"
                         selectedKeys={[page]}
+                        defaultSelectedKeys={[page]}
                     >
                             <Menu.ItemGroup title={texts.menu.Pages[lang]} >
                                 {selectedNotebook.pages.map(pages => {
-                                    return <Menu.Item key={pages.id} onClick={() => {
-                                        setIsOpen(false)
-                                        setPage(page?.id)}
-                                    }>
+                                    return <Menu.Item key={pages.id}>
                                         <ContextMenu mode={'page'}
                                                      nid={selectedNotebook?.id}
                                                      pid={pages.id}
                                                      url={window.location.host+'/notebook?nid=' + selectedNotebook.id + '&page=' + pages.id}
                                         >
-                                            <NavLink to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}>{pages.title}</NavLink>
+                                            <NavLink onClick={(e) => {
+                                                if(pages !== undefined) setPage(pages.id)}
+
+                                            } to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}>{pages.title}</NavLink>
                                         </ContextMenu>
                                     </Menu.Item>
                                 })}
