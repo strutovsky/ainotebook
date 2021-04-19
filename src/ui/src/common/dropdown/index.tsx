@@ -11,7 +11,7 @@ import { deletePage } from '../../redux/document-reducer';
 import {NotebookModal} from '../../components/Modals/NotebookModal';
 
 
-message.config({duration: 1})
+message.config({duration: 1.5})
 
 export const ContextMenu:React.FC<{nid: string,
                                    url: string,
@@ -35,7 +35,7 @@ export const ContextMenu:React.FC<{nid: string,
                     }}>
                         Rename {mode}
                     </Menu.Item>}
-                    <Menu.Item key="3" icon={<CopyOutlined />} onClick={(e) => {
+                    <Menu.Item icon={<CopyOutlined />} onClick={(e) => {
                         navigator.clipboard.writeText(url)
                         message.success("link copied")
                     }}>

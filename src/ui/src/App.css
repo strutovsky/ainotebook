@@ -84,3 +84,7 @@ header h3 {
   background: var(--color-selected-menu)!important;
   color: var(--color-primary)!important;
 }
+
+.ant-modal-close-x {
+  color: var(--color-white);
+}
