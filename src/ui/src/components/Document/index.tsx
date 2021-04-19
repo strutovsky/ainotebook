@@ -4,11 +4,16 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {getPagePending} from '../../redux/selectors/notebook-selector';
 import { Skeleton } from 'antd';
-import {getActivePageSelector, getDocumentErrorSelector} from '../../redux/selectors/document-selector';
+import {
+    getActivePageSelector,
+    getDocumentErrorSelector,
+    getDocumentPendingSelector
+} from '../../redux/selectors/document-selector';
 import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
 import { ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import {SyncOutlined} from '@ant-design/icons';
 
 import { ErrorPage } from '../Error';
 
@@ -23,6 +28,7 @@ const Document: React.FC<any> = (props) => {
     const activePage = useSelector(getActivePageSelector)
     const pending = useSelector(getPagePending)
     const error = useSelector(getDocumentErrorSelector)
+    const pendingSync = useSelector(getDocumentPendingSelector)
 
     const dispatch = useDispatch()
     const parsed = queryString.parse(props.location.search);
@@ -35,7 +41,8 @@ const Document: React.FC<any> = (props) => {
     useEffect(() => {
         if(activePage) {
             try {
-                setEditorState(JSON.parse(activePage.body))
+                const temp = JSON.parse(activePage.body)
+                setEditorState(temp)
             }catch (e){
                 setEditorState(convertToRaw(ContentState.createFromText(activePage.body)))
             }
@@ -68,6 +75,8 @@ const Document: React.FC<any> = (props) => {
                             dispatch(actions.setTitle(e.target.value))
                         }}
                         />
+
+
                     </div>
 
                     <div className={Styles.date}>
@@ -88,6 +97,10 @@ const Document: React.FC<any> = (props) => {
 
                         />
                     </div>
+
+                    <SyncOutlined className={Styles.sync} spin={pendingSync} onClick={() =>
+                        {dispatch(saveChangesThunk(editorState))}
+                    }/>
                 </div>)
 }
 

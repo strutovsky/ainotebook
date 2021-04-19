@@ -103,6 +103,7 @@ export const saveChangesThunk = (editorState: any) => {
             const body = JSON.stringify(editorState)
 
             if(prevBody !== body || prevTitle !==activeDocument.title){
+                dispatch(actions.setPending(true))
 
                 NotebookAPI.putPageChanges(selectedNotebooks.id, activeDocument.id, body, activeDocument.title).then((res) => {
                     if (prevTitle !==activeDocument.title) {
@@ -120,7 +121,9 @@ export const saveChangesThunk = (editorState: any) => {
                         dispatch(aNotebooks.setSelectedNotebook(temp))
                     }
                 }).catch(err => {
-
+                    message.error("Something went wrong")
+                }).finally(() => {
+                    dispatch(actions.setPending(false))
                 })
             }
         }
