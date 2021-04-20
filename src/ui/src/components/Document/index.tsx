@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {withRouter} from 'react-router-dom';
+import {useHistory, withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {getPagePending} from '../../redux/selectors/notebook-selector';
@@ -9,19 +9,24 @@ import {
     getDocumentErrorSelector,
     getDocumentPendingSelector
 } from '../../redux/selectors/document-selector';
-import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
+import {deletePage, getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
 import { ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import {SyncOutlined} from '@ant-design/icons';
+import {SyncOutlined, DeleteOutlined} from '@ant-design/icons';
 
 import { ErrorPage } from '../Error';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Styles from './document.module.css';
+import {AppStateType} from '../../redux/state';
+import {Modal} from 'antd'
 
 
 const queryString = require('query-string');
+
+const { confirm } = Modal;
+
 
 
 const Document: React.FC<any> = (props) => {
@@ -29,6 +34,7 @@ const Document: React.FC<any> = (props) => {
     const pending = useSelector(getPagePending)
     const error = useSelector(getDocumentErrorSelector)
     const pendingSync = useSelector(getDocumentPendingSelector)
+    const activeNote = useSelector((state: AppStateType) => state.notebooks.data.selectedNotebooks)
 
     const dispatch = useDispatch()
     const parsed = queryString.parse(props.location.search);
@@ -36,13 +42,15 @@ const Document: React.FC<any> = (props) => {
     let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
     const raw = convertToRaw(_contentState)
     const [editorState, setEditorState] = useState(raw) ;
+    const history = useHistory()
 
 
     useEffect(() => {
         if(activePage) {
             try {
                 const temp = JSON.parse(activePage.body)
-                setEditorState(temp)
+                if('blocks' in temp && 'entityMap' in temp) setEditorState(temp)
+
             }catch (e){
                 setEditorState(convertToRaw(ContentState.createFromText(activePage.body)))
             }
@@ -101,7 +109,23 @@ const Document: React.FC<any> = (props) => {
                     <SyncOutlined className={Styles.sync} spin={pendingSync} onClick={() =>
                         {dispatch(saveChangesThunk(editorState))}
                     }/>
-                </div>)
+
+                    <DeleteOutlined className={Styles.delete} spin={pendingSync} onClick={() =>
+                    {
+                        if(activeNote?.id && activePage?.id && activeNote?.pages.length !==1) {
+                            confirm({
+                                title: 'Do you Want to delete this page?',
+
+                                onOk() {
+                                    dispatch(deletePage(activeNote?.id, activePage?.id))
+                                }})
+                        }
+                    }
+                    }/>
+
+
+
+    </div>)
 }
 
 export default withRouter(Document)

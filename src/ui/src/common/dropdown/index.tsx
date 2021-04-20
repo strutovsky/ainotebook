@@ -43,10 +43,7 @@ export const ContextMenu:React.FC<{nid: string,
                     }}>
                         Copy link to {mode}
                     </Menu.Item>
-        {!prohabited && <Menu.Item key="2" icon={<DeleteOutlined />} onClick={() =>{
-                        if(mode === "page" && pid) {
-                            dispatch(deletePage(nid, pid))
-                        }
+                     {!prohabited && mode !== "page" && <Menu.Item key="2" icon={<DeleteOutlined />} onClick={() =>{
 
                         if(mode === 'notebook') dispatch(deleteNotebook(nid))
 

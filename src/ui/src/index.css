@@ -121,6 +121,10 @@ code {
   cursor: pointer;
 }
 
+
+.ant-modal-confirm-body .ant-modal-confirm-title {
+  color: #fff!important;
+}
 @media (max-width: 500px) {
   .UserInfo {
     display: none;

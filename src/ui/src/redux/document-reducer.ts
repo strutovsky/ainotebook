@@ -123,7 +123,7 @@ export const saveChangesThunk = (editorState: any) => {
                         dispatch(aNotebooks.setSelectedNotebook(temp))
                     }
                 }).catch(err => {
-                    message.error("Something went wrong")
+                    // message.error("Something went wrong")
                 }).finally(() => {
                     dispatch(actions.setPending(false))
                 })
