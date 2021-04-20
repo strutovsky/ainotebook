@@ -9,6 +9,10 @@ body, html {
   overflow-y: hidden;
 }
 
+body {
+  width: 100%!important;
+}
+
 button {
   border: none;
   outline: none;
