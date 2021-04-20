@@ -4,6 +4,7 @@ import { InferActionsTypes, BaseThunkType } from "./state";
 import {Dispatch} from "redux";
 import {NotebookAPI} from "../api/notebookAPI";
 import { actions as appActions } from './app-reducer';
+import {message} from 'antd';
 
 
 let initState: IReducer<INotebooks> = {
@@ -86,6 +87,15 @@ const notebookReducer = (state = initState, action: ActionsType): IReducer<INote
                 }
             }
 
+        case 'ADD_NOTEBOOK':
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    notebooks: [...state.data.notebooks, action.notebook]
+                }
+            }
+
 
         default: return state
 
@@ -100,7 +110,8 @@ export const actions = {
     setActivePage: (page: INotebookPage | null) => ({type: "SET_ACTIVE_NOTEBOOK_PAGE", page} as const),
     setPagePending: (payload: boolean) => ({type: "SET_PAGE_PENDING", payload} as const),
     addNoteBookPage: (pages: INotebookPage[]) => ({type: "ADD_PAGES", pages} as const ),
-    changeNotebookName: (name: string, nid: string) => ({type: "CHANGE_NOTEBOOK_NAME", nid, name} as const)
+    changeNotebookName: (name: string, nid: string) => ({type: "CHANGE_NOTEBOOK_NAME", nid, name} as const),
+    addNotebook: (notebook: INotebook) => ({type: 'ADD_NOTEBOOK', notebook} as const)
 }
 
 type ActionsType = InferActionsTypes<typeof actions>
@@ -123,10 +134,10 @@ export const getNotebooksThunk = () => {
 
 export const addNotebooksThunk = (name: string) => {
     return (dispatch: any) => {
-        NotebookAPI.addBook(name).then(() => {
-            dispatch(getNotebooksThunk())
+        NotebookAPI.addBook(name).then((res) => {
+            dispatch(actions.addNotebook(res.data))
         }).catch((err) => {
-            debugger
+            message.error('Some error')
         })
     }
 }

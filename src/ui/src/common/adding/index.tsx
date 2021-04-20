@@ -63,6 +63,9 @@ const Add: React.FC<ownProps> = ({placeholder, mode, add, nid}) => {
                                 if(mode === 'page') {
                                     add(nid, value)
                                 }
+
+                                setValue('')
+                                setAddingMode(false)
                             }
                         }}
 
