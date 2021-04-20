@@ -106,13 +106,26 @@ code {
   padding: 10px!important;
 }
 
-.Copyright{
+.Copyright svg{
   color: var(--color-lightgray);
-
+  font-size: 1.2em;
+  margin-bottom: 5px;
 }
 
-@media (max-width: 510px) {
-  .Copyright{
+.Logout {
+  font-size: 1.4em;
+}
+.MainInfo a{
+  color: var(--color-white);
+}
+
+.MainInfo h3{
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .UserInfo {
     display: none;
   }
 }

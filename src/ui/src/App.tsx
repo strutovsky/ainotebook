@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, NavLink, Route, Switch} from 'react-router-dom';
 
 import {LoginPage} from './components/Login';
 import { ChooseNotebook } from './components/NoNotebookSelected';
@@ -9,7 +9,7 @@ import MainMenu from './components/Menu/index';
 import Document from './components/Document/index';
 import {ErrorPage} from './components/Error';
 
-import { UserOutlined,LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined,LogoutOutlined, InfoCircleOutlined} from '@ant-design/icons';
 import './App.css';
 import 'antd/dist/antd.css';
 import {useDispatch, useSelector} from 'react-redux';
@@ -49,15 +49,17 @@ function App() {
 
   return (<BrowserRouter>
             <header>
-                <div className={'Copyright'}>
-                    (C) 2021 Naholiuk Dmytro and Max Strutovskiy
+                <div className={'MainInfo'}>
+                    <InfoCircleOutlined title={'(C) 2021 Naholiuk Dmytro and Max Strutovskiy'} className={'Copyright'}/>
+                    <h3><a href={'/'}>AiNotebook</a></h3>
                 </div>
                 <div>
-                    <h3>{userInfo.name} | {userInfo.email}</h3>
-                    <Avatar size={32} icon={<UserOutlined />} />
+                    <h3 className={'UserInfo'}>{userInfo.name} | {userInfo.email}</h3>
+                    <Avatar size={32} icon={<UserOutlined />} className={'UserInfo'}/>
                     <LogoutOutlined size={40}
                                     style={{'color': 'red', marginLeft: '10px'}}
                                     title={'logout'}
+                                    className={'Logout'}
                                     onClick={() => {
                                         dispatch(singOutThunk())
                                     }}
