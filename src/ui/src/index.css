@@ -86,14 +86,11 @@ code {
 /*}*/
 
 .toolbar-class {
-  background: var(--color-background-light)!important;
+  background: var(--color-background-dark)!important;
   border: none!important;
-  position: absolute;
   bottom: 5px;
-  left: 0;
-  width: 100%;
   padding: 10px 0px!important;
-  border-bottom: 1px solid var(--color-selected-menu)!important;
+
 }
 .rdw-option-wrapper {
   background: var(--color-lightgray)!important;

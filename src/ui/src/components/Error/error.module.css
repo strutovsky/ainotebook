@@ -5,6 +5,7 @@
     flex-direction: column;
     height: 100vh;
     background: var(--color-background-dark);
+    flex-grow: 1;
 }
 
 .wrap svg {

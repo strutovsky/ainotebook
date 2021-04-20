@@ -20,7 +20,7 @@ type IApp = {
 
 let initState: IReducer<IApp> = {
     pending: false,
-    error: "",
+    error: '',
     data: {
         lang: 'eng',
         isLogined: false,

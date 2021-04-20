@@ -12,8 +12,8 @@ let initialState: IReducer<IDocument> = {
     error: '',
     data: {
         activeDocument: null,
-        prevBody: "",
-        prevTitle: ""
+        prevBody: '',
+        prevTitle: ''
     }
 }
 
@@ -79,15 +79,17 @@ type ActionsType = InferActionsTypes<typeof actions>
 export const getNotebookPageThunk = (nid: string, page: string) => {
     return (dispatch: any) => {
         dispatch(actions.setPending(true))
+        dispatch(nActions.setPending(true))
         NotebookAPI.getPage(nid, page).then(res => {
             if(res.status === 200){
                 dispatch(actions.setActiveDocument(res.data))
                 dispatch(actions.setPrev({body: res.data.body, title: res.data.title}))
             }
-        }).catch(err => {
+        }).catch(() => {
             dispatch(actions.setError("Network error"))
         }).finally(() => {
             dispatch(actions.setPending(false))
+            dispatch(nActions.setPending(false))
         })
     }
 }

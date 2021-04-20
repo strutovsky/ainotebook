@@ -9,7 +9,7 @@ import {message} from 'antd';
 
 let initState: IReducer<INotebooks> = {
     pending: false,
-    error: "",
+    error: '',
     pagePending: false,
     data: {
         selectedNotebooks: null,

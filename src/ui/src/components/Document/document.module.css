@@ -68,4 +68,14 @@
     }
 
 }
+.preloader{
+
+}
+
+.preloader svg{
+    font-size: 3em;
+    color: var(--color-primary);
+    z-index: 999;
+    margin: 0 auto;
+}
 
