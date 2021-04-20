@@ -13,5 +13,9 @@ export const LoginAPI = {
 
     singUp: (data: FormData) => {
         return instance.post('signup', data)
+    },
+    
+    userInfo: () => {
+        return instance.get('dashboard')
     }
 }

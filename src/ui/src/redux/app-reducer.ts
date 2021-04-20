@@ -6,9 +6,16 @@ import {message} from 'antd';
 
 type Ilang = "eng" | "ukr"
 
+type IUserInfo = {
+    email: string | null,
+    id: string | null,
+    name: string | null,
+}
+
 type IApp = {
     lang: Ilang,
     isLogined: boolean,
+    userInfo: IUserInfo
 }
 
 let initState: IReducer<IApp> = {
@@ -16,7 +23,12 @@ let initState: IReducer<IApp> = {
     error: "",
     data: {
         lang: 'eng',
-        isLogined: false
+        isLogined: false,
+        userInfo: {
+            email: null,
+            id: null,
+            name: null
+        }
     }
 }
 
@@ -48,6 +60,15 @@ const appReducer = (state = initState, action: ActionsType): IReducer<IApp>  => 
                 data: {...state.data, isLogined: action.payload}
             }
 
+        case 'SET_USER_INFO':
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    userInfo: action.payload
+                }
+            }
+
         default: return state
     }
 }
@@ -56,7 +77,8 @@ export const actions = {
     setPending: (payload: boolean) => ({type: 'SET_PENDING', payload} as const),
     setErrorApp: (payload: string) => ({type: 'SET_ERROR', payload} as const),
     setLang: (payload: Ilang) => ({type: 'SET_LANG', payload} as const),
-    setIsLogined: (payload: boolean) => ({type: 'SET_IS_LOGINED', payload} as const)
+    setIsLogined: (payload: boolean) => ({type: 'SET_IS_LOGINED', payload} as const),
+    setUserInfo: (payload: IUserInfo) => ({type: 'SET_USER_INFO', payload} as const)
 }
 
 export const checkLangThunk = () => {
@@ -65,6 +87,16 @@ export const checkLangThunk = () => {
         if(temp){
             dispatch(setLang(temp as Ilang))
         }
+    }
+}
+
+export const getUserInfoThunk = () => {
+    return (dispatch: any) => {
+        LoginAPI.userInfo().then(res => {
+            dispatch(actions.setUserInfo(res.data.name))
+        }).catch(err => {
+            message.info('Some error')
+        })
     }
 }
 
@@ -131,9 +163,9 @@ export const singOutThunk = () => {
     return () => {
         actions.setPending(true)
         LoginAPI.signout().then(() => {
-            actions.setIsLogined(false)
+            debugger
             localStorage.removeItem('lang')
-            window.history.pushState({}, 'Login', '/')
+            window.history.pushState({}, '', '/')
             window.location.reload()
         }).catch(() => {
             message.error('Something wrong try again!')
