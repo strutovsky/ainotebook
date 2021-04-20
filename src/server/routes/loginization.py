@@ -56,3 +56,11 @@ def login():
             return Unauthorized(description="Wrong password")
     except NotFound:
         return Conflict(description="User is not registered")
+
+@routes.route("/dashboard", methods=["GET"])
+@cross_origin(supports_credentials=True)
+def dashboard():
+    if 'logged_id' in session:
+        username = session["user"]
+        return jsonify({"name": username}), 200
+    return Unauthorized(description="Need to authorize")
