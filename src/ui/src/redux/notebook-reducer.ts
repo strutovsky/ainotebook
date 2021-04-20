@@ -136,7 +136,7 @@ export const addNotebooksThunk = (name: string) => {
     return (dispatch: any) => {
         NotebookAPI.addBook(name).then((res) => {
             dispatch(actions.addNotebook(res.data))
-        }).catch((err) => {
+        }).catch(() => {
             message.error('Some error')
         })
     }
@@ -149,8 +149,8 @@ export const addPageThunk = (notebookId: string, title: string) =>{
             NotebookAPI.getNotebooks().then((notebooks: any) => {
                 dispatch(actions.setNotebooks(notebooks))
             })
-        }).catch(err => {
-
+        }).catch(() => {
+            message.error('Can`t create page')
         }).finally(() => {
             dispatch(actions.setPending(false))
         })

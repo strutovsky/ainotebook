@@ -60,7 +60,6 @@ const MainMenu: React.FC = () => {
                 </div>
 
                 <div className={MenuStyles.menuWrap + " custom-scroll"}>
-                    {pending ? <Skeleton active={true}/> :
                         <Menu
                             mode="inline"
                             theme="light"
@@ -75,6 +74,7 @@ const MainMenu: React.FC = () => {
                                     return (<Menu.Item key={item.id}
                                                        icon={<BookOutlined/>}
                                                        title={item.name}
+                                                       disabled={pending}
                                                        onContextMenu={() => {}}
                                                        onClick={(info) =>{
                                                             dispatch(actions.setSelectedNotebook(item))
@@ -100,11 +100,11 @@ const MainMenu: React.FC = () => {
                                     <LangSetting/>
                                 </SubMenu>
                             </Menu.ItemGroup>
-                        </Menu>}
+                        </Menu>
                 </div>
 
                 {selectedNotebook && <div className={MenuStyles.Pages + " custom-scroll"}>
-                    {!pending ? <Menu
+                    <Menu
                         mode="inline"
                         theme="light"
                         selectedKeys={[page]}
@@ -112,7 +112,7 @@ const MainMenu: React.FC = () => {
                     >
                             <Menu.ItemGroup title={texts.menu.Pages[lang]} >
                                 {selectedNotebook.pages.map(pages => {
-                                    return <Menu.Item key={pages.id}>
+                                    return <Menu.Item key={pages.id} disabled={pending}>
                                         <ContextMenu mode={'page'}
                                                      nid={selectedNotebook?.id}
                                                      pid={pages.id}
@@ -132,7 +132,7 @@ const MainMenu: React.FC = () => {
                                 mode={'page'}
                                 nid={selectedNotebook?.id}
                             />
-                    </Menu> : <Skeleton active={true}/> }
+                    </Menu>
                 </div>}
             </div>
 
