@@ -17,12 +17,14 @@ export const ContextMenu:React.FC<{nid: string,
                                    url: string,
                                    mode: 'page'|'notebook',
                                    pid?: string,
-                                   name?: string
+                                   name?: string,
+                                    prohabited?: boolean
 
 }> = ({children,
                                                                                               nid,
                                                                                               url,
-                                                                                              mode,pid, name
+                                                                                              mode,pid,
+                                   prohabited, name
 }) =>{
     const dispatch = useDispatch()
     const history = useHistory()
@@ -41,7 +43,7 @@ export const ContextMenu:React.FC<{nid: string,
                     }}>
                         Copy link to {mode}
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<DeleteOutlined />} onClick={() =>{
+        {!prohabited && <Menu.Item key="2" icon={<DeleteOutlined />} onClick={() =>{
                         if(mode === "page" && pid) {
                             dispatch(deletePage(nid, pid))
                         }
@@ -52,7 +54,7 @@ export const ContextMenu:React.FC<{nid: string,
 
                     }}>
                         Delete {mode}
-                    </Menu.Item>
+                    </Menu.Item>}
                     </Menu>);
     return <>
             <Dropdown overlay={menu} trigger={['contextMenu']}>{children}</Dropdown>
