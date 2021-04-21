@@ -34,7 +34,7 @@ def signup():
 @cross_origin(supports_credentials=True)
 def signout():
     session.clear()
-    return redirect('/')
+    return Response(status=200)
 
 
 @routes.route("/login", methods=["POST"])
