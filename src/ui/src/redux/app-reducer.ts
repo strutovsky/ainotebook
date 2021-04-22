@@ -122,9 +122,7 @@ export const loginThunk = (data: FormData) => {
 
             if(errorCode === 'code 409') {
                 message.error('User not found')
-            }
-
-            else if (errorCode === 'code 401') {
+            } else if (errorCode === 'code 401') {
                 message.error('Wrong password')
             } else {
                 message.error('Some error occurred')
@@ -162,7 +160,15 @@ export const singUpThunk = (data: FormData) => {
 export const singOutThunk = () => {
     return () => {
         actions.setPending(true)
-        LoginAPI.signout().then(() => {
+        LoginAPI.signout().then(async () => {
+            const hasCache = await caches.has('dynamic-v1')
+            if(hasCache){
+                const dynamicCache = await caches.open('dynamic-v1')
+                const keys = await dynamicCache.keys()
+                await keys.map(name => dynamicCache.delete(name))
+            }
+
+
             localStorage.removeItem('lang')
             window.history.pushState({}, '', '/')
             window.location.reload()
