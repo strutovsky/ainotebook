@@ -27,7 +27,6 @@ export const instance = axios.create({
 
 
 instance.interceptors.response.use(res => res, (error) => {
-    console.log(error)
     const code = JSON.stringify(error).match(/code\s\d+/)?.[0]
     throw error
 })
