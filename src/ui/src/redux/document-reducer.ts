@@ -94,7 +94,7 @@ export const getNotebookPageThunk = (nid: string, page: string) => {
     }
 }
 
-export const saveChangesThunk = (editorState: any) => {
+export const saveChangesThunk = (editorState: any, refresh = false) => {
     return (dispatch: any, getState: () => AppStateType) =>{
         const state = getState()
 
@@ -108,6 +108,9 @@ export const saveChangesThunk = (editorState: any) => {
                 dispatch(actions.setPending(true))
 
                 NotebookAPI.putPageChanges(selectedNotebooks.id, activeDocument.id, body, activeDocument.title).then((res) => {
+                    if(refresh) {
+                        dispatch(getNotebookPageThunk(selectedNotebooks.id, activeDocument.id))
+                    }
                     if (prevTitle !==activeDocument.title) {
 
                         let temp = {...selectedNotebooks, pages: [...selectedNotebooks.pages]}
@@ -131,6 +134,7 @@ export const saveChangesThunk = (editorState: any) => {
         }
     }
 }
+
 
 export const deletePage = (notebookId: string, pid: string) => {
     return (dispatch: any) => {

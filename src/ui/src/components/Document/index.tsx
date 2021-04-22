@@ -30,6 +30,7 @@ const { confirm } = Modal;
 
 
 const Document: React.FC<any> = (props) => {
+
     const activePage = useSelector(getActivePageSelector)
     const pending = useSelector(getPagePending)
     const error = useSelector(getDocumentErrorSelector)
@@ -40,16 +41,29 @@ const Document: React.FC<any> = (props) => {
     const parsed = queryString.parse(props.location.search);
 
     let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
+
     const raw = convertToRaw(_contentState)
     const [editorState, setEditorState] = useState(raw) ;
-    const history = useHistory()
+
+    useEffect(() => {
+        return () => {
+            dispatch(saveChangesThunk(editorState))
+        }
+    }, [])
+
+    useEffect(() => {
+        dispatch(saveChangesThunk(editorState))
+        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
+    }, [parsed.nid, parsed.page])
+
 
 
     useEffect(() => {
         if(activePage) {
+
             try {
                 const temp = JSON.parse(activePage.body)
-                if('blocks' in temp && 'entityMap' in temp) setEditorState(temp)
+                setEditorState(temp)
 
             }catch (e){
                 setEditorState(convertToRaw(ContentState.createFromText(activePage.body)))
@@ -57,17 +71,6 @@ const Document: React.FC<any> = (props) => {
         }
     }, [activePage])
 
-
-    useEffect(() => {
-        dispatch(saveChangesThunk(editorState))
-        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
-    }, [parsed.nid, parsed.page])
-
-    useEffect(() => {
-        return () => {
-            dispatch(saveChangesThunk(editorState))
-        }
-    }, [])
 
     if(error) {
         return <ErrorPage message={error}/>
@@ -107,7 +110,10 @@ const Document: React.FC<any> = (props) => {
                     </div>
 
                     <SyncOutlined className={Styles.sync} spin={pendingSync} onClick={() =>
-                        {dispatch(saveChangesThunk(editorState))}
+                        {
+                            dispatch(saveChangesThunk(editorState, true))
+
+                        }
                     }/>
 
                     <DeleteOutlined className={Styles.delete} spin={pendingSync} onClick={() =>

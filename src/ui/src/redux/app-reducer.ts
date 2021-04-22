@@ -163,7 +163,6 @@ export const singOutThunk = () => {
     return () => {
         actions.setPending(true)
         LoginAPI.signout().then(() => {
-            debugger
             localStorage.removeItem('lang')
             window.history.pushState({}, '', '/')
             window.location.reload()
