@@ -12,8 +12,8 @@ let initialState: IReducer<IDocument> = {
     error: '',
     data: {
         activeDocument: null,
-        prevBody: "",
-        prevTitle: ""
+        prevBody: '',
+        prevTitle: ''
     }
 }
 
@@ -79,20 +79,22 @@ type ActionsType = InferActionsTypes<typeof actions>
 export const getNotebookPageThunk = (nid: string, page: string) => {
     return (dispatch: any) => {
         dispatch(actions.setPending(true))
+        dispatch(nActions.setPending(true))
         NotebookAPI.getPage(nid, page).then(res => {
             if(res.status === 200){
                 dispatch(actions.setActiveDocument(res.data))
                 dispatch(actions.setPrev({body: res.data.body, title: res.data.title}))
             }
-        }).catch(err => {
+        }).catch(() => {
             dispatch(actions.setError("Network error"))
         }).finally(() => {
             dispatch(actions.setPending(false))
+            dispatch(nActions.setPending(false))
         })
     }
 }
 
-export const saveChangesThunk = (editorState: any) => {
+export const saveChangesThunk = (editorState: any, refresh = false) => {
     return (dispatch: any, getState: () => AppStateType) =>{
         const state = getState()
 
@@ -106,6 +108,9 @@ export const saveChangesThunk = (editorState: any) => {
                 dispatch(actions.setPending(true))
 
                 NotebookAPI.putPageChanges(selectedNotebooks.id, activeDocument.id, body, activeDocument.title).then((res) => {
+                    if(refresh) {
+                        dispatch(getNotebookPageThunk(selectedNotebooks.id, activeDocument.id))
+                    }
                     if (prevTitle !==activeDocument.title) {
 
                         let temp = {...selectedNotebooks, pages: [...selectedNotebooks.pages]}
@@ -121,7 +126,7 @@ export const saveChangesThunk = (editorState: any) => {
                         dispatch(aNotebooks.setSelectedNotebook(temp))
                     }
                 }).catch(err => {
-                    message.error("Something went wrong")
+                    // message.error("Something went wrong")
                 }).finally(() => {
                     dispatch(actions.setPending(false))
                 })
@@ -129,6 +134,7 @@ export const saveChangesThunk = (editorState: any) => {
         }
     }
 }
+
 
 export const deletePage = (notebookId: string, pid: string) => {
     return (dispatch: any) => {

@@ -10,7 +10,7 @@ services:
     volumes:
       - ../../data/mongo-volume:/data/db
     restart: always
-    expose:
+    ports:
       - 27017
 
   ui:

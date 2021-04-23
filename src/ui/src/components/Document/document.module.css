@@ -58,6 +58,15 @@
     cursor: pointer;
 }
 
+.delete {
+    position: absolute;
+    color: red!important;
+    font-size: 1.5em;
+    cursor: pointer;
+    right: 45px;
+    bottom: 25px;
+}
+
 @media (max-width: 800px) {
     .wrap {
         padding: 20px;
@@ -67,5 +76,15 @@
         height: 57vh;
     }
 
+}
+.preloader{
+
+}
+
+.preloader svg{
+    font-size: 3em;
+    color: var(--color-primary);
+    z-index: 999;
+    margin: 0 auto;
 }
 

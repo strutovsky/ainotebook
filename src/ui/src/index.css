@@ -9,6 +9,10 @@ body, html {
   overflow-y: hidden;
 }
 
+body {
+  width: 100%!important;
+}
+
 button {
   border: none;
   outline: none;
@@ -86,14 +90,11 @@ code {
 /*}*/
 
 .toolbar-class {
-  background: var(--color-background-light)!important;
+  background: var(--color-background-dark)!important;
   border: none!important;
-  position: absolute;
   bottom: 5px;
-  left: 0;
-  width: 100%;
   padding: 10px 0px!important;
-  border-bottom: 1px solid var(--color-selected-menu)!important;
+
 }
 .rdw-option-wrapper {
   background: var(--color-lightgray)!important;
@@ -106,13 +107,30 @@ code {
   padding: 10px!important;
 }
 
-.Copyright{
+.Copyright svg{
   color: var(--color-lightgray);
-
+  font-size: 1.2em;
+  margin-bottom: 5px;
 }
 
-@media (max-width: 510px) {
-  .Copyright{
+.Logout {
+  font-size: 1.4em;
+}
+.MainInfo a{
+  color: var(--color-white);
+}
+
+.MainInfo h3{
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+
+.ant-modal-confirm-body .ant-modal-confirm-title {
+  color: #fff!important;
+}
+@media (max-width: 500px) {
+  .UserInfo {
     display: none;
   }
 }

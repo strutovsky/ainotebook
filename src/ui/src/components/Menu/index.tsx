@@ -60,7 +60,6 @@ const MainMenu: React.FC = () => {
                 </div>
 
                 <div className={MenuStyles.menuWrap + " custom-scroll"}>
-                    {pending ? <Skeleton active={true}/> :
                         <Menu
                             mode="inline"
                             theme="light"
@@ -75,16 +74,20 @@ const MainMenu: React.FC = () => {
                                     return (<Menu.Item key={item.id}
                                                        icon={<BookOutlined/>}
                                                        title={item.name}
+                                                       disabled={pending}
                                                        onContextMenu={() => {}}
-                                                       onClick={(info) =>{
-                                                            dispatch(actions.setSelectedNotebook(item))
-                                    }}>
+                                                     >
                                         <ContextMenu mode={'notebook'}
                                                      name={item.name}
-                                                    nid={item.id}
+                                                     nid={item.id}
                                                     url={window.location.host+'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}
                                         >
-                                            <NavLink to={'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}>{item.name}</NavLink>
+                                            <NavLink to={'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}
+                                                     onClick={(info) =>{
+                                                         dispatch(actions.setSelectedNotebook(item))
+                                                     }}
+
+                                            >{item.name}</NavLink>
                                         </ContextMenu>
                                     </Menu.Item>)})}
                             </Menu.ItemGroup>
@@ -100,11 +103,11 @@ const MainMenu: React.FC = () => {
                                     <LangSetting/>
                                 </SubMenu>
                             </Menu.ItemGroup>
-                        </Menu>}
+                        </Menu>
                 </div>
 
                 {selectedNotebook && <div className={MenuStyles.Pages + " custom-scroll"}>
-                    {!pending ? <Menu
+                    <Menu
                         mode="inline"
                         theme="light"
                         selectedKeys={[page]}
@@ -112,10 +115,11 @@ const MainMenu: React.FC = () => {
                     >
                             <Menu.ItemGroup title={texts.menu.Pages[lang]} >
                                 {selectedNotebook.pages.map(pages => {
-                                    return <Menu.Item key={pages.id}>
+                                    return <Menu.Item key={pages.id} disabled={pending}>
                                         <ContextMenu mode={'page'}
                                                      nid={selectedNotebook?.id}
                                                      pid={pages.id}
+                                                     prohabited={selectedNotebook.pages.length === 1}
                                                      url={window.location.host+'/notebook?nid=' + selectedNotebook.id + '&page=' + pages.id}
                                         >
                                             <NavLink onClick={(e) => {
@@ -132,7 +136,7 @@ const MainMenu: React.FC = () => {
                                 mode={'page'}
                                 nid={selectedNotebook?.id}
                             />
-                    </Menu> : <Skeleton active={true}/> }
+                    </Menu>
                 </div>}
             </div>
 

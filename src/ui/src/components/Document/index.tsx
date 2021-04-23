@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {withRouter} from 'react-router-dom';
+import {useHistory, withRouter} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {getPagePending} from '../../redux/selectors/notebook-selector';
@@ -9,57 +9,68 @@ import {
     getDocumentErrorSelector,
     getDocumentPendingSelector
 } from '../../redux/selectors/document-selector';
-import {getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
+import {deletePage, getNotebookPageThunk, saveChangesThunk} from '../../redux/document-reducer';
 import {actions} from '../../redux/document-reducer'
 import { ContentState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import {SyncOutlined} from '@ant-design/icons';
+import {SyncOutlined, DeleteOutlined} from '@ant-design/icons';
 
 import { ErrorPage } from '../Error';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import Styles from './document.module.css';
+import {AppStateType} from '../../redux/state';
+import {Modal} from 'antd'
 
 
 const queryString = require('query-string');
 
+const { confirm } = Modal;
+
+
 
 const Document: React.FC<any> = (props) => {
+
     const activePage = useSelector(getActivePageSelector)
     const pending = useSelector(getPagePending)
     const error = useSelector(getDocumentErrorSelector)
     const pendingSync = useSelector(getDocumentPendingSelector)
+    const activeNote = useSelector((state: AppStateType) => state.notebooks.data.selectedNotebooks)
 
     const dispatch = useDispatch()
     const parsed = queryString.parse(props.location.search);
 
     let _contentState = ContentState.createFromText(activePage ? activePage.body : "");
+
     const raw = convertToRaw(_contentState)
     const [editorState, setEditorState] = useState(raw) ;
-
-
-    useEffect(() => {
-        if(activePage) {
-            try {
-                const temp = JSON.parse(activePage.body)
-                setEditorState(temp)
-            }catch (e){
-                setEditorState(convertToRaw(ContentState.createFromText(activePage.body)))
-            }
-        }
-    }, [activePage])
-
-
-    useEffect(() => {
-        dispatch(saveChangesThunk(editorState))
-        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
-    }, [parsed.nid, parsed.page])
 
     useEffect(() => {
         return () => {
             dispatch(saveChangesThunk(editorState))
         }
     }, [])
+
+    useEffect(() => {
+        dispatch(saveChangesThunk(editorState))
+        dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
+    }, [parsed.nid, parsed.page])
+
+
+
+    useEffect(() => {
+        if(activePage) {
+
+            try {
+                const temp = JSON.parse(activePage.body)
+                setEditorState(temp)
+
+            }catch (e){
+                setEditorState(convertToRaw(ContentState.createFromText(activePage.body)))
+            }
+        }
+    }, [activePage])
+
 
     if(error) {
         return <ErrorPage message={error}/>
@@ -99,9 +110,28 @@ const Document: React.FC<any> = (props) => {
                     </div>
 
                     <SyncOutlined className={Styles.sync} spin={pendingSync} onClick={() =>
-                        {dispatch(saveChangesThunk(editorState))}
+                        {
+                            dispatch(saveChangesThunk(editorState, true))
+
+                        }
                     }/>
-                </div>)
+
+                    <DeleteOutlined className={Styles.delete} spin={pendingSync} onClick={() =>
+                    {
+                        if(activeNote?.id && activePage?.id && activeNote?.pages.length !==1) {
+                            confirm({
+                                title: 'Do you Want to delete this page?',
+
+                                onOk() {
+                                    dispatch(deletePage(activeNote?.id, activePage?.id))
+                                }})
+                        }
+                    }
+                    }/>
+
+
+
+    </div>)
 }
 
 export default withRouter(Document)

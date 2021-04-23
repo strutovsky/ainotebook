@@ -1,4 +1,5 @@
 import axios from "axios";
+import {message} from 'antd';
 
 const DEBUG = process.env.NODE_ENV === "development";
 
@@ -8,17 +9,22 @@ export const instance = axios.create({
     baseURL: "http://localhost/api",
     headers: {
             'Content-Type': 'application/json',
-
-
     },
 })
 
-instance.interceptors.request.use((config) => {
-    if (DEBUG) {
-        //console.info("✉️ ", config);
-    }
-    return config;
-}, (error) => {
-    if (DEBUG) { console.error("✉️ ", error); }
-    return Promise.reject(error);
-});
+// instance.interceptors.request.use(config => {
+//     // // if(!document.cookie.match(/session=.+/) && config.url !== 'login' && config.url !== 'signup'){
+//     // //     window.location.reload()
+//     // // }
+//     //
+//     // return config
+// }, error => {
+//     message.error('Network error')
+// })
+
+
+instance.interceptors.response.use(res => res, (error) => {
+    const code = JSON.stringify(error).match(/code\s\d+/)?.[0]
+    throw error
+})
+

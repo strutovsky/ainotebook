@@ -53,6 +53,10 @@ header h3 {
   background: var(--color-selected-menu)!important;
 }
 
+li.ant-menu-item-disabled a{
+  color: var(--color-lightgray)!important;
+}
+
 .ant-menu-item:hover a, .ant-menu-item:hover {
   color: var(--color-white)!important;
 }
