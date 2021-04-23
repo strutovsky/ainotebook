@@ -5,7 +5,17 @@ body, html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--color-background-light);
+  background: var(--color-background-dark);
+  overflow-y: hidden;
+}
+
+body {
+  width: 100%!important;
+}
+
+button {
+  border: none;
+  outline: none;
 }
 
 code {
@@ -15,4 +25,112 @@ code {
 
 .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
   border-right: none!important;
+}
+
+.custom-scroll {
+  overflow-y: scroll;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 1px;
+  background-color: var(--color-selected-menu);
+}
+
+.custom-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  height: 10px;
+}
+
+.ant-message {
+  top: auto!important;
+  letf: 90%!important;
+  bottom: 50px!important;
+}
+
+.ant-modal-content {
+  background: var(--color-background-dark)!important;
+  color: var(--color-white);
+}
+
+.ant-modal-content input {
+  background: var(--color-background-light);
+  color: var(--color-white);
+  border: none;
+}
+
+
+.ant-modal-header {
+  background: var(--color-background-dark)!important;
+  color: var(--color-white)!important;
+  border-bottom: 1px solid var(--color-selected-menu)!important;
+}
+
+.ant-modal-title, .ant-modal-title .ant-modal-header {
+  color: var(--color-lightgray)!important;
+}
+
+.ant-modal-footer {
+  border-top: 1px solid var(--color-selected-menu)!important;
+}
+
+/*Editor*/
+
+.wrapper-class *{
+  box-shadow: none!important;
+}
+
+.editor-class {
+  color: var(--color-white);
+
+}
+
+/*.editor-class * {*/
+/*  background: var(--color-background-dark);*/
+/*  color: var(--color-white);*/
+/*}*/
+
+.toolbar-class {
+  background: var(--color-background-dark)!important;
+  border: none!important;
+  bottom: 5px;
+  padding: 10px 0px!important;
+
+}
+.rdw-option-wrapper {
+  background: var(--color-lightgray)!important;
+  border: none!important;
+  outline: none!important;
+
+}
+
+.padding-10 {
+  padding: 10px!important;
+}
+
+.Copyright svg{
+  color: var(--color-lightgray);
+  font-size: 1.2em;
+  margin-bottom: 5px;
+}
+
+.Logout {
+  font-size: 1.4em;
+}
+.MainInfo a{
+  color: var(--color-white);
+}
+
+.MainInfo h3{
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+
+.ant-modal-confirm-body .ant-modal-confirm-title {
+  color: #fff!important;
+}
+@media (max-width: 500px) {
+  .UserInfo {
+    display: none;
+  }
 }

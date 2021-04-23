@@ -1,120 +1,146 @@
-import React, {useEffect} from 'react';
-import {NavLink} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {NavLink, useHistory} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 
-
-import {connect} from 'react-redux';
-import {INotebooks} from '../../interfaces/notebooks';
-
-import {Menu, Skeleton} from 'antd';
-import {BookOutlined, PaperClipOutlined, SettingOutlined} from '@ant-design/icons';
-
-import MenuStyles from './menu.module.css'
-import Add from '../../common/adding';
-
-import {INotices} from '../../interfaces/notices';
-import {AppStateType} from '../../redux/state';
-import {getNoticesThunk} from '../../redux/notice-reducer';
 import {actions, addNotebooksThunk, addPageThunk, getNotebooksThunk} from '../../redux/notebook-reducer';
+import {getNotebooksPending, getNotebooksSelector, getSelectedNotebook } from '../../redux/selectors/notebook-selector';
+import {Menu, Skeleton} from 'antd';
 
+import Add from '../../common/adding';
+import { ContextMenu } from '../../common/dropdown';
 
+import {BookOutlined, SettingOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
+import MenuStyles from './menu.module.css'
+import { LangSetting } from '../Settings/lang';
+import {getLangSelector} from '../../redux/selectors/app-selector';
+import {texts} from '../../lang/languages';
+
+const queryString = require('query-string');
 const {SubMenu} = Menu;
 
+const MainMenu: React.FC = () => {
+    const history = useHistory()
+    const dispatch = useDispatch()
 
-type PropsType = {
-    addNotebooksThunk: (name: string) => void,
-    addPageThunk: (id: number, title: string) => void,
-    getNotebooksThunk: () => void,
-    getNoticesThunk: () => void,
-    Notebooks: INotebooks,
-    Notices: INotices,
-    pending: boolean
-}
+    const parsed = queryString.parse(history.location.search);
 
+    const [nid, setNid] = useState(parsed.nid)
+    const [page, setPage] = useState(parsed.pages)
+    const [isOpen, setIsOpen] = useState(true)
+    const [editNotebookMode, setEditNotebookMode] = useState(false)
 
-const MainMenu: React.FC<PropsType> = ({
-                                           Notebooks,
-                                           addNotebooksThunk,
-                                           getNotebooksThunk,
-                                           Notices,
-                                           getNoticesThunk,
-                                           pending,
-                                           addPageThunk
-                                       }) => {
+    const notebooks = useSelector(getNotebooksSelector)
+    const pending = useSelector(getNotebooksPending)
+    const selectedNotebook = useSelector(getSelectedNotebook);
+    const lang = useSelector(getLangSelector)
+
     useEffect(() => {
-        getNotebooksThunk()
-        getNoticesThunk()
+        dispatch(getNotebooksThunk())
     }, [])
 
-    return (
-        <div className={MenuStyles.menuWrap} style={{width: '270px'}}>
-            {pending ? <Skeleton active={true}/> :
-                <Menu
-                    defaultSelectedKeys={['add']}
-                    mode="inline"
-                    theme="light"
+    useEffect(() =>{
+        setNid(parsed.nid)
+        setPage(parsed.page)
+    },[parsed.nid, parsed.page])
 
-                >
 
-                    <Menu.ItemGroup title={'Notebooks'}>
-                        {Notebooks.map(item => (<SubMenu key={item.id} icon={<BookOutlined/>} title={item.name}>
-                            {item.pages.map(page => {
-                                return (<Menu.Item key={page.id + item.id}>
-                                    <NavLink to={'/notebook/' + item.id + '/page/' + page.id}></NavLink>{page.title}
-                                </Menu.Item>)
-                            })}
+    const addBook = (name: string) => {
+        dispatch(addNotebooksThunk(name))
+    }
+
+    const addPage = (nid: string, title: string) => {
+        dispatch(addPageThunk(nid, title))
+    }
+
+    return (<div className={MenuStyles.mainWrap  + " " + (isOpen ? MenuStyles.menuOpened : "")}>
+                <div className={MenuStyles.menuButton} onClick={() => {
+                    setIsOpen(prevState => !prevState)
+                }}>
+                    <MenuUnfoldOutlined />
+                </div>
+
+                <div className={MenuStyles.menuWrap + " custom-scroll"}>
+                        <Menu
+                            mode="inline"
+                            theme="light"
+                            selectedKeys={[nid]}
+                        >
+
+                            <Menu.ItemGroup title={texts.menu.Notebooks[lang]}>
+                                {notebooks.map(item => {
+                                    if(nid === item.id){
+                                        dispatch(actions.setSelectedNotebook(item))
+                                    }
+                                    return (<Menu.Item key={item.id}
+                                                       icon={<BookOutlined/>}
+                                                       title={item.name}
+                                                       disabled={pending}
+                                                       onContextMenu={() => {}}
+                                                     >
+                                        <ContextMenu mode={'notebook'}
+                                                     name={item.name}
+                                                     nid={item.id}
+                                                    url={window.location.host+'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}
+                                        >
+                                            <NavLink to={'/notebook?nid=' + item.id + '&page=' + item?.pages[0]?.id}
+                                                     onClick={(info) =>{
+                                                         dispatch(actions.setSelectedNotebook(item))
+                                                     }}
+
+                                            >{item.name}</NavLink>
+                                        </ContextMenu>
+                                    </Menu.Item>)})}
+                            </Menu.ItemGroup>
 
                             <Add
-                                placeholder={'Add page'}
-                                add={() => addPageThunk(item.id, 'f')}
+                                placeholder={texts.menu.addNotebook[lang]}
+                                add={addBook}
+                                mode={'book'}
                             />
-                        </SubMenu>))}
 
-                        <Add
-                            placeholder={'Add notebook'}
-                            add={addNotebooksThunk}
-                        />
-                    </Menu.ItemGroup>
+                            <Menu.ItemGroup title={texts.settings.setting[lang]}>
+                                <SubMenu key="sub2" icon={<SettingOutlined/>} title={texts.settings.lang[lang]}>
+                                    <LangSetting/>
+                                </SubMenu>
+                            </Menu.ItemGroup>
+                        </Menu>
+                </div>
 
+                {selectedNotebook && <div className={MenuStyles.Pages + " custom-scroll"}>
+                    <Menu
+                        mode="inline"
+                        theme="light"
+                        selectedKeys={[page]}
+                        defaultSelectedKeys={[page]}
+                    >
+                            <Menu.ItemGroup title={texts.menu.Pages[lang]} >
+                                {selectedNotebook.pages.map(pages => {
+                                    return <Menu.Item key={pages.id} disabled={pending}>
+                                        <ContextMenu mode={'page'}
+                                                     nid={selectedNotebook?.id}
+                                                     pid={pages.id}
+                                                     prohabited={selectedNotebook.pages.length === 1}
+                                                     url={window.location.host+'/notebook?nid=' + selectedNotebook.id + '&page=' + pages.id}
+                                        >
+                                            <NavLink onClick={(e) => {
+                                                if(pages !== undefined) setPage(pages.id)}
 
-                    <Menu.ItemGroup title={'Sticks'}>
-                        <SubMenu key="sub1" icon={<PaperClipOutlined/>} title="Stick pages">
-                            {Notices.map(item => (<Menu.Item key={item.id}>
-                                {item.name}
-                            </Menu.Item>))}
+                                            } to={'/notebook?nid=' + selectedNotebook?.id + '&page=' + pages.id}>{pages.title}</NavLink>
+                                        </ContextMenu>
+                                    </Menu.Item>
+                                })}
+                            </Menu.ItemGroup>
+                            <Add
+                                placeholder={texts.menu.addPage[lang]}
+                                add={addPage}
+                                mode={'page'}
+                                nid={selectedNotebook?.id}
+                            />
+                    </Menu>
+                </div>}
+            </div>
 
-                            {/*<Add*/}
-                            {/*    addingMode={this.props.addingNotice}*/}
-                            {/*    setAddingMode={this.props.setAddingNoticeMode}*/}
-                            {/*    placeholder={"Add stick page"}*/}
-                            {/*    add={this.addNoteNotice}*/}
-                            {/*/>*/}
-                        </SubMenu>
-                    </Menu.ItemGroup>
-
-                    <Menu.ItemGroup title={'Setting and other'}>
-                        <SubMenu key="sub2" icon={<SettingOutlined/>} title="Setting">
-                            <Menu.Item key="9">Option 9</Menu.Item>
-                            <Menu.Item key="10">Option 10</Menu.Item>
-                        </SubMenu>
-                    </Menu.ItemGroup>
-                </Menu>}
-        </div>
     );
 }
 
-
-const mapStateToProps = (state: AppStateType) => {
-    return {
-        Notebooks: state.notebooks.data,
-        Notices: state.notices.data,
-        pending: state.notebooks.pending
-    }
-}
-
-export default connect(mapStateToProps, {
-    ...actions,
-    addNotebooksThunk,
-    getNotebooksThunk,
-    getNoticesThunk,
-    addPageThunk
-})(MainMenu)
+export default MainMenu

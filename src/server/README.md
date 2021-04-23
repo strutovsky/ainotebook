@@ -11,9 +11,15 @@ Postman collection's available [here.](https://www.getpostman.com/collections/2f
 ## Folder structure
 ```
 server
+├── models
+│   ├── __init__.py
+│   ├── pages.py              -> class with pages
+│   ├── user.py               -> class with users
+│   └── notebook.py           -> class with notebooks
 ├── routes
 │   ├── __init__.py
-│   └── notebooks.py        -> routes for notebooks
+│   ├── loginization.py       -> routes for signup/login system
+│   └── notebooks.py          -> routes for notebooks
 ├── README.md
 ├── Dockerfile
 ├── server.py                 -> flask app runs here
@@ -43,52 +49,85 @@ docker run -p 5000:5000 ainotebook-server
 ## API endpoints
 There endpoints allow you to handle backend service.
 
-Method | Endpoint | Description | Input | Output example
----|---|---|---|---
-GET | /notebooks | Get all notebooks |  | [Example](#get-all-notebooks)
-POST | /notebook | Create a notebook | **Query:**  <ul><li>name - *notebook name*</li></ul> | [Example](#create-a-notebook)
-GET | /notebook | Get a notebook by id | **Query:** <ul><li>nid - *notebook id*</li></ul> | [Example](#get-a-notebook-by-id)
-DELETE | /notebook | Delete a notebook by id | **Query:** <ul><li>nid - *notebook id*</li></ul> | 200
-PUT | /notebook | Update notebook name | **Query:** <ul><li>nid - *notebook id*</li><li>name - *notebook name*</li></ul> | 200
-POST | /page | Create a page of notebook | **JSON:** <ul><li>"nid": "6065f30e3fbc16a1a89e1665"</li><li>"title": "New page of notebook"</li><li>"body": "This is body of notebook"</li><li>"metadata": ""</li></ul> | 200
-GET | /page | Get a page by id | **Query:** <ul><li>nid - *notebook id*</li><li>pid - *page id*</li></ul> | [Example](#get-a-page-by-id)
-DELETE | /page | Delete a page by id | **Query:** <ul><li>nid - *notebook id*</li><li>pid - *page id*</li></ul> | 200
-PUT | /page | Update page | **JSON:** <ul><li>"nid": "60662d57327ef36b8721dfc6"</li><li>"pid": "60662d5f327ef36b8721dfc8"</li><li>"body": "1"</li><li>"metadata": "2"</li><li>"title": "3"</li></ul> | 200
+Method | Endpoint | Description
+---|---|---
+GET | /notebooks | [Get all notebooks](#get-all-notebooks)
+POST | /notebook | [Create a notebook](#create-a-notebook)
+GET | /notebook | [Get a notebook](#get-a-notebook)
+DELETE | /notebook | [Delete a notebook](#delete-a-notebook)
+PUT | /notebook | [Update notebook name](#update-notebook-name)
+POST | /page | [Create a page](#create-a-page)
+GET | /page | [Get a page](#get-a-page)
+DELETE | /page | [Delete a page](#delete-a-page)
+PUT | /page | [Update a page](#update-a-page)
+POST | /signup | [Sign up](#sign-up)
+POST | /signout | [Sign out](#sign-out)
+POST | /login | [Login](#login)
 
+---
 
-### Output Examples
+## Detailed about routes
 
-#### Get all notebooks
+### Get all notebooks
 
+**GET /notebooks** - Returns all available user's notebooks.
+
+**Output Example:**
 ```json5
 [
     {
-        "id": "6065f30e3fbc16a1a89e1665",
-        "name": "",
+        "id": "6067d2e386d8b93c0cb9a368",
+        "name": "asd",
         "pages": [
             {
-                "body": "1",
-                "create_at": "Thu, 01 Apr 2021 22:21:48 GMT",
-                "id": "60661d4cfa9f51145e7f2972",
-                "metadata": "2",
-                "title": "3"
+                "body": "",
+                "create_at": "Sat, 03 Apr 2021 05:28:51 GMT",
+                "id": "6067d2e386d8b93c0cb9a369",
+                "metadata": "",
+                "title": "New page"
+            }
+        ]
+    },
+    {
+        "id": "6067d2ea86d8b93c0cb9a36a",
+        "name": "312s",
+        "pages": [
+            {
+                "body": "",
+                "create_at": "Sat, 03 Apr 2021 05:28:58 GMT",
+                "id": "6067d2ea86d8b93c0cb9a36b",
+                "metadata": "",
+                "title": "New page"
             }
         ]
     }
 ]
 ```
 
-#### Create a notebook
+---
 
+### Create a notebook
+
+**POST /notebook** - Create a notebook for user. Also creates empty page.
+
+**Input Query Params:**
+* name - notebook's name
+
+**Input Example:**
+```
+http://localhost:5000/notebook?name=TestNotebook
+```
+
+**Output Example:**
 ```json5
 {
-    "id": "60662749327ef36b8721dfc4",
-    "name": "asd",
+    "id": "6067d50a86d8b93c0cb9a36c",
+    "name": "TestNotebook",
     "pages": [
         {
             "body": "",
-            "create_at": "Thu, 01 Apr 2021 23:04:25 GMT",
-            "id": "60662749327ef36b8721dfc5",
+            "create_at": "Sat, 03 Apr 2021 05:38:02 GMT",
+            "id": "6067d50a86d8b93c0cb9a36d",
             "metadata": "",
             "title": "New page"
         }
@@ -96,33 +135,208 @@ PUT | /page | Update page | **JSON:** <ul><li>"nid": "60662d57327ef36b8721dfc6"<
 }
 ```
 
-#### Get a notebook by id
+---
 
+### Get a notebook
+
+**GET /notebook** - Returns a notebook with given ID
+
+**Input Query Params:**
+* nid - notebook's id
+
+**Input Example:**
+```
+http://localhost:5000/notebook?nid=6067d2e386d8b93c0cb9a368
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+
+**Output Example:**
 ```json5
 {
-    "id": "6065f30e3fbc16a1a89e1665",
-    "name": "",
+    "id": "6067d2e386d8b93c0cb9a368",
+    "name": "asd",
     "pages": [
         {
-            "body": "1",
-            "create_at": "Thu, 01 Apr 2021 22:21:48 GMT",
-            "id": "60661d4cfa9f51145e7f2972",
-            "metadata": "2",
-            "title": "3"
+            "body": "",
+            "create_at": "Sat, 03 Apr 2021 05:28:51 GMT",
+            "id": "6067d2e386d8b93c0cb9a369",
+            "metadata": "",
+            "title": "New page"
         }
     ]
 }
 ```
 
-#### Get a page by id
+---
 
+### Delete a notebook
+
+**DELETE /notebook** - Deletes a notebook with given ID
+
+**Input Query Params:**
+* nid - notebook's id
+
+**Input Example:**
+```
+http://localhost:5000/notebook?nid=6067d2e386d8b93c0cb9a368
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+
+**Output Example:** 200
+
+---
+
+### Update notebook name
+
+**PUT /notebook** - Updates notebook's name
+
+**Input Query Params:**
+* nid - notebook's id
+* name - new name to which you want to change
+
+**Input Example:**
+```
+http://localhost:5000/notebook?nid=6067d2ea86d8b93c0cb9a36a&name=NewName
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+
+**Output Example:** 200
+
+---
+
+### Create a page
+
+**POST /page** - Creates page of user's notebook
+
+**Input JSON Params Example:**
+```json5
+{
+    "nid": "6067d2ea86d8b93c0cb9a36a",
+    "title": "New page of notebook",
+    "body": "This is body of notebook",
+    "metadata": ""
+}
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+
+**Output Example:** 200
+
+---
+
+### Get a page
+
+**GET /page** - Returns page of notebook
+
+**Input Query Params:**
+* nid - notebook's id
+* pid - page's id
+
+**Input Example:**
+```
+http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9a36d
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+* When no page with such ID raises **404** response
+
+**Output Example:**
 ```json5
 {
     "body": "",
-    "create_at": "Thu, 01 Apr 2021 23:30:15 GMT",
-    "id": "60662d57327ef36b8721dfc7",
+    "create_at": "Sat, 03 Apr 2021 05:38:02 GMT",
+    "id": "6067d50a86d8b93c0cb9a36d",
     "metadata": "",
     "title": "New page"
 }
 ```
 
+---
+
+### Delete a page
+
+**DELETE /page** - Deletes page of notebook
+
+**Input Query Params:**
+* nid - notebook's id
+* pid - page's id
+
+**Input Example:**
+```
+http://localhost:5000/page?nid=6067d2ea86d8b93c0cb9a36a&pid=6067d50a86d8b93c0cb9a36d
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+* When no page with such ID raises **404** response
+
+**Output Example:** 200
+
+---
+
+### Update a page
+
+**PUT /page** - Updates page of notebook
+
+**Input JSON Params Example:**
+```json5
+{
+    "nid": "6067d2ea86d8b93c0cb9a36a",
+    "pid": "6067dab463cdb8ff5729d625",
+    "body": "New body",
+    "metadata": "",
+    "title": "Updated title"
+}
+```
+
+**Handling errors**
+* When no notebook with such ID raises **404** response
+* When no page with such ID raises **404** response
+
+**Output Example:** 200
+
+---
+
+### Sign up
+
+**POST /signup** - Sign up in account
+
+**Input Form-Data:**
+* name
+* email
+* password
+
+**Outputs:**
+* 409 - if user is already registered
+* 500 - if something went wrong (with database, but shouldn't raises)
+* 200 - if user was successfully registered
+---
+
+### Sign out
+
+**POST /signout** - Sign out of account
+
+**NOTE: NOW AFTER SIGNING OUT, IT IS REDIRECTING TO "/" PAGE**
+
+---
+
+### Login
+
+**POST /login** - Log in account
+
+**Input Form-Data:**
+* email
+* password
+
+**Outputs:**
+* 401 - if user entered wrong password
+* 409 - if user is not registered
+* 200 - if user was successfully logged in

@@ -1,7 +1,8 @@
 .wrap {
     background: #1F1F1F;
-    width: 100%;
-    padding: 50px 100px 0px 100px;
+    padding: 50px 20px 0px 100px;
+    position: relative;
+    flex-grow: 1;
 }
 
 .header, .header input {
@@ -41,4 +42,49 @@
 .date {
     color: var(--color-lightgray);
     font-size: 12px;
+    padding-bottom: 10px;
 }
+
+.body {
+    height: 60vh;
+}
+
+.sync {
+    position: absolute;
+    right: 15px;
+    bottom: 25px;
+    color: var(--color-lightgray)!important;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.delete {
+    position: absolute;
+    color: red!important;
+    font-size: 1.5em;
+    cursor: pointer;
+    right: 45px;
+    bottom: 25px;
+}
+
+@media (max-width: 800px) {
+    .wrap {
+        padding: 20px;
+    }
+
+    .body {
+        height: 57vh;
+    }
+
+}
+.preloader{
+
+}
+
+.preloader svg{
+    font-size: 3em;
+    color: var(--color-primary);
+    z-index: 999;
+    margin: 0 auto;
+}
+

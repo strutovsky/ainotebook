@@ -6,14 +6,23 @@ There is four services into docker-compose:
 
 service | IP | desc
 ---|---|---
-mongo | 172.20.0.2:8000 | uses volume */data/mongo-volume*
-ui | 172.20.0.4:8080 | -
-server | 172.20.0.3:8001 | - 
-nginx-proxy | none | -
+mongo | mongo:27017 | uses volume */data/mongo-volume*
+ui | localhost | -
+backend | backend:5000 | For production
+backend | localhost/api | For development [(requires authentication)](docker-compose-deployment/ainotebook-proxy/README.md)
+backend signup | localhost/signup | Sign up
+backend signout | localhost/signout | Sign out
+backend login | localhost/login | Login
 
 
 Run ainotebook services via docker-compose:
 ```bash
 cd docker-compose-deployment
 docker-compose up --build
+```
+
+Run with scaling:
+```bash
+cd docker-compose-deployment
+docker-compose up --scaling backend=3
 ```

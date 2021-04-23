@@ -1,0 +1,30 @@
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--color-background-dark);
+    flex-grow: 1;
+}
+
+.wrap svg {
+    font-size: 100px;
+    color: #1890FF;
+}
+
+.wrap h2 {
+    margin-top: 10px;
+}
+
+.wrap h2, .wrap p {
+    font-weight: lighter;
+    color: var(--color-white);
+}
+
+.wrap button{
+    cursor: pointer;
+    background: var(--color-selected-menu);
+    color: var(--color-lightgray);
+    padding: 5px 10px;
+}

@@ -5,10 +5,12 @@ import {Input, Menu} from 'antd';
 
 type ownProps = {
     placeholder: string,
-    add: (name: string) => void,
+    mode: "page" | "book",
+    add: Function,
+    nid?: string,
 }
 
-const Add: React.FC<ownProps> = ({placeholder, add}) => {
+const Add: React.FC<ownProps> = ({placeholder, mode, add, nid}) => {
     const [value, setValue] = useState("")
     const [addingMode, setAddingMode] = useState(false)
 
@@ -38,10 +40,42 @@ const Add: React.FC<ownProps> = ({placeholder, add}) => {
                         onChange={valueHandler}
                         onBlur={(e) => {
                             if(e.target.value !== ''){
+                                if(mode === 'book'){
+                                    add(value)
+                                }
+
+                                if(mode === 'page') {
+                                    add(nid, value)
+                                }
                                 setValue('')
-                                add(e.target.value)
+                                setAddingMode(false)
                             }
-                        }}/>
+                            setAddingMode(false)
+                        }}
+                        onKeyPress={e => {
+                            if(e.code === "Enter" && value === "") {
+                                setValue('')
+                                setAddingMode(false)
+                            }else if(e.code === "Enter" && value !== "" ){
+                                if(mode === 'book'){
+                                    add(value)
+                                }
+                                if(mode === 'page') {
+                                    add(nid, value)
+                                }
+
+                                setValue('')
+                                setAddingMode(false)
+                            }
+                        }}
+
+                        onKeyDown={e => {
+                            if(e.code === "Escape"){
+                                setValue('')
+                                setAddingMode(false)
+                            }
+                        }}
+                    />
                 </Menu.Item>}
             </>)
 }
