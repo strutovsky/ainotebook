@@ -161,14 +161,16 @@ export const singOutThunk = () => {
     return () => {
         actions.setPending(true)
         LoginAPI.signout().then(async () => {
-            const hasCache = await caches.has('dynamic-v1')
-            if(hasCache){
-                const dynamicCache = await caches.open('dynamic-v1')
-                const keys = await dynamicCache.keys()
-                await keys.map(name => dynamicCache.delete(name))
+
+            if(navigator.serviceWorker) {
+                const hasCache = await caches.has('dynamic-v1')
+                if (hasCache) {
+                    const dynamicCache = await caches.open('dynamic-v1')
+                    const keys = await dynamicCache.keys()
+                    await keys.map(name => dynamicCache.delete(name))
+                }
             }
-
-
+            
             localStorage.removeItem('lang')
             window.history.pushState({}, '', '/')
             window.location.reload()
