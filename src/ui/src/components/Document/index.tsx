@@ -44,6 +44,7 @@ const Document: React.FC<any> = (props) => {
 
     const raw = convertToRaw(_contentState)
     const [editorState, setEditorState] = useState(raw) ;
+    const [hideDelete, setHideDelete] = useState(false)
 
     useEffect(() => {
         return () => {
@@ -54,6 +55,7 @@ const Document: React.FC<any> = (props) => {
     useEffect(() => {
         dispatch(saveChangesThunk(editorState))
         dispatch(getNotebookPageThunk(parsed.nid, parsed.page))
+        setHideDelete(false)
     }, [parsed.nid, parsed.page])
 
 
@@ -116,18 +118,20 @@ const Document: React.FC<any> = (props) => {
                         }
                     }/>
 
-                    <DeleteOutlined className={Styles.delete} spin={pendingSync} onClick={() =>
+                   {!hideDelete && <DeleteOutlined className={Styles.delete} spin={pendingSync} onClick={() =>
                     {
                         if(activeNote?.id && activePage?.id && activeNote?.pages.length !==1) {
                             confirm({
                                 title: 'Do you Want to delete this page?',
 
                                 onOk() {
+
                                     dispatch(deletePage(activeNote?.id, activePage?.id))
+                                    setHideDelete(true)
                                 }})
                         }
                     }
-                    }/>
+                    }/>}
 
 
 
